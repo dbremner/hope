@@ -49,12 +49,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef	DEBUG
-#	define	local
-#else
-#	define	local	static
-#endif
-
 typedef	unsigned int	Natural;
 typedef	unsigned char	Byte;
 typedef	int	Bool;
