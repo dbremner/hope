@@ -220,7 +220,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		/* last argument */
 		return nv_pattern(p->e_arg, *pathp);
-	otherwise:
+	default:
 		start_err_line();
 		(void)fprintf(errout, "  ");
 		pr_expr(errout, p);
@@ -263,7 +263,7 @@ nv_expr(Expr *expr)
 		return TRUE;
 	when E_VAR:
 		return nv_var(expr);
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

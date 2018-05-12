@@ -77,7 +77,7 @@ compare(Cell *arg)
 			new_cnst(cmp_args(arg->c_left, arg->c_right));
 	when C_PAIR:
 		return new_susp(e_cmppair, new_pair(arg, NOCELL));
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }
@@ -101,7 +101,7 @@ cmp_args(Cell *first, Cell *second)
 	when C_CONS:
 		return first->c_cons->c_index < second->c_cons->c_index ?
 					c_less : c_greater;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

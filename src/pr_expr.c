@@ -337,7 +337,7 @@ expr_name(Expr *expr, int level)
 		if (expr->e_level < level)
 			return expr_name(expr->e_patt, 0);
 		return val_name(expr->e_level - level, expr->e_where);
-	otherwise:
+	default:
 		return NULL;
 	}
 }
@@ -383,7 +383,7 @@ precedence(Expr *expr)
 			return PREC_ATOMIC;
 	when E_PARAM:
 		return precedence(expr->e_patt);
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

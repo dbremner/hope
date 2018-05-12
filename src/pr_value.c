@@ -299,7 +299,7 @@ val_name(int level, Path path)
 			return value->c_expr->e_const->c_name;
 		when E_DEFUN:
 			return value->c_expr->e_defun->f_name;
-		otherwise:
+		default:
 			return NULL;
 		}
 	when C_PAPP:
@@ -308,7 +308,7 @@ val_name(int level, Path path)
 			return value->c_expr->e_defun->f_name;
 		else
 			return NULL;
-	otherwise:
+	default:
 		return NULL;
 	}
 }
@@ -333,12 +333,12 @@ prec_value(Cell *value)
 				return PREC_APPLY;
 			else
 				return PREC_ATOMIC;
-		otherwise:
+		default:
 			return PREC_APPLY;
 		}
 	when C_PAIR:
 		return PREC_COMMA;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

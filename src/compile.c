@@ -186,7 +186,7 @@ size_pattern(Expr *pattern)
 		return 1;
 	case E_VAR:
 		return 0;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

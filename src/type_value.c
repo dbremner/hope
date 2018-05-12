@@ -347,7 +347,7 @@ cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top)
 		ty_value = new_tcons(type->ty_deftype,
 				cp_list(type->ty_args, type_arg, mu_top));
 		return ty_value;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

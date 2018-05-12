@@ -158,7 +158,7 @@ n_ty_precedence(Cell *type)
 		return PREC_APPLY;
 	when C_TVAR:
 		return PREC_ATOMIC;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }

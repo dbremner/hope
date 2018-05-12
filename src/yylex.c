@@ -246,7 +246,7 @@ yylex(void)
 					return LITERAL;
 			when '(' or ')' or ',' or ';' or '[' or ']':
 				return c;
-			otherwise:
+			default:
 				do {
 					c = FetchChar(&inptr);
 				} while (! IsSpace(c) && IsPunct(c) &&
@@ -320,7 +320,7 @@ charesc(void)
 		/* will be reported as a non-terminated character or string */
 		BackChar(&inptr);
 		return '\\';
-	otherwise:
+	default:
 		return c;
 	}
 }

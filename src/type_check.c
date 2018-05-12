@@ -197,7 +197,7 @@ ty_expr(Expr *expr)
 			error(TYPEERR, "argument has wrong type");
 		}
 		return deref(type1)->c_targ2;
-	otherwise:
+	default:
 		NOT_REACHED;
 	}
 }
@@ -383,7 +383,7 @@ get_functor(Expr *expr)
 			return expr->e_defun->f_tycons;
 		else
 			return NULL;
-	otherwise:
+	default:
 		return NULL;
 	}
 }

@@ -320,7 +320,7 @@ run(Cell *current)
 		when E_RETURN:
 			SHOW("RETURN\n");
 			return;
-		otherwise:
+		default:
 			NOT_REACHED;
 		}
 	when C_PAPP:
