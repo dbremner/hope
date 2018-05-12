@@ -220,7 +220,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		/* last argument */
 		return nv_pattern(p->e_arg, *pathp);
-	default:
+	otherwise:
 		start_err_line();
 		(void)fprintf(errout, "  ");
 		pr_expr(errout, p);
