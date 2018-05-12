@@ -501,6 +501,12 @@
 				);
 				GCC_STRICT_ALIASING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-padded",
+					"-Wno-cast-align",
+					"-Wno-unused-macros",
+				);
 			};
 			name = Debug;
 		};
@@ -512,6 +518,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS = unix;
 				GCC_STRICT_ALIASING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-padded",
+					"-Wno-cast-align",
+					"-Wno-unused-macros",
+				);
 			};
 			name = Release;
 		};
