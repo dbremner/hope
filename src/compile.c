@@ -182,7 +182,8 @@ size_pattern(Expr *pattern)
 		return size_pattern(pattern->e_rest) + pattern->e_incr;
 	case E_NUM:
 		return (int)(pattern->e_num) + 1;
-	case E_CONS or E_CHAR:
+	case E_CONS:
+    case E_CHAR:
 		return 1;
 	case E_VAR:
 		return 0;
@@ -243,7 +244,8 @@ merge(UCase *old)
 	LCase	*lcase;
 
 	switch (old->uc_class) {
-	case UC_F_NOMATCH or UC_L_NOMATCH:	/* do all the matching */
+	case UC_F_NOMATCH:
+    case UC_L_NOMATCH:	/* do all the matching */
 		return gen_tree(cur_match, old);
 	case UC_SUCCESS:
 		if (old->uc_size < cur_size)	/* maybe more specific */
@@ -326,19 +328,31 @@ comp_expr(Expr *expr)
 	Branch	*br;
 
 	switch (expr->e_class) {
-	case E_LAMBDA or E_EQN or E_PRESECT or E_POSTSECT:
+	case E_LAMBDA:
+    case E_EQN:
+    case E_PRESECT:
+    case E_POSTSECT:
 		expr->e_code = l_nomatch(expr);
 		for (br = expr->e_branch; br != NULL; br = br->br_next)
 			expr->e_code = comp_branch(expr->e_code, br);
 	when E_PAIR:
 		comp_expr(expr->e_left);
 		comp_expr(expr->e_right);
-	when E_APPLY or E_IF or E_WHERE or E_LET or E_RWHERE or E_RLET:
+	when E_APPLY:
+    case E_IF:
+    case E_WHERE:
+    case E_LET:
+    case E_RWHERE:
+    case E_RLET:
 		comp_expr(expr->e_func);
 		comp_expr(expr->e_arg);
 	when E_MU:
 		comp_expr(expr->e_body);
-	when E_NUM or E_CHAR or E_CONS or E_DEFUN or E_PARAM:
+	when E_NUM:
+    case E_CHAR:
+    case E_CONS:
+    case E_DEFUN:
+    case E_PARAM:
 		;
 	otherwise:
 		NOT_REACHED;

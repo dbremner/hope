@@ -144,7 +144,9 @@ ty_expr(Expr *expr)
 		}
 		return copy_type(expr->e_const->c_type,
 				expr->e_const->c_ntvars, FALSE);
-	when E_LAMBDA or E_PRESECT or E_POSTSECT:
+	when E_LAMBDA:
+    case E_PRESECT:
+    case E_POSTSECT:
 		return ty_list(expr->e_branch);
 	case E_PARAM:
 		if ((dt = get_functor(expr)) != NULL)
@@ -175,9 +177,11 @@ ty_expr(Expr *expr)
 				     ty_expr(expr->e_right));
 	case E_IF:
 		return ty_if(expr);
-	when E_WHERE or E_LET:
+	when E_WHERE:
+    case E_LET:
 		return ty_eqn(expr->e_func->e_branch, expr->e_arg);
-	when E_RWHERE or E_RLET:
+	when E_RWHERE:
+    case E_RLET:
 		return ty_rec_eqn(expr->e_func->e_branch, expr->e_arg);
 	case E_MU:
 		return ty_mu_expr(expr->e_muvar, expr->e_body);

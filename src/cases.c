@@ -149,7 +149,8 @@ copy_lcase(LCase *old)
 	new->lc_class = old->lc_class;
 	new->lc_arity = old->lc_arity;
 	switch (old->lc_class) {
-	case LC_ALGEBRAIC or LC_NUMERIC:
+	case LC_ALGEBRAIC:
+    case LC_NUMERIC:
 		new->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
 		for (i = 0; i < old->lc_arity; i++)
 			new->lc_limbs[i] = new_reference(old->lc_limbs[i]);

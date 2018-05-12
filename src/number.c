@@ -116,7 +116,8 @@ nv_pattern(Expr *p, Path path)
 	if (p == NULL)		/* error in apply_pat() */
 		return FALSE;
 	switch (p->e_class) {
-	case E_NUM or E_CHAR:
+	case E_NUM:
+    case E_CHAR:
 		return TRUE;
 	when E_PAIR:
 		return nv_pattern(p->e_left, p_push(P_LEFT, path)) &&
@@ -236,17 +237,26 @@ nv_expr(Expr *expr)
 	Branch	*br;
 
 	switch (expr->e_class) {
-	case E_NUM or E_CHAR or E_CONS:
+	case E_NUM:
+    case E_CHAR:
+    case E_CONS:
 		return TRUE;
 	when E_PAIR:
 		return nv_expr(expr->e_left) && nv_expr(expr->e_right);
-	when E_APPLY or E_IF or E_WHERE or E_LET:
+	when E_APPLY:
+    case E_IF:
+    case E_WHERE:
+    case E_LET:
 		return nv_expr(expr->e_func) && nv_expr(expr->e_arg);
-	when E_RLET or E_RWHERE:
+	when E_RLET:
+    case E_RWHERE:
 		return nv_rec_eqn(expr->e_func->e_branch, expr->e_arg);
 	when E_MU:
 		return nv_mu_expr(expr->e_muvar, expr->e_body);
-	when E_LAMBDA or E_EQN or E_PRESECT or E_POSTSECT:
+	when E_LAMBDA:
+    case E_EQN:
+    case E_PRESECT:
+    case E_POSTSECT:
 		for (br = expr->e_branch; br != NULL; br = br->br_next) {
 			if (arity_formals(br->br_formals) != expr->e_arity) {
 				start_err_line();

@@ -317,7 +317,9 @@ local int
 prec_value(Cell *value)
 {
 	switch (value->c_class) {
-	case C_NUM or C_CHAR or C_CONST:
+	case C_NUM:
+    case C_CHAR:
+    case C_CONST:
 		return PREC_ATOMIC;
 	when C_CONS:
 		return PREC_APPLY;

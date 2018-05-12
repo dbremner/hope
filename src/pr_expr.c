@@ -346,7 +346,8 @@ local int
 precedence(Expr *expr)
 {
 	switch (expr->e_class) {
-	case E_NUM or E_CHAR:
+	case E_NUM:
+    case E_CHAR:
 		return PREC_ATOMIC;
 	when E_PAIR:
 		return PREC_COMMA;
@@ -354,11 +355,14 @@ precedence(Expr *expr)
 		return PREC_LAMBDA;
 	when E_MU:
 		return PREC_MU;
-	when E_PRESECT or E_POSTSECT:
+	when E_PRESECT:
+    case E_POSTSECT:
 		return in_definition ? PREC_INFIX : PREC_LAMBDA;
-	when E_WHERE or E_RWHERE:
+	when E_WHERE:
+    case E_RWHERE:
 		return PREC_WHERE;
-	when E_LET or E_RLET:
+	when E_LET:
+    case E_RLET:
 		return PREC_LET;
 	when E_IF:
 		return PREC_IF;

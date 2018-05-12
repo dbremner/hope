@@ -244,7 +244,12 @@ yylex(void)
 			when '"':
 				if (scan_string())
 					return LITERAL;
-			when '(' or ')' or ',' or ';' or '[' or ']':
+			when '(':
+            case ')':
+            case ',':
+            case ';':
+            case '[':
+            case ']':
 				return c;
 			default:
 				do {
@@ -314,7 +319,14 @@ charesc(void)
 		return hexdigit(hexdigit((Char)0));
 	case 'X': /* long hexadecimal */
 		return hexdigit(hexdigit(hexdigit(hexdigit((Char)0))));
-	when '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7': /* octal */
+	when '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7': /* octal */
 		return octdigit(octdigit(c - '0'));
 	case '\0':
 		/* will be reported as a non-terminated character or string */

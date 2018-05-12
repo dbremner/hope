@@ -66,7 +66,9 @@ local Cell *
 compare(Cell *arg)
 {
 	switch (arg->c_left->c_class) {
-	case C_NUM or C_CHAR or C_CONST:
+	case C_NUM:
+    case C_CHAR:
+    case C_CONST:
 		return new_cnst(cmp_args(arg->c_left, arg->c_right));
 	case C_CONS:
 		return arg->c_left->c_cons == arg->c_right->c_cons ?

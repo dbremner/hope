@@ -247,11 +247,15 @@ run(Cell *current)
 			SHOW("PAIR\n");
 			current = new_pair(new_susp(expr->e_left, env),
 					   new_susp(expr->e_right, env));
-		when E_APPLY or E_IF or E_LET or E_WHERE:
+		when E_APPLY:
+        case E_IF:
+        case E_LET:
+        case E_WHERE:
 			SHOW("APPLY\n");
 			Push(new_susp(expr->e_arg, env));
 			current = new_susp(expr->e_func, env);
-		when E_RLET or E_RWHERE:
+		when E_RLET:
+        case E_RWHERE:
 			SHOW("RLET\n");
 			/*
 			 * build a cyclic environment:
@@ -280,7 +284,10 @@ run(Cell *current)
 					expr->e_defun->f_name);
 			current = new_papp(expr, NULL_ENV,
 					expr->e_defun->f_arity);
-		when E_LAMBDA or E_EQN or E_PRESECT or E_POSTSECT:
+		when E_LAMBDA:
+        case E_EQN:
+        case E_PRESECT:
+        case E_POSTSECT:
 			SHOW("LAMBDA\n");
 			current = new_papp(expr, env, expr->e_arity);
 		when E_NUM:
@@ -345,7 +352,10 @@ run(Cell *current)
 			when E_DEFUN:
 				current =
 					new_ucase(expr->e_defun->f_code, env);
-			when E_LAMBDA or E_EQN or E_PRESECT or E_POSTSECT:
+			when E_LAMBDA:
+            case E_EQN:
+            case E_PRESECT:
+            case E_POSTSECT:
 				current = new_ucase(expr->e_code, env);
 			otherwise:
 				NOT_REACHED;
