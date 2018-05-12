@@ -135,7 +135,7 @@ start_err_line(void)
 				(void)mktemp(list_file);
 			} else {
 				mod_file(input_file, mod_name());
-				(void)sprintf(list_file, "%s%s",
+				(void)snprintf(list_file, sizeof(list_file), "%s%s",
 					mod_name(), list_extension);
 			}
 			first_error = cur_source->lineno;
@@ -407,7 +407,7 @@ edit(String name)
 		mod_file(filename, name);
 	else
 		(void)strcpy(filename, tmp_file);
-	(void)sprintf(command, "${EDITOR-vi} %s", filename);
+	(void)snprintf(command, sizeof(command), "${EDITOR-vi} %s", filename);
 	(void)system(command);
 	restart(tmp_file);
 }
@@ -468,7 +468,7 @@ re_edit_script(void)
 
 	get_script(tmp_file);
 	before = mtime(list_file);
-	(void)sprintf(command, "${EDITOR-vi} +%d %s", first_error, list_file);
+	(void)snprintf(command, sizeof(command), "${EDITOR-vi} +%d %s", first_error, list_file);
 	(void)system(command);
 	if (mtime(list_file) == before) {	/* no change */
 		(void)remove(list_file);

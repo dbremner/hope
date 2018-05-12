@@ -170,7 +170,7 @@ num2str(Cell *arg)
 {
 	Byte	strval[MAX_TMP_STRING];
 
-	(void)sprintf((char *)strval, NUMfmt, arg->c_num);
+    (void)snprintf((char *)strval, sizeof(strval), NUMfmt, arg->c_num);
 	return c2hope(strval);
 }
 
