@@ -16,9 +16,9 @@
 
 #define	STDOUT	stdout
 
-global	Expr	*e_return, *e_print, *e_wr_list;
+Expr	*e_return, *e_print, *e_wr_list;
 
-global void
+void
 init_print(void)
 {
 	Func	*fn;
@@ -45,7 +45,7 @@ init_print(void)
 /*
  *	Print value and inferred type on standard output
  */
-global Cell *
+Cell *
 print_value(Cell *value)
 {
 	(void)fprintf(STDOUT, ">> ");
@@ -65,7 +65,7 @@ local	const	char	*out_name;
 
 #define	TEMPFILE "TempFile"
 
-global void
+void
 open_out_file(const char *name)
 {
 	if (restricted)
@@ -77,7 +77,7 @@ open_out_file(const char *name)
 	out_name = name;
 }
 
-global void
+void
 save_out_file(void)
 {
 	if (out_name != NULL) {
@@ -88,7 +88,7 @@ save_out_file(void)
 	}
 }
 
-global void
+void
 close_out_file(void)
 {
 	if (out_name != NULL) {
@@ -97,7 +97,7 @@ close_out_file(void)
 	}
 }
 
-global Cell *
+Cell *
 write_value(Cell *value)
 {
 	if (value->c_class == C_CHAR)

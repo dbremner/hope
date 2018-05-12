@@ -59,7 +59,7 @@ struct _Module {
 	Module	*mod_public;		/* public part of a private module */
 };
 
-global	TVar	alpha;
+TVar	alpha;
 
 local	String	Standard_name;
 
@@ -128,7 +128,7 @@ local	void	default_path(void);
 /*
  *	Set up the special modules
  */
-global void
+void
 mod_init(void)
 {
 	split_path();
@@ -199,13 +199,13 @@ default_path(void)
 	dir[2] = NULL;
 }
 
-global String
+String
 mod_name(void)
 {
 	return (*mod_current)->mod_name;
 }
 
-global Bool
+Bool
 mod_system(void)
 {
 	return (*mod_current)->mod_num == STANDARD;
@@ -270,7 +270,7 @@ module(String name)
 	return mod;
 }
 
-global void
+void
 mod_use(String name)
 {
 	Module	**mp;
@@ -294,7 +294,7 @@ mod_use(String name)
 /*
  *	Read in any queued modules
  */
-global void
+void
 mod_fetch(void)
 {
 	Natural	i;
@@ -333,7 +333,7 @@ mark_as_private(TabElt *p)
 /*
  *	Rest of module is to be hidden from other modules.
  */
-global void
+void
 mod_private(void)
 {
 	Module	*priv_module;
@@ -384,7 +384,7 @@ reset_private(TabElt *p)
  *	- when an abstype is defined as a synonym, and
  *	- when privately-defined abstype's are reset.
  */
-global void
+void
 fix_synonyms(void)
 {
 	Module	*current;
@@ -416,7 +416,7 @@ fix_syn_depth(TabElt *p)
 }
 
 /* end of use */
-global void
+void
 mod_finish(void)
 {
 	Module	*current;
@@ -451,7 +451,7 @@ mod_finish(void)
 	mod_fetch();
 }
 
-global void
+void
 mod_save(String name)
 {
 	FILE	*f;
@@ -482,7 +482,7 @@ mod_save(String name)
 	preserve();
 }
 
-global void
+void
 mod_dump(FILE *f)
 {
 	if (f != NULL) {
@@ -498,7 +498,7 @@ mod_dump(FILE *f)
 	}
 }
 
-global void
+void
 mod_file(char *buf, String name)
 {
 	(void)sprintf(buf, "%s%s", name, extension);
@@ -616,7 +616,7 @@ look_everywhere(String name,
  *	Operators
  */
 
-global void
+void
 op_declare(String name, int prec, Assoc assoc)
 {
 	Op	*op;
@@ -635,7 +635,7 @@ op_mod_lookup(String name, Module *mod)
 	return (void *)t_lookup(&(mod->mod_ops), name);
 }
 
-global Op *
+Op *
 op_lookup(String name)
 {
 	return (Op *)look_everywhere(name, op_mod_lookup);
@@ -660,7 +660,7 @@ op_display(TabElt *p)
  *	declaring type variables or checking whether they are declared.
  */
 
-global void
+void
 tv_declare(String name)
 {
 	Natural	n;
@@ -679,7 +679,7 @@ tv_declare(String name)
 	ADD((*mod_current)->mod_all_tvars, n);
 }
 
-global Bool
+Bool
 tv_lookup(String name)
 {
 	Natural	n;
@@ -710,7 +710,7 @@ tv_trim(String name)
  *	Print n as the n+1'th known type variable, adding primes when the
  *	known ones run out.
  */
-global void
+void
 tv_print(FILE *f, Natural n)
 {
 	int	ntvars;
@@ -768,7 +768,7 @@ tv_display(Module *mod)
  *	Defined types and constructors.
  */
 
-global void
+void
 dt_declare(DefType *dt)
 {
 	t_insert(&((*mod_current)->mod_types), (TabElt *)dt);
@@ -783,13 +783,13 @@ dt_mod_lookup(String name, Module *mod)
 	return (void *)t_lookup(&(mod->mod_types), name);
 }
 
-global DefType *
+DefType *
 dt_lookup(String name)
 {
 	return (DefType *)look_everywhere(name, dt_mod_lookup);
 }
 
-global DefType *
+DefType *
 dt_local(String name)
 {
 	return (DefType *)look_here(name, dt_mod_lookup);
@@ -822,13 +822,13 @@ cons_mod_lookup(String name, Module *mod)
 	return (void *)cons_found;
 }
 
-global Cons *
+Cons *
 cons_lookup(String name)
 {
 	return (Cons *)look_everywhere(name, cons_mod_lookup);
 }
 
-global Cons *
+Cons *
 cons_local(String name)
 {
 	return (Cons *)look_here(name, cons_mod_lookup);
@@ -860,7 +860,7 @@ ty_def_display(TabElt *p)
  *	Functions.
  */
 
-global void
+void
 new_fn(String name, QType *qtype)
 {
 	Func	*fn;
@@ -892,7 +892,7 @@ dec_functor(DefType *dt)
 	t_insert(&((*mod_current)->mod_fns), (TabElt *)fn);
 }
 
-global void
+void
 del_fn(Func *fn)
 {
 	t_delete(&((*mod_current)->mod_fns), (TabElt *)fn);
@@ -904,13 +904,13 @@ fn_mod_lookup(String name, Module *mod)
 	return (void *)t_lookup(&(mod->mod_fns), name);
 }
 
-global Func *
+Func *
 fn_lookup(String name)
 {
 	return (Func *)look_everywhere(name, fn_mod_lookup);
 }
 
-global Func *
+Func *
 fn_local(String name)
 {
 	return (Func *)look_here(name, fn_mod_lookup);
@@ -962,7 +962,7 @@ pr_fdecl(FILE *f, Func *fn)
 /*
  *	List out all tables.
  */
-global void
+void
 display(void)
 {
 	if ((*mod_current)->mod_num != SESSION) {

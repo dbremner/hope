@@ -15,7 +15,7 @@ struct _Ident {
 local	Ident	*table[TABSIZ];
 local	Natural	hash(const Byte *s, int n);
 
-global void
+void
 init_strings(void)
 {
 	Ident	**tp;
@@ -24,13 +24,13 @@ init_strings(void)
 		*tp = NULL;
 }
 
-global String
+String
 newstring(const char *s)
 {
 	return newnstring(s, strlen(s));
 }
 
-global String
+String
 newnstring(const char *s, int n)
 {
 	Ident	*np, **p;

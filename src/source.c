@@ -14,7 +14,7 @@
 
 #define	PROMPTOUT	stdout
 
-global	FILE	*errout;
+FILE	*errout;
 
 local	Bool	gen_listing;	/* generate a listing */
 
@@ -31,7 +31,7 @@ local	Source	*cur_source;
 local	Bool	istty;		/* top level input is a terminal */
 
 local	char	src_line[MAX_LINE];
-global	const	Byte	*inptr;
+const	Byte	*inptr;
 
 local	const	char	prompt[] = ">: ";	/* the Hope command prompt */
 
@@ -88,7 +88,7 @@ local	const	char	list_prefix[] = "@ ";
 /* level (if any) at which we are creating a listing file */
 local	Source	*listing;
 
-global void
+void
 init_source(FILE *src, Bool listing_flag)
 {
 	gen_listing = listing_flag;
@@ -110,7 +110,7 @@ init_source(FILE *src, Bool listing_flag)
 	errout = stderr;
 }
 
-global void
+void
 start_err_line(void)
 {
 #ifdef	RE_EDIT
@@ -159,7 +159,7 @@ start_err_line(void)
  *	Called on detecting the error -- flag the erroneous token.
  */
 /*ARGSUSED*/
-global void
+void
 yyerror(const char *s)
 {
 	const	Byte	*p;
@@ -193,7 +193,7 @@ yyerror(const char *s)
 		error(SYNERR, s);
 }
 
-global	Bool	erroneous;
+Bool	erroneous;
 
 #include <stdarg.h>
 #define	VAR_FPRINTF(f,fmt) {\
@@ -203,7 +203,7 @@ global	Bool	erroneous;
 		va_end(__args__);\
 	}
 
-global void
+void
 error(int errtype, const char *fmt, ...)
 {
 /* array indexed by error types (see error.h) */
@@ -264,7 +264,7 @@ static	const	char	*const	errname[] = {
 	erroneous = TRUE;
 }
 
-global void
+void
 enterfile(FILE *f)
 {
 	cur_source++;
@@ -275,7 +275,7 @@ enterfile(FILE *f)
 	inptr = (const Byte *)"";
 }
 
-global Bool
+Bool
 interactive(void)
 {
 	return cur_source == source && istty;
@@ -286,7 +286,7 @@ interactive(void)
  *	The line will be terminated by a null if it comes from the terminal;
  *	otherwise it ends in a newline (whitespace) and then a null.
  */
-global Bool
+Bool
 _getline(void)
 {
 	if (atend && cur_source >= source) {
@@ -389,7 +389,7 @@ head(int lines, const char *filename, FILE *to)
  *	re-reading the file.
  *	If an error occurs during re-reading, go back to the editor.
  */
-global void
+void
 edit(String name)
 {
 	char	tmp_file[MAX_TEMP];
@@ -412,7 +412,7 @@ edit(String name)
 	restart(tmp_file);
 }
 
-global void
+void
 set_script(const char *filename)
 {
 	FILE	*f;

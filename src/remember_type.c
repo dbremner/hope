@@ -44,7 +44,7 @@ local	NoteCons note_cons[] = {
  *	Called whenever a type is defined in the Standard module.
  */
 
-global void
+void
 remember_type(DefType *dt)
 {
 	NoteType *ntp;
@@ -70,7 +70,7 @@ remember_type(DefType *dt)
  *	Called at the end of the Standard module, to check that all the
  *	types and constructors required internally have been defined.
  */
-global void
+void
 check_type_defs(void)
 {
 	NoteType *ntp;

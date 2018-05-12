@@ -7,8 +7,8 @@
 
 #include "defs.h"
 
-global void init_pr_ty_value(void);
+void init_pr_ty_value(void);
 
-global void pr_ty_value(FILE *f, Cell *type);
+void pr_ty_value(FILE *f, Cell *type);
 
 #endif

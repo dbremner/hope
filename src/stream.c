@@ -19,7 +19,7 @@ local	FILE	*str_table[MAX_STREAMS];
 local	int	get_one_char(void);
 local	void	end_stream(FILE *f);
 
-global Cell *
+Cell *
 open_stream(Cell *arg)
 {
 	char	filename[MAX_FILENAME];
@@ -41,7 +41,7 @@ open_stream(Cell *arg)
 	return new_stream(*fp);
 }
 
-global Cell *
+Cell *
 read_stream(Cell *cell)
 {
 	long	c;
@@ -58,7 +58,7 @@ read_stream(Cell *cell)
 local	char	str_line[MAX_INPUTLINE];
 local	const	Byte	*str_lptr;
 
-global void
+void
 reset_streams(void)
 {
 	FILE	**fp;
@@ -98,7 +98,7 @@ end_stream(FILE *f)
 	}
 }
 
-global void
+void
 close_streams(void)
 {
 	FILE	**fp;

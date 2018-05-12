@@ -9,7 +9,7 @@
  *	Returned value points to a static area that will be overwritten
  *	by the next call.
  */
-global Path
+Path
 p_new(void)
 {
 static	char	path_buf[MAX_PATH];
@@ -18,7 +18,7 @@ static	char	path_buf[MAX_PATH];
 	return &path_buf[MAX_PATH-1];
 }
 
-global Path
+Path
 p_push(int dir, Path p)
 {
 	*--p = dir;
@@ -26,7 +26,7 @@ p_push(int dir, Path p)
 }
 
 /* permanent storage for a path */
-global Path
+Path
 p_stash(Path p)
 {
 	return strcpy(NEWARRAY(char, strlen(p) + 1), p);
@@ -37,14 +37,14 @@ local	char	*p_buffer;
 local	char	*pb_end;
 local	int	pb_size;	/* not checked at present */
 
-global void
+void
 p_init(char *buf, int size)
 {
 	pb_end = p_buffer = buf;
 	pb_size = size;
 }
 
-global Path
+Path
 p_save(Path p)
 {
 	char	*new;
@@ -60,7 +60,7 @@ p_save(Path p)
  *	Returned value points to a static area that will be overwritten
  *	by the next call.
  */
-global Path
+Path
 p_reverse(Path old)
 {
 static	char	path_buf[MAX_PATH];

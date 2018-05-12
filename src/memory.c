@@ -13,11 +13,11 @@
 #define	RoundDown(n)	((n)/ALIGNMENT*ALIGNMENT)
 #define	RoundUp(n)	RoundDown((n) + (ALIGNMENT-1))
 
-global	char	*base_memory, *top_memory;
-global	char	*top_string, *base_table, *base_temp;
-global	char	*lim_temp;
+char	*base_memory, *top_memory;
+char	*top_string, *base_table, *base_temp;
+char	*lim_temp;
 
-global void
+void
 init_memory(void)
 {
 	if ((base_memory = (char *)malloc((size_t)MEMSIZE)) == NULL)
@@ -28,7 +28,7 @@ init_memory(void)
 	base_table = base_temp = top_memory;
 }
 
-global void *
+void *
 s_alloc(Natural n)
 {
 	char	*start;
@@ -41,7 +41,7 @@ s_alloc(Natural n)
 	return (void *)start;
 }
 
-global void *
+void *
 t_alloc(Natural n)
 {
 	base_temp -= RoundUp(n);
@@ -50,14 +50,14 @@ t_alloc(Natural n)
 	return (void *)base_temp;
 }
 
-global void
+void
 clean_slate(void)
 {
 	base_temp = base_table;
 	lim_temp = top_string;
 }
 
-global void
+void
 preserve(void)
 {
 	base_table = base_temp;

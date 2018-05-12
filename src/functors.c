@@ -23,7 +23,7 @@ local	String	variable[] = {
 	"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 };
 
-global void
+void
 def_functor(DefType *dt)
 {
 	Cons	*cp;

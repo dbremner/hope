@@ -34,7 +34,7 @@ local	Num	divide(Num x, Num y);
 local	Num	int_div(Num x, Num y);
 local	Num	mod(Num x, Num y);
 
-global void
+void
 init_builtins(void)
 {
 	def_builtin("ord",	ord		);
@@ -201,7 +201,7 @@ user_error(Cell *arg)
 /*
  *	Convert a C string to a string value.
  */
-global Cell *
+Cell *
 c2hope(const Byte *str)
 {
 	const	Byte	*sp;
@@ -220,7 +220,7 @@ c2hope(const Byte *str)
  *	Convert a string value to a C string.
  *	It is an error if the string has more than n-1 characters.
  */
-global void
+void
 hope2c(Byte *s, int n, Cell *arg)
 {
 	for ( ; n > 0 && arg->c_class == C_CONS; arg = arg->c_arg->c_right) {

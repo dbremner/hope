@@ -11,7 +11,7 @@ local	UCase	*new_reference(UCase *node);
  *	Upper case expressions.
  */
 
-global UCase *
+UCase *
 ucase(int level, Path path, LCase *cases)
 {
 	UCase	*code;
@@ -25,7 +25,7 @@ ucase(int level, Path path, LCase *cases)
 	return code;
 }
 
-global UCase *
+UCase *
 f_nomatch(Func *defun)
 {
 	UCase	*code;
@@ -36,7 +36,7 @@ f_nomatch(Func *defun)
 	return code;
 }
 
-global UCase *
+UCase *
 l_nomatch(Expr *who)
 {
 	UCase	*code;
@@ -47,7 +47,7 @@ l_nomatch(Expr *who)
 	return code;
 }
 
-global UCase *
+UCase *
 success(Expr *body, int size)
 {
 	UCase	*code;
@@ -59,7 +59,7 @@ success(Expr *body, int size)
 	return code;
 }
 
-global UCase *
+UCase *
 strict(Expr *real)
 {
 	UCase	*code;
@@ -70,7 +70,7 @@ strict(Expr *real)
 	return code;
 }
 
-global UCase *
+UCase *
 copy_ucase(UCase *old)
 {
 	UCase	*new;
@@ -107,7 +107,7 @@ copy_ucase(UCase *old)
  *	Lower case expressions.
  */
 
-global LCase *
+LCase *
 alg_case(Natural arity, UCase *def)
 {
 	LCase	*lcase;
@@ -122,7 +122,7 @@ alg_case(Natural arity, UCase *def)
 	return lcase;
 }
 
-global LCase *
+LCase *
 num_case(UCase *def)
 {
 	LCase	*lcase;
@@ -132,7 +132,7 @@ num_case(UCase *def)
 	return lcase;
 }
 
-global LCase *
+LCase *
 char_case(UCase *def)
 {
 	LCase	*lcase;

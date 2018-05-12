@@ -32,7 +32,7 @@ local	Expr	***ref_level;
 local	Bool	enter_scope(Expr *formals);
 local	void	leave_scope(Expr *formals);
 
-global Bool
+Bool
 nr_branch(Branch *branch)
 {
 	Expr	*varlist[MAX_VARIABLES];

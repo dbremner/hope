@@ -7,7 +7,7 @@
 local	RETSIGTYPE	onintr(int sig);
 local	RETSIGTYPE	onalarm(int sig);
 
-global void
+void
 disable_interrupt(void)
 {
 #ifdef	unix
@@ -16,7 +16,7 @@ disable_interrupt(void)
 	(void)signal(SIGINT, SIG_IGN);
 }
 
-global void
+void
 enable_interrupt(void)
 {
 #ifdef	unix

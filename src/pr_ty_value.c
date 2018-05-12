@@ -20,13 +20,13 @@ local	Bool	occurs(Cell *type1, Cell *type2);
 /* number of known type variables (including mu's) */
 local	int	var_count;
 
-global void
+void
 init_pr_ty_value(void)
 {
 	var_count = 0;
 }
 
-global void
+void
 pr_ty_value(FILE *f, Cell *type)
 {
 	pr_c_ty_value(f, type, PREC_BODY);

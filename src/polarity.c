@@ -8,7 +8,7 @@
  *	Polarities of type constructor arguments.
  */
 
-global String
+String
 type_arg_name(Type *var, Bool full)
 {
 	return full ? var->ty_var :
@@ -16,7 +16,7 @@ type_arg_name(Type *var, Bool full)
 			var->ty_neg ? n_neg : n_none;
 }
 
-global void
+void
 set_polarities(TypeList *varlist)
 {
 	for ( ; varlist != NULL; varlist = varlist->ty_tail)
@@ -31,7 +31,7 @@ set_polarities(TypeList *varlist)
 		}
 }
 
-global Bool
+Bool
 check_polarities(TypeList *decl_vars, TypeList *def_vars)
 {
 	while (decl_vars != NULL) {
@@ -86,7 +86,7 @@ local	void	set_pos(int n);
 local	void	set_neg(int n);
 local	void	do_polarities(Type *type, Bool pos, Bool neg);
 
-global void
+void
 start_polarities(DefType *deftype, TypeList *varlist)
 {
 	int	i;
@@ -99,7 +99,7 @@ start_polarities(DefType *deftype, TypeList *varlist)
 	cur_varlist = varlist;
 }
 
-global void
+void
 compute_polarities(Type *type)
 {
 	do_polarities(type, TRUE, FALSE);
@@ -157,7 +157,7 @@ do_polarities(Type *type, Bool pos, Bool neg)
 	}
 }
 
-global void
+void
 finish_polarities(void)
 {
 	TypeList *vp;

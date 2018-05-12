@@ -321,7 +321,7 @@ compile(UCase *old_body, Expr *formals, Expr *new)
 	return old_body == NULL ? new_body : merge(old_body);
 }
 
-global UCase *
+UCase *
 comp_branch(UCase *old_body, Branch *branch)
 {
 	comp_expr(branch->br_expr);
@@ -331,7 +331,7 @@ comp_branch(UCase *old_body, Branch *branch)
 /*
  *	Compile all the LAMBDAs in expr.
  */
-global void
+void
 comp_expr(Expr *expr)
 {
 	Branch	*br;

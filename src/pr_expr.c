@@ -25,7 +25,7 @@ local	Bool	in_definition;		/* initially FALSE */
  *	Printing of functions.
  */
 
-global void
+void
 pr_fundef(FILE *f, Func *fn)
 {
 	Branch	*br;
@@ -48,13 +48,13 @@ pr_fundef(FILE *f, Func *fn)
  *	Others are fetched from the current environment with get_actual().
  */
 
-global void
+void
 pr_expr(FILE *f, Expr *expr)
 {
 	pr_c_expr(f, expr, MAX_SCOPES, PREC_BODY);
 }
 
-global void
+void
 pr_c_expr(FILE *f, Expr *expr, int level, int context)
 {
 	int	prec;
@@ -269,7 +269,7 @@ pr_string(FILE *f, Expr *expr)
 	(void)fprintf(f, "\"");
 }
 
-global void
+void
 pr_char(FILE *f, Char c)
 {
 	switch (c) {
@@ -307,7 +307,7 @@ pr_lambda(FILE *f, Branch *branch, int level)
 	}
 }
 
-global void
+void
 pr_branch(FILE *f, Branch *branch, int level)
 {
 	pr_formals(f, branch->br_formals);
@@ -346,7 +346,7 @@ pr_postsection(FILE *f, Expr *expr, int level)
 /*
  *	If expr amounts to an identifier, return it, else NULL.
  */
-global String
+String
 expr_name(Expr *expr, int level)
 {
 	switch (expr->e_class) {

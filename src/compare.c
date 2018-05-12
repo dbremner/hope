@@ -23,7 +23,7 @@ local	Cons	*cmp_args(Cell *first, Cell *second);
  *	Set up comparison code
  *	Call after reading standard module.
  */
-global void
+void
 init_cmps(void)
 {
 	Func	*fn;

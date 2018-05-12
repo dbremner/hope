@@ -20,7 +20,7 @@ local	Cell	*curried_args(Type *head, Cell *tail, Cell **targ);
 
 local	Cell	*functor_arg(Type *tvar, Cell **targ);
 
-global Cell *
+Cell *
 functor_type(DefType *dt)
 {
 	int	ntvars;

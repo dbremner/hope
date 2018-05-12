@@ -16,7 +16,7 @@ local	Bool	create_environment(Expr *expr);
  *	Evaluation of expressions.
  */
 
-global	jmp_buf	execerror;
+jmp_buf	execerror;
 
 local Bool
 create_environment(Expr *expr)
@@ -26,7 +26,7 @@ create_environment(Expr *expr)
 			(Branch *)0));
 }
 
-global void
+void
 eval_expr(Expr *expr)
 {
 	if (erroneous)
@@ -42,7 +42,7 @@ eval_expr(Expr *expr)
 	}
 }
 
-global void
+void
 wr_expr(Expr *expr, const char *file)
 {
 	if (erroneous)

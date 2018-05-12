@@ -14,8 +14,8 @@
  */
 
 /* Internal names of some types and constructors. */
-global	DefType *product, *function, *list, *num, *truval, *character;
-global	Cons	*nil, *cons, *succ, *true, *false;
+DefType *product, *function, *list, *num, *truval, *character;
+Cons	*nil, *cons, *succ, *true, *false;
 
 /*
  *	The type currently being defined.
@@ -43,14 +43,14 @@ local	int	nv_tvar(String name);
 local	Type	*multi_pair_type(TypeList *args);
 local	Type	*multi_func_type(TypeList *args, Type *result);
 
-global void
+void
 start_dec_type()
 {
 	cur_deftype = NULL;
 	mu_top = mu_names;
 }
 
-global DefType *
+DefType *
 new_deftype(String name, Bool tupled, TypeList *vars)
 {
 	DefType *dt;
@@ -110,7 +110,7 @@ current_newtype(void)
 	return cur_newtype;
 }
 
-global void
+void
 abstype(DefType *deftype)
 {
 	if (erroneous || already_defined)
@@ -123,7 +123,7 @@ abstype(DefType *deftype)
 	preserve();
 }
 
-global void
+void
 type_syn(DefType *deftype, Type *type)
 {
 	if (erroneous || args_repeated(cur_varlist))
@@ -192,7 +192,7 @@ is_header(Type *type, DefType *deftype)
 	}
 }
 
-global void
+void
 decl_type(DefType *deftype, Cons *conslist)
 {
 	Cons	*ct;
@@ -287,7 +287,7 @@ args_repeated(TypeList *varlist)
  *	Lists of data constructors.
  */
 
-global Cons *
+Cons *
 constructor(String name, Bool tupled, TypeList *args)
 {
 	Cons	*c;
@@ -301,7 +301,7 @@ constructor(String name, Bool tupled, TypeList *args)
 	return c;
 }
 
-global Cons *
+Cons *
 alt_cons(Cons *constr, Cons *next)
 {
 	constr->c_next = next;
@@ -327,7 +327,7 @@ ty_length(TypeList *typelist)
  *	Type constructor application.
  *	If tupled is TRUE, there must be at least 2 arguments.
  */
-global Type *
+Type *
 new_type(String name, Bool tupled, TypeList *args)
 {
 	Type	*type;
@@ -376,7 +376,7 @@ new_type(String name, Bool tupled, TypeList *args)
 	return type;
 }
 
-global Type *
+Type *
 def_type(DefType *dt, TypeList *args)
 {
 	Type	*type;
@@ -391,7 +391,7 @@ def_type(DefType *dt, TypeList *args)
 /*
  *	Enter a mu scope.
  */
-global void
+void
 enter_mu_tv(String name)
 {
 	*mu_top++ = name;
@@ -400,7 +400,7 @@ enter_mu_tv(String name)
 /*
  *	Leave a mu scope, building the mu type.
  */
-global Type *
+Type *
 mu_type(Type *body)
 {
 	Type	*type;
@@ -412,7 +412,7 @@ mu_type(Type *body)
 	return type;
 }
 
-global Type *
+Type *
 new_tv(TVar tvar)
 {
 	Type	*type;
@@ -424,7 +424,7 @@ new_tv(TVar tvar)
 	return type;
 }
 
-global TypeList *
+TypeList *
 cons_type(Type *type, TypeList *typelist)
 {
 	TypeList *tl;
@@ -437,14 +437,14 @@ cons_type(Type *type, TypeList *typelist)
 	return tl;
 }
 
-global Type *
+Type *
 pair_type(Type *type1, Type *type2)
 {
 	return def_type(product,
 		cons_type(type1, cons_type(type2, (TypeList *)NULL)));
 }
 
-global Type *
+Type *
 func_type(Type *type1, Type *type2)
 {
 	return def_type(function,
@@ -470,7 +470,7 @@ multi_func_type(TypeList *args, Type *result)
  *	Qualified types
  */
 
-global QType *
+QType *
 qualified_type(Type *type)
 {
 	QType	*qtype;

@@ -32,13 +32,13 @@ local	void	pr_papp(FILE *f, Expr *expr, Cell *env, int nargs, int context);
 local	void	pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context);
 local	int	prec_value(Cell *value);
 
-global void
+void
 pr_value(FILE *f, Cell *value)
 {
 	safe_pr_value(f, value, PREC_BODY);
 }
 
-global void
+void
 pr_f_match(Func *defun, Cell *env)
 {
 	start_err_line();
@@ -46,7 +46,7 @@ pr_f_match(Func *defun, Cell *env)
 	(void)fprintf(errout, "\n");
 }
 
-global void
+void
 pr_l_match(Expr *func, Cell *env)
 {
 	start_err_line();
@@ -243,13 +243,13 @@ get_actual(int level, Path path)
 /*
  *	Print actual parameter, taking its value from the environment.
  */
-global void
+void
 pr_actual(FILE *f, int level, Path path, int context)
 {
 	safe_pr_value(f, get_actual(level, path), context);
 }
 
-global void
+void
 pr_f_actual(FILE *f, String name, int level, Path path, int context)
 {
 	safe_pr_f_value(f, name, get_actual(level, path), context);
@@ -295,7 +295,7 @@ pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context)
 	}
 }
 
-global String
+String
 val_name(int level, Path path)
 {
 	Cell	*value;

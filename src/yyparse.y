@@ -104,7 +104,7 @@
  */
 extern	int	yyerrflag;
 
-global Bool
+Bool
 recovering(void)
 {
 	return yyerrflag != 0;

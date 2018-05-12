@@ -62,7 +62,7 @@ local	void	run(Cell *current);
 local	Cell	*take(Cell *current);
 local	void	chk_argument(Cell *arg);
 
-global	String	cur_function;	/* for error reporting */
+String	cur_function;	/* for error reporting */
 
 #define	NULL_ENV	NOCELL
 
@@ -92,7 +92,7 @@ local	int	do_dir[P_NCLASSES];
  *	Interpreter for an expression.
  *	See compile.c for the translation schemes.
  */
-global void
+void
 interpret(Expr *action, Expr *expr)
 {
 #ifdef MORE_STATS
@@ -129,7 +129,7 @@ interpret(Expr *action, Expr *expr)
 /*
  *	Reduce a value to head normal form
  */
-global Cell *
+Cell *
 evaluate(Cell *value)
 {
 	chk_stack(3 + UPD_FRAME);

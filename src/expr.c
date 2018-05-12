@@ -17,13 +17,13 @@
  */
 
 /* Internal names of some constructor expressions */
-global	Expr	*e_true, *e_false, *e_cons, *e_nil;
-global	Func	*f_id;
+Expr	*e_true, *e_false, *e_cons, *e_nil;
+Func	*f_id;
 
 /* the following is different from any String */
 local	const	char	bound_variable[] = "x'";
 
-global Expr *
+Expr *
 char_expr(Char c)
 {
 	Expr	*expr;
@@ -34,7 +34,7 @@ char_expr(Char c)
 	return expr;
 }
 
-global Expr *
+Expr *
 text_expr(const Byte *text, int n)
 {
 	const	Byte	*s;
@@ -46,7 +46,7 @@ text_expr(const Byte *text, int n)
 	return expr;
 }
 
-global Expr *
+Expr *
 num_expr(Num n)
 {
 	Expr	*expr;
@@ -57,7 +57,7 @@ num_expr(Num n)
 	return expr;
 }
 
-global Expr *
+Expr *
 cons_expr(Cons *constr)
 {
 	Expr	*expr;
@@ -72,7 +72,7 @@ cons_expr(Cons *constr)
  *	An identifier occurring as an expression.
  *	Call it a variable for now; we'll find out what it really is later.
  */
-global Expr *
+Expr *
 id_expr(String name)
 {
 	Expr	*expr;
@@ -83,7 +83,7 @@ id_expr(String name)
 	return expr;
 }
 
-global Expr *
+Expr *
 dir_expr(Path where)
 {
 	Expr	*expr;
@@ -95,7 +95,7 @@ dir_expr(Path where)
 	return expr;
 }
 
-global Expr *
+Expr *
 pair_expr(Expr *left, Expr *right)
 {
 	Expr	*expr;
@@ -107,7 +107,7 @@ pair_expr(Expr *left, Expr *right)
 	return expr;
 }
 
-global Expr *
+Expr *
 apply_expr(Expr *func, Expr *arg)
 {
 	Expr	*expr;
@@ -119,7 +119,7 @@ apply_expr(Expr *func, Expr *arg)
 	return expr;
 }
 
-global Expr *
+Expr *
 func_expr(Branch *branches)
 {
 	Expr	*expr;
@@ -141,7 +141,7 @@ func_expr(Branch *branches)
  *	Representation of various other structures.
  */
 
-global Expr *
+Expr *
 ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr)
 {
 	Expr	*expr;
@@ -155,7 +155,7 @@ ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr)
 	return expr;
 }
 
-global Expr *
+Expr *
 let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 {
 	Expr	*expr;
@@ -168,7 +168,7 @@ let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 	return expr;
 }
 
-global Expr *
+Expr *
 where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 {
 	Expr	*expr;
@@ -181,7 +181,7 @@ where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 	return expr;
 }
 
-global Expr *
+Expr *
 mu_expr(Expr *muvar, Expr *body)
 {
 	Expr	*expr;
@@ -193,7 +193,7 @@ mu_expr(Expr *muvar, Expr *body)
 	return expr;
 }
 
-global Expr *
+Expr *
 presection(String operator, Expr *arg)
 {
 	Expr	*expr;
@@ -207,7 +207,7 @@ presection(String operator, Expr *arg)
 	return expr;
 }
 
-global Expr *
+Expr *
 postsection(String operator, Expr *arg)
 {
 	Expr	*expr;
@@ -225,7 +225,7 @@ postsection(String operator, Expr *arg)
  *	Kinds of expression used to represent built-in functions.
  */
 
-global Expr *
+Expr *
 builtin_expr(Function *fn)
 {
 	Expr	*expr;
@@ -236,7 +236,7 @@ builtin_expr(Function *fn)
 	return expr;
 }
 
-global Expr *
+Expr *
 bu_1math_expr(Unary *fn)
 {
 	Expr	*expr;
@@ -247,7 +247,7 @@ bu_1math_expr(Unary *fn)
 	return expr;
 }
 
-global Expr *
+Expr *
 bu_2math_expr(Binary *fn)
 {
 	Expr	*expr;
@@ -262,7 +262,7 @@ bu_2math_expr(Binary *fn)
  *	Branches of lambdas or defined functions.
  */
 
-global Branch *
+Branch *
 new_branch(Expr *formals, Expr *expr, Branch *next)
 {
 	Branch	*branch;
@@ -274,7 +274,7 @@ new_branch(Expr *formals, Expr *expr, Branch *next)
 	return branch;
 }
 
-global Branch *
+Branch *
 new_unary(Expr *pattern, Expr *expr, Branch *next)
 {
 	return new_branch(apply_expr((Expr *)0, pattern), expr, next);
@@ -284,7 +284,7 @@ new_unary(Expr *pattern, Expr *expr, Branch *next)
  *	Defined value names
  */
 
-global void
+void
 decl_value(String name, QType *qtype)
 {
 	Func	*fn;
@@ -303,7 +303,7 @@ decl_value(String name, QType *qtype)
 	}
 }
 
-global void
+void
 def_value(Expr *formals, Expr *body)
 {
 	Branch	*branch;
@@ -369,7 +369,7 @@ def_value(Expr *formals, Expr *body)
 
 local	Expr	*textlist(const char *const *sp);
 
-global void
+void
 init_argv(void)
 {
 	def_value(id_expr(newstring("argv")), textlist(cmd_args));

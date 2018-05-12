@@ -18,8 +18,8 @@
 #define	TopStack	((StkElt *)base_temp)
 #define	BaseHeap	((Cell *)top_string)
 
-global	StkElt	*stack;
-global	StkElt	*last_update;
+StkElt	*stack;
+StkElt	*last_update;
 local	StkElt	*stack_limit;
 local	Cell	*heap, *heap_limit;
 
@@ -49,7 +49,7 @@ local	long	num_free;	/* number of free cells */
  *	Set up the heap and free list, but not garbage collection.
  *	Required before any calls to new_cell().
  */
-global void
+void
 start_heap(void)
 {
 	heap = BaseHeap;
@@ -68,7 +68,7 @@ start_heap(void)
  *	Required before any calls to Push().
  *	start_heap() should have been already called.
  */
-global void
+void
 start_stack(void)
 {
 	/* Split the available space between the heap and stack. */
@@ -85,7 +85,7 @@ start_stack(void)
 	last_update = NULL;
 }
 
-global void
+void
 chk_stack(int required)
 {
 #ifdef STATS
@@ -96,7 +96,7 @@ chk_stack(int required)
 		error(EXECERR, StackOverflow);
 }
 
-global Cell *
+Cell *
 new_cell(int class)
 {
 	Cell	*cell;
@@ -135,7 +135,7 @@ local	void	reach(Cell *cell);
  *	to cells are scattered all over the C stack.  So we assume that
  *	type checking can be done without a garbage collection.
  */
-global void
+void
 chk_heap(Cell *current, int required)	/* required no. of free cells */
 {
 	while (num_free < required)
@@ -242,7 +242,7 @@ reach(Cell *cell)
 	}
 }
 
-global void
+void
 heap_stats(void)
 {
 #ifdef	STATS

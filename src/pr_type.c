@@ -16,13 +16,13 @@ local	void	ty_print(FILE *f, Type *type, int context);
 local	int	ty_precedence(Type *type);
 local	void	pr_alt(FILE *f, Cons *alt);
 
-global void
+void
 pr_qtype(FILE *f, QType *qtype)
 {
 	pr_type(f, qtype->qt_type);
 }
 
-global void
+void
 pr_type(FILE *f, Type *type)
 {
 	ty_print(f, type, PREC_BODY);
@@ -95,7 +95,7 @@ ty_precedence(Type *type)
 	return PREC_APPLY;
 }
 
-global void
+void
 pr_deftype(FILE *f, DefType *dt, Bool full)
 {
 	TypeList *argp;

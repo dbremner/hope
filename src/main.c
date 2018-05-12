@@ -11,12 +11,12 @@
 #include <locale.h>
 #endif
 
-global	Bool	restricted;	/* disable file I/O */
-global	int	time_limit;	/* evaluation time limit in seconds */
+Bool	restricted;	/* disable file I/O */
+int	time_limit;	/* evaluation time limit in seconds */
 
-global	const	char	*const	*cmd_args;
+const	char	*const	*cmd_args;
 
-global int
+int
 main(int argc, const char *const argv[])
 {
 	Bool	gen_listing;	/* generate a listing on stderr */
@@ -94,7 +94,7 @@ main(int argc, const char *const argv[])
  *	its initial state.  So, we just exec ourselves again, passing
  *	the script_file as an argument.
  */
-global void
+void
 restart(const char *script_file)
 {
 	(void)execlp(argv0, argv0, "-s", script_file, (char *)0);

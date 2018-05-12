@@ -1,7 +1,7 @@
 #include "defs.h"
 #include "value.h"
 
-global Cell *
+Cell *
 new_pair(Cell *left, Cell *right)
 {
 	Cell	*cp;
@@ -12,7 +12,7 @@ new_pair(Cell *left, Cell *right)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_dirs(Path path, Cell *val)
 {
 	Cell	*cp;
@@ -23,7 +23,7 @@ new_dirs(Path path, Cell *val)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_cons(Cons *data_constructor, Cell *arg)
 {
 	Cell	*cp;
@@ -34,7 +34,7 @@ new_cons(Cons *data_constructor, Cell *arg)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_susp(Expr *expr, Cell *env)
 {
 	Cell	*cp;
@@ -45,7 +45,7 @@ new_susp(Expr *expr, Cell *env)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_papp(Expr *expr, Cell *env, int arity)
 {
 	Cell	*cp;
@@ -57,7 +57,7 @@ new_papp(Expr *expr, Cell *env, int arity)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_ucase(UCase *code, Cell *env)
 {
 	Cell	*cp;
@@ -68,7 +68,7 @@ new_ucase(UCase *code, Cell *env)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_lcase(LCase *lcase, Cell *env)
 {
 	Cell	*cp;
@@ -79,7 +79,7 @@ new_lcase(LCase *lcase, Cell *env)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_cnst(Cons *data_constant)
 {
 	Cell	*cp;
@@ -89,7 +89,7 @@ new_cnst(Cons *data_constant)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_num(Num n)
 {
 	Cell	*cp;
@@ -99,7 +99,7 @@ new_num(Num n)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_char(Char c)
 {
 	Cell	*cp;
@@ -109,7 +109,7 @@ new_char(Char c)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_stream(FILE *f)
 {
 	Cell	*cp;

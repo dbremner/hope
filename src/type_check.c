@@ -12,7 +12,7 @@
 #include "error.h"
 #include "exceptions.h"
 
-global	Cell	*expr_type;	/* last inferred type */
+Cell	*expr_type;	/* last inferred type */
 
 	/* Types of local program variables, allocated with new_vars() */
 local	Cell	**next_vtype;
@@ -44,7 +44,7 @@ local	void	show_expr_type(Expr *expr, Cell *type);
 local	void	show_expr(Expr *expr);
 local	void	show_branch(Branch *branch);
 
-global Bool
+Bool
 chk_func(Branch *branch, Func *fn)
 {
 	Cell	*inferred;
@@ -77,7 +77,7 @@ match_type(String name, Cell *inferred, QType *declared)
 	}
 }
 
-global Bool
+Bool
 ty_instance(Type *type1, Natural ntvars1, Type *type2, Natural ntvars2)
 {
 	if (setjmp(execerror))
@@ -92,7 +92,7 @@ ty_instance(Type *type1, Natural ntvars1, Type *type2, Natural ntvars2)
  *
  *	Side effect: set expr_type to T.
  */
-global void
+void
 chk_expr(Expr *expr)
 {
 	init_vars();
@@ -102,7 +102,7 @@ chk_expr(Expr *expr)
 	del_vars();
 }
 
-global void
+void
 chk_list(Expr *expr)
 {
 	chk_expr(expr);

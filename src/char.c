@@ -22,7 +22,7 @@
 
 /* invalid sequences are ignored */
 
-global Char
+Char
 FetchChar(const Byte **p)
 {
 	Char	c;
@@ -44,14 +44,14 @@ FetchChar(const Byte **p)
 	return c;
 }
 
-global void
+void
 BackChar(const Byte **p)
 {
 	while ((*--*p & 0xc0) == 0x80)
 		;
 }
 
-global long
+long
 GetChar(FILE *f)
 {
 	int	c;
@@ -82,7 +82,7 @@ GetChar(FILE *f)
 	return EOF;
 }
 
-global void
+void
 PutChar(Char *wc, FILE *f)
 {
 	Char	tmp;

@@ -44,7 +44,7 @@ local	Trail	*top_trail;
  *	i.e. can they be unified without instantiating the variables
  *	of type?
  */
-global Bool
+Bool
 instance(Type *type, Natural ntvars, Cell *inf_type)
 {
 	return unify(inf_type, copy_type(type, ntvars, TRUE));
@@ -55,7 +55,7 @@ instance(Type *type, Natural ntvars, Cell *inf_type)
  *	Proceeds by direct modification of type cells.
  *	If the unification is unsuccessful, nothing is changed.
  */
-global Bool
+Bool
 unify(Cell *type1, Cell *type2)
 {
 	Trail	trail[MAX_INSTANTIATIONS];
@@ -153,7 +153,7 @@ identify_types(Cell *type1, Cell *type2)
  *	Follow a chain of instantiated variables to either a constructor or
  *	an uninstantiated variable.
  */
-global Cell *
+Cell *
 deref(Cell *cell)
 {
 	while (cell->c_class == C_TREF)
@@ -219,7 +219,7 @@ untrail(Trail *tp)
 
 local	Memo	*first_type_memo;
 
-global Cell *
+Cell *
 expand_type(Cell *type)
 {
 	Memo	type_memo[MAX_SYN_DEPTH];
@@ -294,7 +294,7 @@ same_args(Cell *tp1, Cell *tp2)	/* known to have the same length */
 /*
  *	Make a temporary copy of a type.
  */
-global Cell *
+Cell *
 copy_type(Type *type, Natural ntvars, Bool frozen)
 {
 	return expand_type(cp_type(type,
@@ -379,25 +379,25 @@ cp_list(TypeList *typelist, Cell *type_arg, Cell **mu_top)
  *	Constructors for type values
  */
 
-global Cell *
+Cell *
 new_func_type(Cell *from, Cell *to)
 {
 	return new_tcons(function, new_tlist(from, new_tlist(to, NOCELL)));
 }
 
-global Cell *
+Cell *
 new_prod_type(Cell *left, Cell *right)
 {
 	return new_tcons(product, new_tlist(left, new_tlist(right, NOCELL)));
 }
 
-global Cell *
+Cell *
 new_list_type(Cell *element)
 {
 	return expand_type(new_tcons(list, new_tlist(element, NOCELL)));
 }
 
-global Cell *
+Cell *
 new_const_type(DefType *dt)
 {
 	return new_tcons(dt, NOCELL);
@@ -407,7 +407,7 @@ new_const_type(DefType *dt)
  *	General type value constructors
  */
 
-global Cell *
+Cell *
 new_tvar(void)
 {
 	Cell	*cp;
@@ -417,7 +417,7 @@ new_tvar(void)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_tsub(DefType *tcons, Cell *targ)
 {
 	Cell	*cp;
@@ -429,7 +429,7 @@ new_tsub(DefType *tcons, Cell *targ)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_tref(Cell *tref)
 {
 	Cell	*cp;
@@ -440,7 +440,7 @@ new_tref(Cell *tref)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_void(void)
 {
 	Cell	*cp;
@@ -450,7 +450,7 @@ new_void(void)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_frozen(void)
 {
 	Cell	*cp;
@@ -460,7 +460,7 @@ new_frozen(void)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_tsyn(Cell *abbr, Cell *full)
 {
 	Cell	*cp;
@@ -471,7 +471,7 @@ new_tsyn(Cell *abbr, Cell *full)
 	return cp;
 }
 
-global Cell *
+Cell *
 new_tcons(DefType *tcons, Cell *targ)
 {
 	Cell	*cp;
@@ -480,7 +480,7 @@ new_tcons(DefType *tcons, Cell *targ)
 	return new_tsyn(cp, cp);
 }
 
-global Cell *
+Cell *
 new_tlist(Cell *head, Cell *tail)
 {
 	Cell	*cp;

@@ -27,7 +27,7 @@ struct _CharArray {
 local	Natural	ca_lookup(SChar *array, Natural size, Char c);
 local	void	ca_insert(CharArray *array, Char c, ArrayElement x);
 
-global CharArray *
+CharArray *
 ca_new(ArrayElement x)
 {
 	CharArray	*array;
@@ -40,7 +40,7 @@ ca_new(ArrayElement x)
 	return array;
 }
 
-global CharArray *
+CharArray *
 ca_copy(CharArray *array)
 {
 	CharArray	*new_array;
@@ -87,7 +87,7 @@ ca_lookup(SChar *array, Natural size, Char c)
 	return low < size && array[low] == c ? low : size;
 }
 
-global ArrayElement
+ArrayElement
 ca_index(CharArray *array, Char c)
 {
 	Natural	n;
@@ -132,7 +132,7 @@ ca_insert(CharArray *array, Char c, ArrayElement x)
 	array->ca_size = size+1;
 }
 
-global void
+void
 ca_assign(CharArray *array, Char c, ArrayElement x)
 {
 	Natural	n;
@@ -144,7 +144,7 @@ ca_assign(CharArray *array, Char c, ArrayElement x)
 		ca_insert(array, c, x);
 }
 
-global void
+void
 ca_map(CharArray *array, EltMap *f)
 {
 	Natural	n;

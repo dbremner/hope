@@ -2,14 +2,14 @@
 #include "table.h"
 #include "newstring.h"
 
-global void
+void
 t_init(Table *table)
 {
 	table->t_front = NULL;
 	table->t_end = &(table->t_front);
 }
 
-global void
+void
 t_insert(table, element)
 	Table	*table;
 	TabElt	*element;
@@ -19,7 +19,7 @@ t_insert(table, element)
 	element->t_next = NULL;
 }
 
-global void
+void
 t_delete(table, element)
 	Table	*table;
 	TabElt	*element;
@@ -35,7 +35,7 @@ t_delete(table, element)
 		}
 }
 
-global void
+void
 t_copy(Table *table1, const Table *table2)
 {
 	if (table2->t_front == NULL)
@@ -46,7 +46,7 @@ t_copy(Table *table1, const Table *table2)
 	}
 }
 
-global TabElt *
+TabElt *
 t_lookup(const Table *table, String name)
 {
 	TabElt	*elem;
@@ -57,7 +57,7 @@ t_lookup(const Table *table, String name)
 	return NULL;
 }
 
-global void
+void
 t_foreach(const Table *table, TableAction *action)
 {
 	TabElt	*elem;

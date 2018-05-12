@@ -1,14 +1,14 @@
 #include "defs.h"
 #include "set.h"
 
-global void
+void
 set_clear(SetPtr set, Natural n)
 {
 	while (n-- > 0)
 		*set++ = 0;
 }
 
-global Natural
+Natural
 set_card(SetPtr set, Natural n)
 {
 	Natural	count;
@@ -22,7 +22,7 @@ set_card(SetPtr set, Natural n)
 	return count;
 }
 
-global void
+void
 set_union(SetPtr set1, Natural n1, SetPtr set2, Natural n2)
 {
 	if (n2 < n1)

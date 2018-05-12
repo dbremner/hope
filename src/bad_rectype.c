@@ -37,7 +37,7 @@ local	short	*arg_top;
  *	type is an illegal body for head if it contains a use of head
  *	with different arguments.
  */
-global Bool
+Bool
 bad_rectype(DefType *head, Type *type)
 {
 	int	i;
