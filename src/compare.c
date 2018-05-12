@@ -40,21 +40,21 @@ init_cmps(void)
 			   apply_expr(dir_expr(p_push(P_RIGHT, p_new())),
 				      builtin_expr(compare)));
 	fn = fn_lookup(newstring("compare"));
-	ASSERT( fn != NULL );
+	ASSERT( fn != nullptr );
 	fn->f_code = success(e_cmp, 0);
 	fn->f_arity = 1;
-	fn->f_branch = NULL;
+	fn->f_branch = nullptr;
 
 	fn = fn_lookup(newstring("cmp_pair"));
-	ASSERT( fn != NULL );
+	ASSERT( fn != nullptr );
 	e_cmppair = fn->f_code->uc_body;
 
 	c_less = cons_lookup(newstring("LESS"));
 	c_equal = cons_lookup(newstring("EQUAL"));
 	c_greater = cons_lookup(newstring("GREATER"));
-	ASSERT( c_less != NULL );
-	ASSERT( c_equal != NULL );
-	ASSERT( c_greater != NULL );
+	ASSERT( c_less != nullptr );
+	ASSERT( c_equal != nullptr );
+	ASSERT( c_greater != nullptr );
 }
 
 /*

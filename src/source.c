@@ -51,7 +51,7 @@ static const	char	tmp_stem[] = "/tmp/hope";
 #define	MAX_TEMP	(sizeof(tmp_stem)+6)
 
 static const	char	*script;
-#define	in_script()	(cur_source == source+1 && script != NULL)
+#define	in_script()	(cur_source == source+1 && script != nullptr)
 
 /*
  * If an error is encountered while reading a file, a listing file
@@ -104,9 +104,9 @@ init_source(FILE *src, Bool listing_flag)
 	if (istty)
 		disable_interrupt();
 #ifdef RE_EDIT
-	script = NULL;
+	script = nullptr;
 #endif
-	listing = gen_listing ? cur_source : NULL;
+	listing = gen_listing ? cur_source : nullptr;
 	errout = stderr;
 }
 
@@ -115,7 +115,7 @@ start_err_line(void)
 {
 #ifdef	RE_EDIT
 	if (listing != cur_source && ! gen_listing) {
-		if (listing != NULL) {
+		if (listing != nullptr) {
 			/*
 			 * We were already listing, but now we
 			 * have an error in a deeper module --
@@ -123,7 +123,7 @@ start_err_line(void)
 			 */
 			(void)fclose(errout);
 			(void)remove(list_file);
-			listing = NULL;
+			listing = nullptr;
 		}
 		/* if it's in a system module, it will be fatal */
 		if (istty && cur_source > source && ! mod_system()) {
@@ -139,7 +139,7 @@ start_err_line(void)
 					mod_name(), list_extension);
 			}
 			first_error = cur_source->lineno;
-			if ((errout = fopen(list_file, "w")) == NULL) {
+			if ((errout = fopen(list_file, "w")) == nullptr) {
 				errout = stderr;
 				error(FATALERR, "can't create listing file");
 			}
@@ -151,7 +151,7 @@ start_err_line(void)
 #else
 	errout = stderr;
 #endif
-	if (listing != NULL)
+	if (listing != nullptr)
 		(void)fprintf(errout, list_prefix);
 }
 
@@ -171,7 +171,7 @@ yyerror(const char *s)
 			column = (int)sizeof(prompt)-1;
 		else {
 			/* line ends in a newline */
-			if (listing == NULL) {
+			if (listing == nullptr) {
 				(void)fprintf(errout, "%s", src_line);
 				start_err_line();
 			}
@@ -182,7 +182,7 @@ yyerror(const char *s)
 				column++;
 			else if (*p == '\t')
 				column += 8 - column%8;
-		if (listing != NULL) {
+		if (listing != nullptr) {
 			column -= (int)sizeof(list_prefix)-1;
 			if (column < 0)
 				column = 0;
@@ -223,13 +223,13 @@ static	const	char	*const	errname[] = {
 	if (errtype < FATALERR || gen_listing)
 		start_err_line();
 	else  {
-		if (listing != NULL) {
+		if (listing != nullptr) {
 			/* so get rid of any listing in that case */
 			(void)fclose(errout);
 #ifdef RE_EDIT
 			(void)remove(list_file);
 #endif
-			listing = NULL;
+			listing = nullptr;
 		}
 		errout = stderr;
 	}
@@ -240,7 +240,7 @@ static	const	char	*const	errname[] = {
 			(void)fprintf(errout, "line %d: ", cur_source->lineno);
 	}
 	(void)fprintf(errout, "%s", errname[errtype]);
-	if (fmt != NULL) {
+	if (fmt != nullptr) {
 		(void)fprintf(errout, " - ");
 		VAR_FPRINTF(errout, fmt);
 	}
@@ -299,7 +299,7 @@ _getline(void)
 		}
 		if (in_script()) {
 			(void)remove(script);
-			script = NULL;
+			script = nullptr;
 			cur_source--;
 		}
 		else
@@ -319,7 +319,7 @@ _getline(void)
 		(void)fprintf(PROMPTOUT, prompt);
 		(void)fflush(PROMPTOUT);
 		atend = fgets(src_line, sizeof(src_line),
-				cur_source->file) == NULL;
+				cur_source->file) == nullptr;
 		if (atend) {
 			(void)fprintf(PROMPTOUT, "\n");
 			(void)fflush(PROMPTOUT);
@@ -327,7 +327,7 @@ _getline(void)
 	}
 	else {
 		atend = fgets(src_line, sizeof(src_line),
-				cur_source->file) == NULL;
+				cur_source->file) == nullptr;
 #ifdef unix
 		/* hack for Unix script files */
 		if (! atend &&
@@ -335,7 +335,7 @@ _getline(void)
 		    strncmp(src_line, "#!", 2) == 0) {
 			cur_source->lineno++;
 			atend = fgets(src_line, sizeof(src_line),
-					cur_source->file) == NULL;
+					cur_source->file) == nullptr;
 		}
 #endif
 		if (listing == cur_source && ! atend) {
@@ -368,7 +368,7 @@ head(int lines, const char *filename, FILE *to)
 	FILE	*from;
 	int	c;
 
-	if ((from = fopen(filename, "r")) == NULL)
+	if ((from = fopen(filename, "r")) == nullptr)
 		error(FATALERR, "'%s': can't read file", filename);
 	while (lines-- > 0)
 		do {	/* copy a line */
@@ -403,7 +403,7 @@ edit(String name)
 	if (! interactive())
 		return;
 	get_script(tmp_file, sizeof(tmp_file));
-	if (name != NULL)
+	if (name != nullptr)
 		mod_file(filename, sizeof(filename), name);
 	else
 		(void)snprintf(filename, sizeof(filename), "%s", tmp_file);
@@ -419,7 +419,7 @@ set_script(const char *filename)
 
 	if (strncmp(filename, tmp_stem, (int)sizeof(tmp_stem)-1) != 0)
 		error(FATALERR, "'%s': bad argument", filename);
-	else if ((f = fopen(filename, "r")) == NULL)
+	else if ((f = fopen(filename, "r")) == nullptr)
 		error(FATALERR, "'%s': can't read script", filename);
 	else {
 		script = filename;
@@ -490,11 +490,11 @@ remove_messages(const char *fromname, const char *toname)
 	FILE	*from;
 	FILE	*to;
 
-	if ((from = fopen(fromname, "r")) == NULL)
+	if ((from = fopen(fromname, "r")) == nullptr)
 		error(FATALERR, "'%s': can't read listing file", fromname);
-	if ((to = fopen(toname, "w")) == NULL)
+	if ((to = fopen(toname, "w")) == nullptr)
 		error(FATALERR, "'%s': can't overwrite file", toname);
-	while (fgets(src_line, sizeof(src_line), from) != NULL)
+	while (fgets(src_line, sizeof(src_line), from) != nullptr)
 		if (strncmp(src_line, list_prefix, sizeof(list_prefix)-1) != 0)
 			(void)fprintf(to, "%s", src_line);
 	fclose(from);

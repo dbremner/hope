@@ -55,7 +55,7 @@ num_tvars_in(TypeList *varlist)
 	int	ntvars;
 
 	ntvars = 0;
-	for ( ; varlist != NULL; varlist = varlist->ty_tail) {
+	for ( ; varlist != nullptr; varlist = varlist->ty_tail) {
 		head = varlist->ty_head;
 		ntvars += (head->ty_pos ? 1 : 2) * (head->ty_neg ? 1 : 2);
 	}
@@ -73,7 +73,7 @@ fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
 {
 	Type	*head;
 
-	if (varlist == NULL)
+	if (varlist == nullptr)
 		return finish;
 	head = varlist->ty_head;
 	return (*fn)(head,
@@ -104,7 +104,7 @@ tupled_args(Type *head, Cell *tail_type, Cell **targ)
 	Cell	*head_type;
 
 	head_type = functor_arg(head, targ);
-	return tail_type == NULL ? head_type :
+	return tail_type == nullptr ? head_type :
 		new_prod_type(head_type, tail_type);
 }
 

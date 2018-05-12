@@ -31,12 +31,12 @@ open_stream(Cell *arg)
 	hope2c((Byte *)filename, MAX_FILENAME, arg);
 
 	/* find a free slot in the stream table */
-	for (fp = str_table; *fp != NULL; fp++)
+	for (fp = str_table; *fp != nullptr; fp++)
 		if (fp == &str_table[MAX_STREAMS])
 			error(EXECERR, "stream table full");
 
 	/* try to open the file */
-	if ((*fp = fopen(filename, "r")) == NULL)
+	if ((*fp = fopen(filename, "r")) == nullptr)
 		error(EXECERR, "'%s': can't read file", filename);
 	return new_stream(*fp);
 }
@@ -65,7 +65,7 @@ reset_streams(void)
 
 	str_lptr = (const Byte *)"";
 	for (fp = str_table; fp != &str_table[MAX_STREAMS]; fp++)
-		*fp = NULL;
+		*fp = nullptr;
 }
 
 /*
@@ -76,7 +76,7 @@ static int
 get_one_char(void)
 {
 	if (*str_lptr == '\0') {
-		if (fgets(str_line, sizeof(str_line), stdin) == NULL) {
+		if (fgets(str_line, sizeof(str_line), stdin) == nullptr) {
 			clearerr(stdin);
 			return EOF;
 		}
@@ -94,7 +94,7 @@ end_stream(FILE *f)
 		(void)fclose(f);
 		for (fp = str_table; *fp != f; fp++)
 			;
-		*fp = NULL;
+		*fp = nullptr;
 	}
 }
 
@@ -104,8 +104,8 @@ close_streams(void)
 	FILE	**fp;
 
 	for (fp = str_table; fp != &str_table[MAX_STREAMS]; fp++)
-		if (*fp != NULL) {
+		if (*fp != nullptr) {
 			(void)fclose(*fp);
-			*fp = NULL;
+			*fp = nullptr;
 		}
 }

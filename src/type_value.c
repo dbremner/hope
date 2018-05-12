@@ -366,7 +366,7 @@ type_arg_lookup(Cell *type_arg, Natural n)
 static Cell *
 cp_list(TypeList *typelist, Cell *type_arg, Cell **mu_top)
 {
-	return typelist == NULL ? NOCELL :
+	return typelist == nullptr ? NOCELL :
 		new_tlist(cp_type_aux(typelist->ty_head, type_arg, mu_top),
 			 cp_list(typelist->ty_tail, type_arg, mu_top));
 }

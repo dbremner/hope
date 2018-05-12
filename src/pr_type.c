@@ -61,19 +61,19 @@ pr_tycons(FILE *f, DefType *dt, TypeList *args)
 
 	if (! dt->dt_tupled) {
 		(void)fprintf(f, "%s", dt->dt_name);
-		for ( ; args != NULL; args = args->ty_tail) {
+		for ( ; args != nullptr; args = args->ty_tail) {
 			(void)fprintf(f, " ");
 			ty_print(f, args->ty_head, PREC_ARG);
 		}
-	} else if (dt->dt_arity == 2 && (op = op_lookup(dt->dt_name)) != NULL) {
+	} else if (dt->dt_arity == 2 && (op = op_lookup(dt->dt_name)) != nullptr) {
 		ty_print(f, args->ty_head, LeftPrec(op));
 		(void)fprintf(f, " %s ", dt->dt_name);
 		ty_print(f, args->ty_tail->ty_head, RightPrec(op));
 	} else {
 		(void)fprintf(f, "%s (", dt->dt_name);
-		for ( ; args != NULL; args = args->ty_tail) {
+		for ( ; args != nullptr; args = args->ty_tail) {
 			ty_print(f, args->ty_head, PREC_BODY);
-			if (args->ty_tail != NULL)
+			if (args->ty_tail != nullptr)
 				(void)fprintf(f, ", ");
 		}
 		(void)fprintf(f, ")");
@@ -90,7 +90,7 @@ ty_precedence(Type *type)
 	if (type->ty_class == TY_MU)
 		return PREC_MU;
 	if (type->ty_deftype->dt_arity == 2 &&
-	    (op = op_lookup(type->ty_deftype->dt_name)) != NULL)
+	    (op = op_lookup(type->ty_deftype->dt_name)) != nullptr)
 		return op->op_prec;
 	return PREC_APPLY;
 }
@@ -105,20 +105,20 @@ pr_deftype(FILE *f, DefType *dt, Bool full)
 		full && IsSynType(dt) ? n_type :
 		full && IsDataType(dt) ? n_data : n_abstype);
 	if (dt->dt_arity == 2 && dt->dt_tupled &&
-		 op_lookup(dt->dt_name) != NULL)
+		 op_lookup(dt->dt_name) != nullptr)
 		(void)fprintf(f, "%s %s %s",
 			type_arg_name(dt->dt_varlist->ty_head, full),
 			dt->dt_name,
 			type_arg_name(dt->dt_varlist->ty_tail->ty_head, full));
 	else if (dt->dt_tupled) {
 		(void)fprintf(f, "%s(", dt->dt_name);
-		for (argp = dt->dt_varlist; argp != NULL; argp = argp->ty_tail)
-			(void)fprintf(f, argp->ty_tail == NULL ? "%s" : "%s, ",
+		for (argp = dt->dt_varlist; argp != nullptr; argp = argp->ty_tail)
+			(void)fprintf(f, argp->ty_tail == nullptr ? "%s" : "%s, ",
 				type_arg_name(argp->ty_head, full));
 		(void)fprintf(f, ")");
 	} else {
 		(void)fprintf(f, "%s", dt->dt_name);
-		for (argp = dt->dt_varlist; argp != NULL; argp = argp->ty_tail)
+		for (argp = dt->dt_varlist; argp != nullptr; argp = argp->ty_tail)
 			(void)fprintf(f, " %s",
 				type_arg_name(argp->ty_head, full));
 	}
@@ -129,10 +129,10 @@ pr_deftype(FILE *f, DefType *dt, Bool full)
 		} else if (IsDataType(dt)) {
 			(void)fprintf(f, " %s ", n_eq);
 			for (alt = dt->dt_cons;
-			     alt != NULL;
+			     alt != nullptr;
 			     alt = alt->c_next) {
 				pr_alt(f, alt);
-				if (alt->c_next != NULL)
+				if (alt->c_next != nullptr)
 					(void)fprintf(f, " %s ", n_or);
 			}
 		}
@@ -148,7 +148,7 @@ pr_alt(FILE *f, Cons *alt)
 
 	if (alt->c_nargs == 0)
 		(void)fprintf(f, "%s", alt->c_name);
-	if (alt->c_nargs == 1 && (op = op_lookup(alt->c_name)) != NULL) {
+	if (alt->c_nargs == 1 && (op = op_lookup(alt->c_name)) != nullptr) {
 		ty_print(f, alt->c_type->ty_firstarg->ty_firstarg,
 			LeftPrec(op));
 		(void)fprintf(f, " %s ", alt->c_name);
@@ -157,7 +157,7 @@ pr_alt(FILE *f, Cons *alt)
 	} else {
 		(void)fprintf(f, "%s", alt->c_name);
 		for (args = alt->c_type->ty_args;
-		     args != NULL;
+		     args != nullptr;
 		     args = args->ty_tail) {
 			(void)fprintf(f, " ");
 			ty_print(f, args->ty_head, PREC_ARG);

@@ -75,7 +75,7 @@ check_recursion(DefType *head, Type *type)
 		 * all variables and none occurs twice.
 		 */
 		for (argp = type->ty_args;
-		     argp != NULL;
+		     argp != nullptr;
 		     argp = argp->ty_tail) {
 			if (argp->ty_head->ty_class != TY_VAR) {
 				error(SEMERR,
@@ -101,7 +101,7 @@ check_recursion(DefType *head, Type *type)
 
 	*dt_top++ = type->ty_deftype;
 	for (argp = type->ty_args, i = 0;
-	     argp != NULL;
+	     argp != nullptr;
 	     argp = argp->ty_tail, i++)
 		arg_top[i - arity] = argp->ty_head->ty_class == TY_VAR ?
 			arg_top[argp->ty_head->ty_index] : COMPLEX_ARG;
@@ -115,7 +115,7 @@ check_recursion(DefType *head, Type *type)
 	} else {	/* it's a data-type */
 		result = REC_NONE;
 		for (ct = type->ty_deftype->dt_cons;
-		     ct != NULL;
+		     ct != nullptr;
 		     ct = ct->c_next)
 			if (ct->c_nargs > 0) {
 				sub_result = check_recursion(head,
@@ -157,7 +157,7 @@ check_recursion(DefType *head, Type *type)
 	}
 
 	/* check arguments of type constructor */
-	for (argp = type->ty_args; argp != NULL; argp = argp->ty_tail) {
+	for (argp = type->ty_args; argp != nullptr; argp = argp->ty_tail) {
 		sub_result = check_recursion(head, argp->ty_head);
 		if (sub_result == REC_FAIL)
 			return REC_FAIL;

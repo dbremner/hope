@@ -20,7 +20,7 @@ char	*lim_temp;
 void
 init_memory(void)
 {
-	if ((base_memory = (char *)malloc((size_t)MEMSIZE)) == NULL)
+	if ((base_memory = (char *)malloc((size_t)MEMSIZE)) == nullptr)
 		error(FATALERR, "can't allocate memory");
 	top_memory = base_memory + RoundDown(MEMSIZE);
 

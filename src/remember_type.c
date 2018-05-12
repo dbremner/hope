@@ -23,7 +23,7 @@ static NoteType note_type[] = {
 	{ "num",	&num },
 	{ "list",	&list },
 	{ "char",	&character },
-	{ NULL, NULL }
+	{ nullptr, nullptr }
 };
 
 typedef struct {
@@ -35,8 +35,8 @@ typedef struct {
 static NoteCons note_cons[] = {
 	{ "nil",	&nil,		&e_nil },
 	{ "::",		&cons,		&e_cons },
-	{ "succ",	&succ,		NULL },
-	{ NULL, NULL, NULL }
+	{ "succ",	&succ,		nullptr },
+	{ nullptr, nullptr, nullptr }
 };
 
 /*
@@ -51,16 +51,16 @@ remember_type(DefType *dt)
 	NoteCons *ncp;
 	Cons	*cp;
 
-	for (ntp = note_type; ntp->type_name != NULL; ntp++)
+	for (ntp = note_type; ntp->type_name != nullptr; ntp++)
 		if (dt->dt_name == newstring(ntp->type_name))
 			*(ntp->type_ref) = dt;
 	if (IsDataType(dt))
-		for (ncp = note_cons; ncp->cons_name != NULL; ncp++)
-			for (cp = dt->dt_cons; cp != NULL; cp = cp->c_next)
+		for (ncp = note_cons; ncp->cons_name != nullptr; ncp++)
+			for (cp = dt->dt_cons; cp != nullptr; cp = cp->c_next)
 				if (cp->c_name == newstring(ncp->cons_name)) {
-					if (ncp->cons_ref != NULL)
+					if (ncp->cons_ref != nullptr)
 						*(ncp->cons_ref) = cp;
-					if (ncp->expr_ref != NULL)
+					if (ncp->expr_ref != nullptr)
 						*(ncp->expr_ref) =
 							cons_expr(cp);
 				}
@@ -76,16 +76,16 @@ check_type_defs(void)
 	NoteType *ntp;
 	NoteCons *ncp;
 
-	for (ntp = note_type; ntp->type_name != NULL; ntp++)
-		if (*(ntp->type_ref) == NULL)
+	for (ntp = note_type; ntp->type_name != nullptr; ntp++)
+		if (*(ntp->type_ref) == nullptr)
 			error(LIBERR, "%s: standard type not defined",
 				ntp->type_name);
-	for (ncp = note_cons; ncp->cons_name != NULL; ncp++) {
-		if ((ncp->cons_ref != NULL && *(ncp->cons_ref) == NULL) ||
-		    (ncp->expr_ref != NULL && *(ncp->expr_ref) == NULL))
+	for (ncp = note_cons; ncp->cons_name != nullptr; ncp++) {
+		if ((ncp->cons_ref != nullptr && *(ncp->cons_ref) == nullptr) ||
+		    (ncp->expr_ref != nullptr && *(ncp->expr_ref) == nullptr))
 			error(LIBERR, "%s: standard constructor not defined",
 				ncp->cons_name);
 	}
-	if ((f_id = fn_local(newstring("id"))) == NULL)
+	if ((f_id = fn_local(newstring("id"))) == nullptr)
 		error(LIBERR, "%s: standard function not defined", "id");
 }

@@ -79,7 +79,7 @@ gen_num_match(int level, Path here, Num n)
 static Natural
 num_cases(Cons *constr)
 {
-	while (constr->c_next != NULL)
+	while (constr->c_next != nullptr)
 		constr = constr->c_next;
 	return constr->c_index + 1;
 }
@@ -157,7 +157,7 @@ gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 static void
 scan_formals(int level, Expr *formals)
 {
-	if (formals != NULL && formals->e_class == E_APPLY) {
+	if (formals != nullptr && formals->e_class == E_APPLY) {
 		scan_formals(level+1, formals->e_func);
 		gen_matches(level, p_new(), formals->e_arg);
 	}
@@ -169,7 +169,7 @@ size_formals(Expr *formals)
 	int	n;
 
 	n = 0;
-	while (formals != NULL && formals->e_class == E_APPLY) {
+	while (formals != nullptr && formals->e_class == E_APPLY) {
 		n += size_pattern(formals->e_arg);
 		formals = formals->e_func;
 	}
@@ -317,7 +317,7 @@ compile(UCase *old_body, Expr *formals, Expr *new_expr)
 	cur_match = matchlist;
 	cur_size = size_formals(formals);
 	new_body = success(new_expr, cur_size);
-	return old_body == NULL ? new_body : merge(old_body);
+	return old_body == nullptr ? new_body : merge(old_body);
 }
 
 UCase *
@@ -341,7 +341,7 @@ comp_expr(Expr *expr)
     case E_PRESECT:
     case E_POSTSECT:
 		expr->e_code = l_nomatch(expr);
-		for (br = expr->e_branch; br != NULL; br = br->br_next)
+		for (br = expr->e_branch; br != nullptr; br = br->br_next)
 			expr->e_code = comp_branch(expr->e_code, br);
         break;
     case E_PAIR:

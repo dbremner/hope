@@ -131,7 +131,7 @@ func_expr(Branch *branches)
 	expr->e_arity = 0;
 	/* use the first branch for the arity: checked later in nv_expr() */
 	for (formals = branches->br_formals;
-	     formals != NULL && formals->e_class == E_APPLY;
+	     formals != nullptr && formals->e_class == E_APPLY;
 	     formals = formals->e_func)
 		expr->e_arity++;
 	return expr;
@@ -292,11 +292,11 @@ decl_value(String name, QType *qtype)
 
 	if (erroneous)
 		return;
-	if (((fn = fn_local(name)) != NULL && fn->f_explicit_dec) ||
-	    ((cp = cons_local(name)) != NULL && cp != succ))
+	if (((fn = fn_local(name)) != nullptr && fn->f_explicit_dec) ||
+	    ((cp = cons_local(name)) != nullptr && cp != succ))
 		error(SEMERR, "'%s': value identifier already declared", name);
 	else {
-		if (fn != NULL)
+		if (fn != nullptr)
 			del_fn(fn);
 		new_fn(name, qtype);
 		preserve();
@@ -325,14 +325,14 @@ def_value(Expr *formals, Expr *body)
 
 	if (head->e_class != E_VAR)
 		error(SEMERR, "illegal left-hand-side");
-	else if ((fn = fn_local(head->e_vname)) == NULL)
+	else if ((fn = fn_local(head->e_vname)) == nullptr)
 		error(SEMERR, "'%s': value identifier not locally declared",
 			head->e_vname);
 	else if (fn->f_explicit_def && fn->f_arity != arity)
 		error(SEMERR,
 			"'%s': attempted redefinition with a different arity",
 			head->e_vname);
-	else if (fn->f_code != NULL && arity == 0)
+	else if (fn->f_code != nullptr && arity == 0)
 		error(SEMERR, "'%s': attempt to redefine value identifier",
 			head->e_vname);
 	else {	
@@ -342,25 +342,25 @@ def_value(Expr *formals, Expr *body)
 		    (fn->f_explicit_dec && ! chk_func(branch, fn)))
 			return;		/* some error reported */
 		if (! fn->f_explicit_def) {
-			fn->f_code = NULL;
-			fn->f_branch = NULL;
+			fn->f_code = nullptr;
+			fn->f_branch = nullptr;
 			fn->f_explicit_def = TRUE;
 		}
 		head->e_class = E_DEFUN;
 		head->e_defun = fn;
 		fn->f_arity = arity;
 		/* add the branch at the end */
-		if (fn->f_branch == NULL)
+		if (fn->f_branch == nullptr)
 			fn->f_branch = branch;
 		else {
 			for (br = fn->f_branch;
-			     br->br_next != NULL;
+			     br->br_next != nullptr;
 			     br = br->br_next)
 				;
 			br->br_next = branch;
 		}
 		/* compile it */
-		if (fn->f_code == NULL && arity > 0)
+		if (fn->f_code == nullptr && arity > 0)
 			fn->f_code = f_nomatch(fn);
 		fn->f_code = comp_branch(fn->f_code, branch);
 		preserve();
@@ -378,7 +378,7 @@ init_argv(void)
 static Expr *
 textlist(const char *const *sp)
 {
-	return *sp == NULL ? e_nil :
+	return *sp == nullptr ? e_nil :
 		apply_expr(e_cons,
 			pair_expr(text_expr((const Byte *)*sp, strlen(*sp)),
 			textlist(sp+1)));

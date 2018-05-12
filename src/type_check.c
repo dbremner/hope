@@ -124,7 +124,7 @@ ty_expr(Expr *expr)
 	case E_CHAR:
 		return new_const_type(character);
 	case E_DEFUN:
-		if ((dt = get_functor(expr)) != NULL)
+		if ((dt = get_functor(expr)) != nullptr)
 			return functor_type(dt);
 		return copy_type(expr->e_defun->f_type,
 				expr->e_defun->f_ntvars, FALSE);
@@ -149,7 +149,7 @@ ty_expr(Expr *expr)
     case E_POSTSECT:
 		return ty_list(expr->e_branch);
 	case E_PARAM:
-		if ((dt = get_functor(expr)) != NULL)
+		if ((dt = get_functor(expr)) != nullptr)
 			return functor_type(dt);
 		return ty_pattern(expr->e_patt, expr->e_level);
 	case E_PLUS:
@@ -325,7 +325,7 @@ ty_list(Branch *branch)
 	Branch	*br;
 
 	type = ty_branch(branch);
-	for (br = branch->br_next; br != NULL; br = br->br_next)
+	for (br = branch->br_next; br != nullptr; br = br->br_next)
 		if (! unify(type, ty_branch(br))) {
 			show_branch(branch);
 			error(TYPEERR, "alternatives have incompatible types");
@@ -358,7 +358,7 @@ ty_branch(Branch *branch)
 	*tp = ty_expr(branch->br_expr);
 	/* delete all the variables pushed by ty_formals() */
 	for (formals = branch->br_formals;
-	     formals != NULL && formals->e_class == E_APPLY;
+	     formals != nullptr && formals->e_class == E_APPLY;
 	     formals = formals->e_func)
 		del_vars();
 	return type;
@@ -369,7 +369,7 @@ ty_formals(Expr *formals, Cell *type)
 {
 	Cell	*newtype;
 
-	if (formals == NULL || formals->e_class != E_APPLY)
+	if (formals == nullptr || formals->e_class != E_APPLY)
 		return type;
 	newtype = new_func_type(NOCELL, type);
 	type = ty_formals(formals->e_func, newtype);
@@ -386,9 +386,9 @@ get_functor(Expr *expr)
 		if (! expr->e_defun->f_explicit_dec)
 			return expr->e_defun->f_tycons;
 		else
-			return NULL;
+			return nullptr;
 	default:
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -440,8 +440,8 @@ show_argument(Expr *func, Expr *arg, Cell *arg_type)
 	String	name;
 
 	if (arg->e_class == E_PAIR &&
-	    (name = expr_name(func, MAX_SCOPES)) != NULL &&
-	    op_lookup(name) != NULL) {
+	    (name = expr_name(func, MAX_SCOPES)) != nullptr &&
+	    op_lookup(name) != nullptr) {
 		arg_type = deref(arg_type);
 		show_expr_type(arg->e_left, arg_type->c_targ1);
 		show_expr_type(arg->e_right, arg_type->c_targ2);
@@ -473,7 +473,7 @@ show_expr(Expr *expr)
 static void
 show_branch(Branch *branch)
 {
-	for ( ; branch != NULL; branch = branch->br_next) {
+	for ( ; branch != nullptr; branch = branch->br_next) {
 		start_err_line();
 		(void)fprintf(errout, "  ");
 		pr_branch(errout, branch, MAX_SCOPES);

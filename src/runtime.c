@@ -82,7 +82,7 @@ start_stack(void)
 	stack = TopStack;
 	stack_limit = stack -
 		((char *)TopStack - (char *)heap_limit)/sizeof(StkElt);
-	last_update = NULL;
+	last_update = nullptr;
 }
 
 void

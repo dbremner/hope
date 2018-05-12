@@ -80,7 +80,7 @@ pr_c_ty_value(FILE *f, Cell *type, int context)
 		/* mark it as a VAR in case we encounter it recursively */
 		type->c_class = C_TVAR;
 		if (tcons->dt_arity == 2 && tcons->dt_tupled &&
-		    (op = op_lookup(tcons->dt_name)) != NULL) {
+		    (op = op_lookup(tcons->dt_name)) != nullptr) {
 						/* infix */
 			pr_c_ty_value(f, targ->c_head, LeftPrec(op));
 			(void)fprintf(f, " %s ", tcons->dt_name);
@@ -156,7 +156,7 @@ n_ty_precedence(Cell *type)
 		if (tcons->dt_arity == 0)
 			return PREC_ATOMIC;
 		if (tcons->dt_arity == 2 &&
-		    (op = op_lookup(tcons->dt_name)) != NULL)
+		    (op = op_lookup(tcons->dt_name)) != nullptr)
 			return op->op_prec;
 		return PREC_APPLY;
     case C_TVAR:

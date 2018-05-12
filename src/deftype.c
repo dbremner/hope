@@ -45,7 +45,7 @@ static Type	*multi_func_type(TypeList *args, Type *result);
 void
 start_dec_type()
 {
-	cur_deftype = NULL;
+	cur_deftype = nullptr;
 	mu_top = mu_names;
 }
 
@@ -59,7 +59,7 @@ new_deftype(String name, Bool tupled, TypeList *vars)
 
 	dt = dt_local(name);
 	arity = ty_length(vars);
-	already_defined = dt != NULL;
+	already_defined = dt != nullptr;
 	if (already_defined) {
 		if (! IsAbsType(dt)) {
 			error(SEMERR, "'%s': attempt to redefine type", name);
@@ -85,17 +85,17 @@ new_deftype(String name, Bool tupled, TypeList *vars)
 		dt->dt_syn_depth = 0;
 		dt->dt_index = 0;
 		dt->dt_tupled = tupled;
-		dt->dt_cons = NULL;
+		dt->dt_cons = nullptr;
 		dt->dt_arity = arity;
-		dt->dt_varlist = NULL;
+		dt->dt_varlist = nullptr;
 	}
 
-	for (varp = vars, i = 0; varp != NULL; varp = varp->ty_tail, i++)
+	for (varp = vars, i = 0; varp != nullptr; varp = varp->ty_tail, i++)
 		varp->ty_head->ty_index = i;
 
 	cur_varlist = vars;
 	cur_deftype = dt;
-	cur_newtype = NULL;
+	cur_newtype = nullptr;
 	mu_top = mu_names;
 	return dt;
 }
@@ -103,8 +103,8 @@ new_deftype(String name, Bool tupled, TypeList *vars)
 static Type *
 current_newtype(void)
 {
-	ASSERT( cur_deftype != NULL );
-	if (cur_newtype == NULL)
+	ASSERT( cur_deftype != nullptr );
+	if (cur_newtype == nullptr)
 		cur_newtype = def_type(cur_deftype, cur_varlist);
 	return cur_newtype;
 }
@@ -204,8 +204,8 @@ decl_type(DefType *deftype, Cons *conslist)
 
 	start_polarities(deftype, cur_varlist);
 	c_index = 0;
-	for (ct = conslist; ct != NULL; ct = ct->c_next) {
-		if (cons_local(ct->c_name) != NULL) {
+	for (ct = conslist; ct != nullptr; ct = ct->c_next) {
+		if (cons_local(ct->c_name) != nullptr) {
 			error(SEMERR, "'%s': attempt to redefine constructor",
 				ct->c_name);
 			return;
@@ -224,9 +224,9 @@ decl_type(DefType *deftype, Cons *conslist)
 		ct->c_index = c_index++;
 		ct->c_ntvars = deftype->dt_arity;
 
-		if ((fn = fn_local(ct->c_name)) != NULL) {
+		if ((fn = fn_local(ct->c_name)) != nullptr) {
 			/* fulfilling a declaration */
-			if (fn->f_code != NULL) {
+			if (fn->f_code != nullptr) {
 				error(SEMERR,
 					"'%s': attempt to redefine value identifier",
 					ct->c_name);
@@ -253,8 +253,8 @@ decl_type(DefType *deftype, Cons *conslist)
 	deftype->dt_varlist = cur_varlist;
 	deftype->dt_cons = conslist;
 
-	for (ct = conslist; ct != NULL; ct = ct->c_next)
-		if ((fn = fn_local(ct->c_name)) != NULL) {
+	for (ct = conslist; ct != nullptr; ct = ct->c_next)
+		if ((fn = fn_local(ct->c_name)) != nullptr) {
 			def_value(id_expr(fn->f_name), cons_expr(ct));
 			fn->f_explicit_def = FALSE;
 		}
@@ -272,8 +272,8 @@ args_repeated(TypeList *varlist)
 {
 	TypeList *vp;
 
-	for ( ; varlist != NULL; varlist = varlist->ty_tail)
-		for (vp = varlist->ty_tail; vp != NULL; vp = vp->ty_tail)
+	for ( ; varlist != nullptr; varlist = varlist->ty_tail)
+		for (vp = varlist->ty_tail; vp != nullptr; vp = vp->ty_tail)
 			if (vp->ty_head->ty_var == varlist->ty_head->ty_var) {
 				error(SEMERR, "'%s': parameter is repeated",
 					vp->ty_head->ty_var);
@@ -296,7 +296,7 @@ constructor(String name, Bool tupled, TypeList *args)
 	c->c_type = tupled ?
 			func_type(multi_pair_type(args), current_newtype()) :
 			multi_func_type(args, current_newtype());
-	c->c_next = NULL;
+	c->c_next = nullptr;
 	return c;
 }
 
@@ -317,7 +317,7 @@ ty_length(TypeList *typelist)
 	int	len;
 
 	len = 0;
-	for ( ; typelist != NULL; typelist = typelist->ty_tail)
+	for ( ; typelist != nullptr; typelist = typelist->ty_tail)
 		len++;
 	return len;
 }
@@ -334,7 +334,7 @@ new_type(String name, Bool tupled, TypeList *args)
 	TypeList *tparam;
 	String	*mu_ptr;
 
-	if (args == NULL) { /* nullary constructor: may be type variable */
+	if (args == nullptr) { /* nullary constructor: may be type variable */
 		/* is it bound by a mu quantifier? */
 		for (mu_ptr = mu_top-1; mu_ptr >= mu_names; mu_ptr--)
 			if (*mu_ptr == name) {
@@ -344,9 +344,9 @@ new_type(String name, Bool tupled, TypeList *args)
 				return type;
 			}
 		/* in a type definition, must be a parameter */
-		if (cur_deftype != NULL) {
+		if (cur_deftype != nullptr) {
 			for (tparam = cur_varlist;
-			     tparam != NULL;
+			     tparam != nullptr;
 			     tparam = tparam->ty_tail)
 				if (name == tparam->ty_head->ty_var)
 					return tparam->ty_head;
@@ -355,9 +355,9 @@ new_type(String name, Bool tupled, TypeList *args)
 			return new_tv(name);
 	}
 
-	if (cur_deftype != NULL && name == cur_deftype->dt_name)
+	if (cur_deftype != nullptr && name == cur_deftype->dt_name)
 		deftype = cur_deftype;
-	else if ((deftype = dt_lookup(name)) == NULL) {
+	else if ((deftype = dt_lookup(name)) == nullptr) {
 		error(SEMERR, "'%s' is not a defined type", name);
 		deftype = truval;	/* dummy */
 	}
@@ -428,7 +428,7 @@ cons_type(Type *type, TypeList *typelist)
 {
 	TypeList *tl;
 
-	if (type == NULL)
+	if (type == nullptr)
 		return typelist;
 	tl = NEW(TypeList);
 	tl->ty_head = type;
@@ -440,27 +440,27 @@ Type *
 pair_type(Type *type1, Type *type2)
 {
 	return def_type(product,
-		cons_type(type1, cons_type(type2, (TypeList *)NULL)));
+		cons_type(type1, cons_type(type2, nullptr)));
 }
 
 Type *
 func_type(Type *type1, Type *type2)
 {
 	return def_type(function,
-		cons_type(type1, cons_type(type2, (TypeList *)NULL)));
+		cons_type(type1, cons_type(type2, nullptr)));
 }
 
 static Type *
 multi_pair_type(TypeList *args)
 {
-	return args->ty_tail == NULL ? args->ty_head :
+	return args->ty_tail == nullptr ? args->ty_head :
 		pair_type(args->ty_head, multi_pair_type(args->ty_tail));
 }
 
 static Type *
 multi_func_type(TypeList *args, Type *result)
 {
-	return args == NULL ? result :
+	return args == nullptr ? result :
 		func_type(args->ty_head,
 			multi_func_type(args->ty_tail, result));
 }
@@ -513,7 +513,7 @@ nv_type(Type *type)
 		nv_type(type->ty_body);
         break;
     case TY_CONS:
-		for (argp = type->ty_args; argp != NULL; argp = argp->ty_tail)
+		for (argp = type->ty_args; argp != nullptr; argp = argp->ty_tail)
 			nv_type(argp->ty_head);
         break;
     default:

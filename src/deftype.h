@@ -30,8 +30,8 @@ struct _DefType {
 #define	dt_cons	dt_union.dtu_cons
 #define	dt_type	dt_union.dtu_type
 
-#define	IsAbsType(dt)	((dt)->dt_syn_depth == 0 && (dt)->dt_cons == NULL)
-#define	IsDataType(dt)	((dt)->dt_syn_depth == 0 && (dt)->dt_cons != NULL)
+#define	IsAbsType(dt)	((dt)->dt_syn_depth == 0 && (dt)->dt_cons == nullptr)
+#define	IsDataType(dt)	((dt)->dt_syn_depth == 0 && (dt)->dt_cons != nullptr)
 #define	IsSynType(dt)	((dt)->dt_syn_depth > 0)
 
 extern	void	dt_declare(DefType *dt);

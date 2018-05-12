@@ -59,7 +59,7 @@ def_functor(DefType *dt)
 		 *			c (t1 x1) ... (tk xk);
 		 * Similarly for T a1 ... an
 		 */
-		for (cp = dt->dt_cons; cp != NULL; cp = cp->c_next) {
+		for (cp = dt->dt_cons; cp != nullptr; cp = cp->c_next) {
 			lhs = dt->dt_tupled ?
 				apply_expr(id_expr(dt->dt_name),
 					expr_of_typelist(dt->dt_varlist)) :
@@ -119,7 +119,7 @@ expr_of_type(Type *type)
 static Expr *
 expr_of_typelist(TypeList *typelist)
 {
-	return typelist->ty_tail == NULL ? expr_of_type(typelist->ty_head) :
+	return typelist->ty_tail == nullptr ? expr_of_type(typelist->ty_head) :
 		pair_expr(expr_of_type(typelist->ty_head),
 			  expr_of_typelist(typelist->ty_tail));
 }
@@ -127,7 +127,7 @@ expr_of_typelist(TypeList *typelist)
 static Expr *
 multi_apply_expr(Expr *func, TypeList *typelist)
 {
-	while (typelist != NULL) {
+	while (typelist != nullptr) {
 		func = apply_expr(func, expr_of_type(typelist->ty_head));
 		typelist = typelist->ty_tail;
 	}

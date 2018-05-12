@@ -21,7 +21,7 @@ init_strings(void)
 	Ident	**tp;
 
 	for (tp = table; tp != &table[TABSIZ]; tp++)
-		*tp = NULL;
+		*tp = nullptr;
 }
 
 String
@@ -36,7 +36,7 @@ newnstring(const char *s, int n)
 	Ident	*np, **p;
 
 	p = &table[hash((const Byte *)s, n)];
-	for (np = *p; np != NULL; np = np->link)
+	for (np = *p; np != nullptr; np = np->link)
 		if (strncmp(np->text, s, n) == 0 && np->text[n] == '\0')
 			return np->text;
 	np = (Ident *)s_alloc((Natural)SizeIdent(n));

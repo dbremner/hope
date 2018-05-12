@@ -19,7 +19,7 @@ type_arg_name(Type *var, Bool full)
 void
 set_polarities(TypeList *varlist)
 {
-	for ( ; varlist != NULL; varlist = varlist->ty_tail)
+	for ( ; varlist != nullptr; varlist = varlist->ty_tail)
 		if (varlist->ty_head->ty_var == n_none) {
 			varlist->ty_head->ty_pos = FALSE;
 			varlist->ty_head->ty_neg = FALSE;
@@ -34,7 +34,7 @@ set_polarities(TypeList *varlist)
 Bool
 check_polarities(TypeList *decl_vars, TypeList *def_vars)
 {
-	while (decl_vars != NULL) {
+	while (decl_vars != nullptr) {
 		if (def_vars->ty_head->ty_pos &&
 		    ! decl_vars->ty_head->ty_pos) {
 			error(SEMERR, "%s: unexpected positive use",
@@ -129,7 +129,7 @@ do_polarities(Type *type, Bool pos, Bool neg)
 		if (type->ty_deftype == cur_deftype) {
 			for (actuals = type->ty_args,
 			     formals = cur_varlist;
-			     actuals != NULL;
+			     actuals != nullptr;
 			     actuals = actuals->ty_tail,
 			     formals = formals->ty_tail) {
 				if (pos)
@@ -142,7 +142,7 @@ do_polarities(Type *type, Bool pos, Bool neg)
 		} else
 			for (actuals = type->ty_args,
 			     formals = type->ty_deftype->dt_varlist;
-			     actuals != NULL;
+			     actuals != nullptr;
 			     actuals = actuals->ty_tail,
 			     formals = formals->ty_tail)
 				do_polarities(actuals->ty_head,
@@ -162,7 +162,7 @@ finish_polarities(void)
 	TypeList *vp;
 	int	n, nd;
 
-	for (vp = cur_varlist; vp != NULL; vp = vp->ty_tail) {
+	for (vp = cur_varlist; vp != nullptr; vp = vp->ty_tail) {
 		n = tycon_find(vp->ty_head->ty_index);
 		nd = ty_arg[n].dual;
 		vp->ty_head->ty_pos = ty_arg[n].pos ||

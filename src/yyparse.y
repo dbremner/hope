@@ -209,20 +209,20 @@ abstype	:	newtype		{ abstype($1); }
 newtype	:	ident tvargs	{ $$ = new_deftype($1, FALSE, $2); }
 	|	ident '(' tv ')'
 				{ $$ = new_deftype($1, FALSE,
-						cons_type($3, NULL)); }
+						cons_type($3, nullptr)); }
 	|	ident '(' tvpair ')'
 				{ $$ = new_deftype($1, TRUE, $3); }
 	|	tv BINARY tv	{ $$ = new_deftype($2, TRUE,
 					cons_type($1,
 					    cons_type($3,
-						(TypeList *)NULL))); }
+						nullptr))); }
 	;
 
-tvargs	:	/* empty */	{ $$ = NULL; }
+tvargs	:	/* empty */	{ $$ = nullptr; }
 	|	tv tvargs	{ $$ = cons_type($1, $2); }
 	;
 
-tvlist	:	tv		{ $$ = cons_type($1, (TypeList *)NULL); }
+tvlist	:	tv		{ $$ = cons_type($1, nullptr); }
 	|	tvpair		{ $$ = $1; }
 	;
 
@@ -232,7 +232,7 @@ tvpair	:	tv ',' tvlist	{ $$ = cons_type($1, $3); }
 tv	:	ident		{ $$ = new_tv($1); }
 	;
 
-constypelist:	constype	{ $$ = alt_cons($1, (Cons *)NULL); }
+constypelist:	constype	{ $$ = alt_cons($1, nullptr); }
 	|	constype OR constypelist
 				{ $$ = alt_cons($1, $3); }
 	;
@@ -249,7 +249,7 @@ constype:	ident typeargs		%prec IDENT
 				{ $$ = constructor($2, TRUE,
 					cons_type($1,
 						cons_type($3,
-							(TypeList *)NULL))); }
+							nullptr))); }
 	;
 
 
@@ -261,23 +261,23 @@ type	:	ident typeargs		%prec IDENT
 				{ $$ = new_type($2, TRUE,
 					cons_type($1,
 						cons_type($3,
-							(TypeList *)NULL))); }
+							nullptr))); }
 	|	MU mu_tv GIVES type		%prec MU
 				{ $$ = mu_type($4); }
 	|	'(' type ')'	{ $$ = $2; }
 	;
 
-typeargs:	/* empty */	{ $$ = (TypeList *)NULL; }
+typeargs:	/* empty */	{ $$ = nullptr; }
 	|	typearg typeargs
 				{ $$ = cons_type($1, $2); }
 	;
 
 typearg:	ident		{ $$ = new_type($1, FALSE,
-						(TypeList *)NULL); }
+						nullptr); }
 	|	'(' type ')'	{ $$ = $2; }
 	;
 
-typelist:	type		{ $$ = cons_type($1, (TypeList *)NULL); }
+typelist:	type		{ $$ = cons_type($1, nullptr); }
 	|	typepair	{ $$ = $1; }
 	;
 

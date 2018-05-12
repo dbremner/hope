@@ -163,7 +163,7 @@ static void
 pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context)
 {
 	if (nargs == 0)
-		if (context > PREC_INFIX && op_lookup(name) != NULL)
+		if (context > PREC_INFIX && op_lookup(name) != nullptr)
 			(void)fprintf(f, "(%s)", name);
 		else
 			(void)fprintf(f, "%s", name);
@@ -270,7 +270,7 @@ pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context)
 {
 	Op	*op;
 
-	if ((op = op_lookup(name)) != NULL) {
+	if ((op = op_lookup(name)) != nullptr) {
 		if (arg->c_class == C_PAIR) {
 			if (op->op_prec < context)
 				(void)fprintf(f, "(");
@@ -309,16 +309,16 @@ val_name(int level, Path path)
         case E_DEFUN:
 			return value->c_expr->e_defun->f_name;
 		default:
-			return NULL;
+			return nullptr;
 		}
     case C_PAPP:
 		if (value->c_expr->e_class == E_DEFUN &&
 		    value->c_arity == value->c_expr->e_defun->f_arity)
 			return value->c_expr->e_defun->f_name;
 		else
-			return NULL;
+			return nullptr;
 	default:
-		return NULL;
+		return nullptr;
 	}
 }
 

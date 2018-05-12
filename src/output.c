@@ -26,17 +26,17 @@ init_print(void)
 	e_return = NEW(Expr);
 	e_return->e_class = E_RETURN;
 	fn = fn_lookup(newstring("return"));
-	ASSERT( fn != NULL );
+	ASSERT( fn != nullptr );
 	fn->f_code = success(e_return, 0);
 
 	fn = fn_lookup(newstring("print"));
-	ASSERT( fn != NULL );
+	ASSERT( fn != nullptr );
 	e_print = NEW(Expr);
 	e_print->e_class = E_DEFUN;
 	e_print->e_defun = fn;
 
 	fn = fn_lookup(newstring("write_list"));
-	ASSERT( fn != NULL );
+	ASSERT( fn != nullptr );
 	e_wr_list = NEW(Expr);
 	e_wr_list->e_class = E_DEFUN;
 	e_wr_list->e_defun = fn;
@@ -70,9 +70,9 @@ open_out_file(const char *name)
 {
 	if (restricted)
 		error(EXECERR, "file output disabled");
-	if (name == NULL)
+	if (name == nullptr)
 		out_file = STDOUT;
-	else if ((out_file = fopen(TEMPFILE, "w")) == NULL)
+	else if ((out_file = fopen(TEMPFILE, "w")) == nullptr)
 		error(EXECERR, "can't create temporary file");
 	out_name = name;
 }
@@ -80,7 +80,7 @@ open_out_file(const char *name)
 void
 save_out_file(void)
 {
-	if (out_name != NULL) {
+	if (out_name != nullptr) {
 		(void)fclose(out_file);
 		(void)remove(out_name);
 		/* (void)link(TEMPFILE, out_name); (void)unlink(TEMPFILE); */
@@ -91,7 +91,7 @@ save_out_file(void)
 void
 close_out_file(void)
 {
-	if (out_name != NULL) {
+	if (out_name != nullptr) {
 		(void)fclose(out_file);
 		(void)remove(TEMPFILE);
 	}

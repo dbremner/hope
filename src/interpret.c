@@ -297,7 +297,7 @@ run(Cell *current)
             break;
         case E_DEFUN:
 			SHOW2("DEFUN: %s\n", expr->e_defun->f_name);
-			if (expr->e_defun->f_code == NULL)
+			if (expr->e_defun->f_code == nullptr)
 				error(EXECERR, "%s: undefined name",
 					expr->e_defun->f_name);
 			current = new_papp(expr, NULL_ENV,

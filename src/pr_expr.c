@@ -31,7 +31,7 @@ pr_fundef(FILE *f, Func *fn)
 	Branch	*br;
 
 	in_definition = TRUE;
-	for (br = fn->f_branch; br != NULL; br = br->br_next) {
+	for (br = fn->f_branch; br != nullptr; br = br->br_next) {
 		(void)fprintf(f, "%s ", n_valof);
 		pr_c_expr(f, br->br_formals, 0, PREC_BODY);
 		(void)fprintf(f, " %s ", n_is);
@@ -77,7 +77,7 @@ pr_c_expr(FILE *f, Expr *expr, int level, int context)
 				pr_elist(f, expr, level);
 		else {
 			name = expr_name(expr->e_func, level);
-			if (name != NULL)
+			if (name != nullptr)
 				pr_f_expr(f, name, expr->e_arg,
 					level, InnerPrec(prec, context));
 			else {
@@ -204,7 +204,7 @@ pr_f_expr(FILE *f, String name, Expr *arg, int level, int context)
 		else
 			pr_f_actual(f, name,
 				arg->e_level - level, arg->e_where, context);
-	else if ((op = op_lookup(name)) != NULL)
+	else if ((op = op_lookup(name)) != nullptr)
 		if (arg->e_class == E_PAIR) {
 			if (op->op_prec < context)
 				(void)fprintf(f, "(");
@@ -299,10 +299,10 @@ static void
 pr_lambda(FILE *f, Branch *branch, int level)
 {
 	(void)fprintf(f, "%s ", n_lambda);
-	while (branch != NULL) {
+	while (branch != nullptr) {
 		pr_branch(f, branch, level);
 		branch = branch->br_next;
-		if (branch != NULL)
+		if (branch != nullptr)
 			(void)fprintf(f, " | ");
 	}
 }
@@ -318,7 +318,7 @@ pr_branch(FILE *f, Branch *branch, int level)
 static void
 pr_formals(FILE *f, Expr *formals)
 {
-	if (formals != NULL && formals->e_class == E_APPLY) {
+	if (formals != nullptr && formals->e_class == E_APPLY) {
 		pr_formals(f, formals->e_func);
 		pr_c_expr(f, formals->e_arg, 0, PREC_FORMAL);
 		(void)fprintf(f, " ");
@@ -363,7 +363,7 @@ expr_name(Expr *expr, int level)
 			return expr_name(expr->e_patt, 0);
 		return val_name(expr->e_level - level, expr->e_where);
 	default:
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -394,19 +394,19 @@ precedence(Expr *expr)
     case E_APPLY:
 		return PREC_APPLY;
     case E_CONS:
-		if (op_lookup(expr->e_const->c_name) != NULL)
+		if (op_lookup(expr->e_const->c_name) != nullptr)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;
     case E_DEFUN:
-		if (op_lookup(expr->e_defun->f_name) != NULL)
+		if (op_lookup(expr->e_defun->f_name) != nullptr)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;
     case E_PLUS:
 		return op_lookup(newstring("+"))->op_prec;
     case E_VAR:
-		if (op_lookup(expr->e_vname) != NULL)
+		if (op_lookup(expr->e_vname) != nullptr)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;

@@ -150,7 +150,7 @@ split_path(void)
 	const	char	*path;
 
 	path = getenv("HOPEPATH");
-	if (path == NULL)
+	if (path == nullptr)
 		default_path();
 	else {
 		char	*np;
@@ -172,19 +172,19 @@ split_path(void)
 			} else
 				*np++ = *pp;
 		*np = '\0';
-		dir[n] = NULL;
+		dir[n] = nullptr;
 	}
 #else
 	default_path();
 #endif
 #ifdef HOPELIB
 	/* empty entries in the path stand for HOPELIB */
-	for (n = 0; dir[n] != NULL; n++)
+	for (n = 0; dir[n] != nullptr; n++)
 		if (dir[n][0] == '\0')
 			dir[n] = HOPELIB;
 #else
 	/* empty entries in the path stand for . */
-	for (n = 0; dir[n] != NULL; n++)
+	for (n = 0; dir[n] != nullptr; n++)
 		if (dir[n][0] == '\0')
 			dir[n] = ".";
 #endif
@@ -196,7 +196,7 @@ default_path(void)
 	dir = NEWARRAY(const char *, 3);
 	dir[0] = ".";
 	dir[1] = "";
-	dir[2] = NULL;
+	dir[2] = nullptr;
 }
 
 String
@@ -218,7 +218,7 @@ mod_new(String name)
 
 	if (mod_count == MAX_MODULES) {
 		error(SEMERR, "too many modules");
-		return NULL;
+		return nullptr;
 	}
 	mod = NEW(Module);
 	mod->mod_name = name;
@@ -238,7 +238,7 @@ mod_clear(Module *mod)
 	t_init(&(mod->mod_ops));
 	t_init(&(mod->mod_types));
 	t_init(&(mod->mod_fns));
-	mod->mod_public = NULL;
+	mod->mod_public = nullptr;
 }
 
 static void
@@ -263,7 +263,7 @@ module(String name)
 			return mod_list[i];	/* already here */
 	/* not here -- make a note to read it */
 	mod = mod_new(name);
-	if (mod != NULL)
+	if (mod != nullptr)
 		ADD(mod_unread, mod->mod_num);
 	return mod;
 }
@@ -275,7 +275,7 @@ mod_use(String name)
 	Module	*mod;
 
 	mod = module(name);
-	if (mod == NULL)
+	if (mod == nullptr)
 		return;
 	for (mp = mod_stack; mp <= mod_current; mp++)
 		if (*mp == mod || (*mp)->mod_public == mod) {
@@ -341,7 +341,7 @@ mod_private(void)
 	 * definitions.
 	 */
 	priv_module = mod_new((*mod_current)->mod_name);
-	if (priv_module == NULL)
+	if (priv_module == nullptr)
 		return;
 	UNION(priv_module->mod_uses, (*mod_current)->mod_uses);
 	UNION(priv_module->mod_all_uses, (*mod_current)->mod_all_uses);
@@ -370,7 +370,7 @@ reset_private(TabElt *p)
 	if (dt->dt_private) {
 		dt->dt_varlist = dt->dt_oldvarlist;
 		dt->dt_syn_depth = 0;
-		dt->dt_cons = NULL;
+		dt->dt_cons = nullptr;
 	}
 }
 
@@ -387,7 +387,7 @@ fix_synonyms(void)
 
 	current = *mod_current;
 	t_foreach(&(current->mod_types), fix_syn_depth);
-	if (current->mod_public != NULL)
+	if (current->mod_public != nullptr)
 		t_foreach(&(current->mod_public->mod_types), fix_syn_depth);
 }
 
@@ -420,7 +420,7 @@ mod_finish(void)
 
 	current = *mod_current;
 	if (current->mod_num == STANDARD ||
-	    (current->mod_public != NULL &&
+	    (current->mod_public != nullptr &&
 	     current->mod_public->mod_num == STANDARD)) {
 		check_type_defs();
 		alpha = tv_var((Natural)0);
@@ -430,7 +430,7 @@ mod_finish(void)
 		init_argv();
 		preserve();
 	}
-	if (current->mod_public != NULL) {
+	if (current->mod_public != nullptr) {
 		current = current->mod_public;
 		/*
 		 * Reset any abstype's that have been privately defined
@@ -462,13 +462,13 @@ mod_save(String name)
 		return;
 	}
 	f = mod_create(name);
-	if (f == NULL)
+	if (f == nullptr)
 		return;
 	mod_dump(f);
 
 	/* move the contents of the current session into the module */
 	mod = mod_new(name);
-	if (mod == NULL)
+	if (mod == nullptr)
 		return;
 	mod_copy(mod, *mod_current);
 	mod_clear(*mod_current);
@@ -481,7 +481,7 @@ mod_save(String name)
 void
 mod_dump(FILE *f)
 {
-	if (f != NULL) {
+	if (f != nullptr) {
 		disp_file = f;
 		us_display(mod_list[SESSION]);
 		tv_display(mod_list[SESSION]);
@@ -531,20 +531,20 @@ mod_read(Module *mod)
 	const	char	*const	*dp;
 #endif
 
-	f = NULL;
+	f = nullptr;
 #ifdef DIR_SEPARATOR
-	for (dp = dir; *dp != NULL; dp++)
+	for (dp = dir; *dp != nullptr; dp++)
 		if (strlen(*dp) + 1 + strlen(filename) < MAX_MODNAME) {
 		(void)snprintf(filename, sizeof(filename), "%s%c%s%s", *dp, DIR_SEPARATOR, mod->mod_name, extension);
 		f = fopen(filename, "r");
-		if (f != NULL)
+		if (f != nullptr)
 			break;
 	}
 #else
 	mod_file(filename, sizeof(filename), mod->mod_name);
 	f = fopen(filename, "r");
 #endif
-	if (f == NULL)
+	if (f == nullptr)
 		return FALSE;
 	enterfile(f);
 	return TRUE;
@@ -560,13 +560,13 @@ mod_create(String name)
 	char	filename[MAX_MODNAME];
 
 	mod_file(filename, sizeof(filename), name);
-	if ((f = fopen(filename, "r")) != NULL) {
+	if ((f = fopen(filename, "r")) != nullptr) {
 		(void)fclose(f);
 		error(SEMERR, "'%s': a module with this name already exists",
 			name);
-		return NULL;
+		return nullptr;
 	}
-	if ((f = fopen(filename, "w")) == NULL)
+	if ((f = fopen(filename, "w")) == nullptr)
 		error(SEMERR, "'%s': can't save module", name);
 	return f;
 }
@@ -580,11 +580,11 @@ look_here(String name,
 {
 	void	*found;
 
-	if ((found = (*look_fn)(name, *mod_current)) != NULL)
+	if ((found = (*look_fn)(name, *mod_current)) != nullptr)
 		return found;
-	if ((*mod_current)->mod_public != NULL)
+	if ((*mod_current)->mod_public != nullptr)
 		return (*look_fn)(name, (*mod_current)->mod_public);
-	return NULL;
+	return nullptr;
 }
 
 /*
@@ -596,13 +596,13 @@ look_everywhere(String name,
 {
 	void	*found;
 
-	if ((found = look_here(name, look_fn)) != NULL)
+	if ((found = look_here(name, look_fn)) != nullptr)
 		return found;
 	for (auto i = mod_count-1; i >= STANDARD; i--)
 		if (MEMBER((*mod_current)->mod_all_uses, i) &&
-		    (found = (*look_fn)(name, mod_list[i])) != NULL)
+		    (found = (*look_fn)(name, mod_list[i])) != nullptr)
 			return found;
-	return NULL;
+	return nullptr;
 }
 
 /*
@@ -795,7 +795,7 @@ ty_cons_lookup(TabElt *p)
 
 	dt = (DefType *)p;
 	if (IsDataType(dt))
-		for (cp = dt->dt_cons; cp != NULL; cp = cp->c_next)
+		for (cp = dt->dt_cons; cp != nullptr; cp = cp->c_next)
 			if (cp->c_name == cons_name) {
 				cons_found = cp;
 				return;
@@ -806,7 +806,7 @@ static void *
 cons_mod_lookup(String name, Module *mod)
 {
 	cons_name = name;
-	cons_found = NULL;
+	cons_found = nullptr;
 	t_foreach(&(mod->mod_types), ty_cons_lookup);
 	return (void *)cons_found;
 }
@@ -860,8 +860,8 @@ new_fn(String name, QType *qtype)
 	fn->f_explicit_dec = TRUE;
 	fn->f_explicit_def = FALSE;
 	fn->f_qtype = qtype;
-	fn->f_branch = NULL;
-	fn->f_code = NULL;
+	fn->f_branch = nullptr;
+	fn->f_code = nullptr;
 	t_insert(&((*mod_current)->mod_fns), (TabElt *)fn);
 }
 
@@ -876,8 +876,8 @@ dec_functor(DefType *dt)
 	fn->f_explicit_dec = FALSE;
 	fn->f_explicit_def = FALSE;
 	fn->f_tycons = dt;
-	fn->f_branch = NULL;
-	fn->f_code = NULL;
+	fn->f_branch = nullptr;
+	fn->f_code = nullptr;
 	t_insert(&((*mod_current)->mod_fns), (TabElt *)fn);
 }
 

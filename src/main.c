@@ -25,9 +25,9 @@ main(int argc, const char *const argv[])
 #ifdef RE_EDIT
 	const	char	*script_file;
 
-	script_file = NULL;
+	script_file = nullptr;
 #endif
-	source_file = NULL;
+	source_file = nullptr;
 	gen_listing = restricted = FALSE;
 	time_limit = 0;
 #ifdef unix
@@ -54,9 +54,9 @@ main(int argc, const char *const argv[])
 	cmd_args = argv+1;
 #endif
 
-	if (source_file != NULL) {
+	if (source_file != nullptr) {
 		src = fopen(source_file, "r");
-		if (src == NULL) {
+		if (src == nullptr) {
 			fprintf(stderr, "%s: can't read file '%s'\n",
 				argv0, source_file);
 			return 1;
@@ -73,14 +73,14 @@ main(int argc, const char *const argv[])
 	init_source(src, gen_listing);
 
 #ifdef RE_EDIT
-	if (script_file != NULL)
+	if (script_file != nullptr)
 		set_script(script_file);	/* re-entry after an edit */
 #endif
 	mod_init();		/* begin standard module */
 	preserve();
 	(void)yyparse();	/* read commands from files and user */
 	heap_stats();
-	if (source_file != NULL)
+	if (source_file != nullptr)
 		fclose(src);
 	return 0;
 }

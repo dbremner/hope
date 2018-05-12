@@ -79,7 +79,7 @@ nv_mu_expr(Expr *muvar, Expr *body)
 static Bool
 enter_scope(Expr *formals)
 {
-	if (formals != NULL && formals->e_class == E_APPLY) {
+	if (formals != nullptr && formals->e_class == E_APPLY) {
 		/*
 		 * The first argument in the reverse-order list
 		 * is the innermost scope.
@@ -113,7 +113,7 @@ nv_pattern(Expr *p, Path path)
 	Cons	*cp;
 	Expr	*arg;
 
-	if (p == NULL)		/* error in apply_pat() */
+	if (p == nullptr)		/* error in apply_pat() */
 		return FALSE;
 	switch (p->e_class) {
 	case E_NUM:
@@ -138,7 +138,7 @@ nv_pattern(Expr *p, Path path)
 		}
 		return nv_constructor(p, 0, &path);
     case E_VAR:
-		if ((cp = cons_lookup(p->e_vname)) != NULL &&
+		if ((cp = cons_lookup(p->e_vname)) != nullptr &&
 		    cp->c_nargs == 0) {
 			p->e_class = E_CONS;
 			p->e_const = cp;
@@ -190,7 +190,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 
 	switch (p->e_class) {
 	case E_VAR:
-		if ((cp = cons_lookup(p->e_vname)) == NULL) {
+		if ((cp = cons_lookup(p->e_vname)) == nullptr) {
 			error(SEMERR, "'%s': unknown constructor",
 				p->e_vname);
 			return FALSE;
@@ -258,7 +258,7 @@ nv_expr(Expr *expr)
     case E_EQN:
     case E_PRESECT:
     case E_POSTSECT:
-		for (br = expr->e_branch; br != NULL; br = br->br_next) {
+		for (br = expr->e_branch; br != nullptr; br = br->br_next) {
 			if (arity_formals(br->br_formals) != expr->e_arity) {
 				start_err_line();
 				(void)fprintf(errout, "  ");
@@ -285,7 +285,7 @@ arity_formals(Expr *formals)
 	int	n;
 
 	n = 0;
-	for ( ; formals != NULL && formals->e_class == E_APPLY;
+	for ( ; formals != nullptr && formals->e_class == E_APPLY;
 	     formals = formals->e_func)
 		n++;
 	return n;
@@ -313,12 +313,12 @@ nv_var(Expr *expr)
 			return TRUE;
 		}
 	/* fiddle: succ constructor becomes succ function */
-	if ((expr->e_const = cons_lookup(name)) != NULL &&
+	if ((expr->e_const = cons_lookup(name)) != nullptr &&
 	    expr->e_const != succ) {
 		expr->e_class = E_CONS;
 		return TRUE;
 	}
-	if ((expr->e_defun = fn_lookup(name)) != NULL) {
+	if ((expr->e_defun = fn_lookup(name)) != nullptr) {
 		expr->e_class = E_DEFUN;
 		return TRUE;
 	}
