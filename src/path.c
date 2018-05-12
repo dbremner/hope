@@ -29,7 +29,9 @@ p_push(int dir, Path p)
 Path
 p_stash(Path p)
 {
-	return strcpy(NEWARRAY(char, strlen(p) + 1), p);
+    const Natural len = strlen(p) + 1;
+    char *dest = NEWARRAY(char, len);
+	return strcpy(dest, p);
 }
 
 /* temporary storage for a number of paths */
