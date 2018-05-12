@@ -54,7 +54,6 @@
 #else
 #	define	local	static
 #endif
-#define	global
 
 typedef	unsigned int	Natural;
 typedef	unsigned char	Byte;
