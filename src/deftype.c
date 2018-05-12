@@ -15,7 +15,7 @@
 
 /* Internal names of some types and constructors. */
 DefType *product, *function, *list, *num, *truval, *character;
-Cons	*nil, *cons, *succ, *true, *false;
+Cons	*nil, *cons, *succ, *true_, *false_;
 
 /*
  *	The type currently being defined.

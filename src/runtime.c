@@ -97,7 +97,7 @@ chk_stack(int required)
 }
 
 Cell *
-new_cell(int class)
+new_cell(int c_class)
 {
 	Cell	*cell;
 
@@ -118,7 +118,7 @@ new_cell(int class)
 		free_list = cell->c_foll;
 		num_free--;
 	}
-	cell->c_class = class;
+	cell->c_class = c_class;
 	return cell;
 }
 

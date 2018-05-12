@@ -45,7 +45,7 @@ static UCase	*gen_tree(const Match *matches, UCase *failure);
 static UCase	*new_node(const Match *matches, UCase *failure, UCase *subtree);
 static UCase	*merge(UCase *old);
 static UCase	*sub_merge(UCase *old);
-static UCase	*compile(UCase *old_body, Expr *pattern, Expr *new);
+static UCase	*compile(UCase *old_body, Expr *pattern, Expr *new_expr);
 
 /*
  * add another match to the list.
@@ -205,11 +205,11 @@ limb_map(LCase *lcase, EltMap *f)
 	if (lcase->lc_class == LC_CHARACTER)
 		ca_map(lcase->lc_c_limbs, f);
 	else {
-		UCase	**this, **finish;
+		UCase	**this_, **finish;
 
 		finish = lcase->lc_limbs + lcase->lc_arity;
-		for (this = lcase->lc_limbs; this != finish; this++)
-			*this = (*f)(*this);
+		for (this_ = lcase->lc_limbs; this_ != finish; this_++)
+			*this_ = (*f)(*this_);
 	}
 }
 
@@ -307,7 +307,7 @@ sub_merge(UCase *old)
  * pattern and expression.
  */
 static UCase *
-compile(UCase *old_body, Expr *formals, Expr *new)
+compile(UCase *old_body, Expr *formals, Expr *new_expr)
 {
 	Match	matchlist[MAX_MATCHES];
 	char	path_buf[MAX_PATHS];
@@ -317,7 +317,7 @@ compile(UCase *old_body, Expr *formals, Expr *new)
 	scan_formals(0, formals);
 	cur_match = matchlist;
 	cur_size = size_formals(formals);
-	new_body = success(new, cur_size);
+	new_body = success(new_expr, cur_size);
 	return old_body == NULL ? new_body : merge(old_body);
 }
 

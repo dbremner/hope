@@ -194,13 +194,13 @@ mu_expr(Expr *muvar, Expr *body)
 }
 
 Expr *
-presection(String operator, Expr *arg)
+presection(String operator_, Expr *arg)
 {
 	Expr	*expr;
 
 	expr = func_expr(new_unary(
 			id_expr(bound_variable),
-			apply_expr(id_expr(operator),
+			apply_expr(id_expr(operator_),
 				pair_expr(arg, id_expr(bound_variable))),
 			(Branch *)0));
 	expr->e_class = E_PRESECT;
@@ -208,13 +208,13 @@ presection(String operator, Expr *arg)
 }
 
 Expr *
-postsection(String operator, Expr *arg)
+postsection(String operator_, Expr *arg)
 {
 	Expr	*expr;
 
 	expr = func_expr(new_unary(
 			id_expr(bound_variable),
-			apply_expr(id_expr(operator),
+			apply_expr(id_expr(operator_),
 				pair_expr(id_expr(bound_variable), arg)),
 			(Branch *)0));
 	expr->e_class = E_POSTSECT;

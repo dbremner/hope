@@ -73,34 +73,34 @@ strict(Expr *real)
 UCase *
 copy_ucase(UCase *old)
 {
-	UCase	*new;
+	UCase	*new_ucase;
 
-	new = NEW(UCase);
-	new->uc_class = old->uc_class;
+	new_ucase = NEW(UCase);
+	new_ucase->uc_class = old->uc_class;
 	switch (old->uc_class) {
 	case UC_CASE:
-		new->uc_references = 1;
-		new->uc_level = old->uc_level;
-		new->uc_path = old->uc_path;
-		new->uc_cases = copy_lcase(old->uc_cases);
+		new_ucase->uc_references = 1;
+		new_ucase->uc_level = old->uc_level;
+		new_ucase->uc_path = old->uc_path;
+		new_ucase->uc_cases = copy_lcase(old->uc_cases);
         break;
     case UC_F_NOMATCH:
-		new->uc_defun = old->uc_defun;
+		new_ucase->uc_defun = old->uc_defun;
         break;
     case UC_L_NOMATCH:
-		new->uc_who = old->uc_who;
+		new_ucase->uc_who = old->uc_who;
         break;
     case UC_SUCCESS:
-		new->uc_body = old->uc_body;
-		new->uc_size = old->uc_size;
+		new_ucase->uc_body = old->uc_body;
+		new_ucase->uc_size = old->uc_size;
         break;
     case UC_STRICT:
-		new->uc_real = old->uc_real;
+		new_ucase->uc_real = old->uc_real;
         break;
     default:
 		NOT_REACHED;
 	}
-	return new;
+	return new_ucase;
 }
 
 /*
@@ -147,27 +147,27 @@ char_case(UCase *def)
 static LCase *
 copy_lcase(LCase *old)
 {
-	LCase	*new;
+	LCase	*new_lcase;
 	int	i;
 
-	new = NEW(LCase);
-	new->lc_class = old->lc_class;
-	new->lc_arity = old->lc_arity;
+	new_lcase = NEW(LCase);
+	new_lcase->lc_class = old->lc_class;
+	new_lcase->lc_arity = old->lc_arity;
 	switch (old->lc_class) {
 	case LC_ALGEBRAIC:
     case LC_NUMERIC:
-		new->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
+		new_lcase->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
 		for (i = 0; i < old->lc_arity; i++)
-			new->lc_limbs[i] = new_reference(old->lc_limbs[i]);
+			new_lcase->lc_limbs[i] = new_reference(old->lc_limbs[i]);
         break;
     case LC_CHARACTER:
-		new->lc_c_limbs = ca_copy(old->lc_c_limbs);
-		ca_map(new->lc_c_limbs, new_reference);
+		new_lcase->lc_c_limbs = ca_copy(old->lc_c_limbs);
+		ca_map(new_lcase->lc_c_limbs, new_reference);
         break;
     default:
 		NOT_REACHED;
 	}
-	return new;
+	return new_lcase;
 }
 
 static UCase *

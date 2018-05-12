@@ -19,6 +19,6 @@ extern	Cons	*alt_cons(Cons *constr, Cons *next);
 extern	Cons	*cons_lookup(String name);
 extern	Cons	*cons_local(String name);
 
-extern	Cons	*nil, *cons, *succ, *true, *false;
+extern	Cons	*nil, *cons, *succ, *true_, *false_;
 
 #endif

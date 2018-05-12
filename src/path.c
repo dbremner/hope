@@ -50,11 +50,11 @@ p_init(char *buf, int size)
 Path
 p_save(Path p)
 {
-	char	*new;
+	char	*new_str;
 
-	new = strcpy(pb_end, p);
+	new_str = strcpy(pb_end, p);
 	pb_end += strlen(p)+1;
-	return new;
+	return new_str;
 }
 
 /*
@@ -67,23 +67,23 @@ Path
 p_reverse(Path old)
 {
 static	char	path_buf[MAX_PATH];
-	Path	new;
+	Path	new_path;
 	int	dir;
 
 	path_buf[MAX_PATH-1] = P_END;
-	new = &path_buf[MAX_PATH-1];
+	new_path = &path_buf[MAX_PATH-1];
 
 	for(;;) {
         if(p_empty(old)) break;
 		dir = p_top(old);
-		new = p_push(dir, new);
+		new_path = p_push(dir, new_path);
 		old = p_pop(old);
         if(dir != P_LEFT && dir != P_RIGHT) break;
-		new = p_push(P_UNROLL, new);
+		new_path = p_push(P_UNROLL, new_path);
 	}
 	while (! p_empty(old)) {
-		new = p_push(p_top(old), new);
+		new_path = p_push(p_top(old), new_path);
 		old = p_pop(old);
 	}
-	return new;
+	return new_path;
 }

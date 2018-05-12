@@ -161,8 +161,8 @@ extern	Expr	*ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr);
 extern	Expr	*let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive);
 extern	Expr	*where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive);
 extern	Expr	*mu_expr(Expr *muvar, Expr *body);
-extern	Expr	*presection(String operator, Expr *arg);
-extern	Expr	*postsection(String operator, Expr *arg);
+extern	Expr	*presection(String operator_, Expr *arg);
+extern	Expr	*postsection(String operator_, Expr *arg);
 
 extern	Expr	*builtin_expr(Function *fn);
 extern	Expr	*bu_1math_expr(Unary *fn);

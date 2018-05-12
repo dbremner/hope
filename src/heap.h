@@ -60,7 +60,7 @@ struct _Cell {
  */
 extern	void	start_heap(void);
 /* required before any calls to new_cell() */
-extern	Cell	*new_cell(int class);
+extern	Cell	*new_cell(int c_class);
 extern	void	chk_heap(Cell *current, int required);
 extern	void	heap_stats(void);
 
