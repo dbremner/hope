@@ -8,17 +8,17 @@
  *	Generate types of 'functors'.
  */
 
-local	int	num_tvars_in(TypeList *varlist);
+static int	num_tvars_in(TypeList *varlist);
 
-local	Cell	*fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
+static Cell	*fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
 			Cell *(*fn)(Type *head, Cell *tail, Cell **targ));
 
-local	Cell	*result_domain(Type *head, Cell *tail, Cell **targ);
-local	Cell	*result_range(Type *head, Cell *tail, Cell **targ);
-local	Cell	*tupled_args(Type *head, Cell *tail, Cell **targ);
-local	Cell	*curried_args(Type *head, Cell *tail, Cell **targ);
+static Cell	*result_domain(Type *head, Cell *tail, Cell **targ);
+static Cell	*result_range(Type *head, Cell *tail, Cell **targ);
+static Cell	*tupled_args(Type *head, Cell *tail, Cell **targ);
+static Cell	*curried_args(Type *head, Cell *tail, Cell **targ);
 
-local	Cell	*functor_arg(Type *tvar, Cell **targ);
+static Cell	*functor_arg(Type *tvar, Cell **targ);
 
 Cell *
 functor_type(DefType *dt)
@@ -48,7 +48,7 @@ functor_type(DefType *dt)
 				result_type, curried_args));
 }
 
-local int
+static int
 num_tvars_in(TypeList *varlist)
 {
 	Type	*head;
@@ -67,7 +67,7 @@ num_tvars_in(TypeList *varlist)
  *	so that they get the right variable numbers.
  */
 
-local Cell *
+static Cell *
 fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
 		Cell *(*fn)(Type *head, Cell *tail, Cell **targ))
 {
@@ -85,20 +85,20 @@ fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
 		     targ);
 }
 
-local Cell *
+static Cell *
 result_domain(Type *head, Cell *tail_type, Cell **targ)
 {
 	return new_tlist(*targ, tail_type);
 }
 
-local Cell *
+static Cell *
 result_range(Type *head, Cell *tail_type, Cell **targ)
 {
 	return new_tlist(*(targ + (head->ty_pos && head->ty_neg ? 0 : 1)),
 			tail_type);
 }
 
-local Cell *
+static Cell *
 tupled_args(Type *head, Cell *tail_type, Cell **targ)
 {
 	Cell	*head_type;
@@ -108,13 +108,13 @@ tupled_args(Type *head, Cell *tail_type, Cell **targ)
 		new_prod_type(head_type, tail_type);
 }
 
-local Cell *
+static Cell *
 curried_args(Type *head, Cell *tail_type, Cell **targ)
 {
 	return new_func_type(functor_arg(head, targ), tail_type);
 }
 
-local Cell *
+static Cell *
 functor_arg(Type *tvar, Cell **targ)
 {
 	Cell	*domain_type, *range_type;

@@ -15,34 +15,34 @@
 Cell	*expr_type;	/* last inferred type */
 
 	/* Types of local program variables, allocated with new_vars() */
-local	Cell	**next_vtype;
+static Cell	**next_vtype;
 	/* Types of variables local to a pattern or parameter */
-local	Cell	**local_var;
+static Cell	**local_var;
 	/* Local variables at each level */
-local	Cell	***variables;
+static Cell	***variables;
 
-local	void	match_type(String name, Cell *inferred, QType *declared);
+static void	match_type(String name, Cell *inferred, QType *declared);
 
-local	Cell	*ty_expr(Expr *expr);
-local	Cell	*ty_pattern(Expr *pattern, int level);
-local	Cell	*ty_if(Expr *expr);
-local	Cell	*ty_eqn(Branch *branch, Expr *expr);
-local	Cell	*ty_rec_eqn(Branch *branch, Expr *expr);
-local	Cell	*ty_mu_expr(Expr *muvar, Expr *body);
-local	Cell	*ty_list(Branch *branch);
-local	Cell	*ty_branch(Branch *branch);
-local	Cell	*ty_formals(Expr *formals, Cell *type);
+static Cell	*ty_expr(Expr *expr);
+static Cell	*ty_pattern(Expr *pattern, int level);
+static Cell	*ty_if(Expr *expr);
+static Cell	*ty_eqn(Branch *branch, Expr *expr);
+static Cell	*ty_rec_eqn(Branch *branch, Expr *expr);
+static Cell	*ty_mu_expr(Expr *muvar, Expr *body);
+static Cell	*ty_list(Branch *branch);
+static Cell	*ty_branch(Branch *branch);
+static Cell	*ty_formals(Expr *formals, Cell *type);
 
-local	DefType	*get_functor(Expr *expr);
+static DefType	*get_functor(Expr *expr);
 
-local	void	init_vars(void);
-local	void	new_vars(int n);
-local	void	del_vars(void);
+static void	init_vars(void);
+static void	new_vars(int n);
+static void	del_vars(void);
 
-local	void	show_argument(Expr *func, Expr *arg, Cell *arg_type);
-local	void	show_expr_type(Expr *expr, Cell *type);
-local	void	show_expr(Expr *expr);
-local	void	show_branch(Branch *branch);
+static void	show_argument(Expr *func, Expr *arg, Cell *arg_type);
+static void	show_expr_type(Expr *expr, Cell *type);
+static void	show_expr(Expr *expr);
+static void	show_branch(Branch *branch);
 
 Bool
 chk_func(Branch *branch, Func *fn)
@@ -61,7 +61,7 @@ chk_func(Branch *branch, Func *fn)
  *	Check that the inferred type is compatible with (at least as
  *	general as) the declared type.
  */
-local void
+static void
 match_type(String name, Cell *inferred, QType *declared)
 {
 	if (! instance(declared->qt_type, declared->qt_ntvars, inferred)) {
@@ -112,7 +112,7 @@ chk_list(Expr *expr)
 	}
 }
 
-local Cell *
+static Cell *
 ty_expr(Expr *expr)
 {
 	Cell	*type1, *type2;
@@ -206,14 +206,14 @@ ty_expr(Expr *expr)
 	}
 }
 
-local Cell *
+static Cell *
 ty_pattern(Expr *pattern, int level)
 {
 	local_var = variables[level];
 	return ty_expr(pattern);
 }
 
-local Cell *
+static Cell *
 ty_if(Expr *expr)
 {
 	Cell	*type1, *type2;
@@ -245,7 +245,7 @@ ty_if(Expr *expr)
  *	--------------------
  *	A |- LET pat == exp IN val: t2
  */
-local Cell *
+static Cell *
 ty_eqn(Branch *branch, Expr *expr)
 {
 	Cell	*pat_type, *exp_type, *val_type;
@@ -270,7 +270,7 @@ ty_eqn(Branch *branch, Expr *expr)
  *	--------------------
  *	A |- LETREC pat == exp IN val: t2
  */
-local Cell *
+static Cell *
 ty_rec_eqn(Branch *branch, Expr *expr)
 {
 	Cell	*pat_type, *exp_type, *val_type;
@@ -294,7 +294,7 @@ ty_rec_eqn(Branch *branch, Expr *expr)
  *	--------------------
  *	A |- MU pat => exp : t
  */
-local Cell *
+static Cell *
 ty_mu_expr(Expr *muvar, Expr *body)
 {
 	Cell	*pat_type, *exp_type;
@@ -318,7 +318,7 @@ ty_mu_expr(Expr *muvar, Expr *body)
  *	--------------
  *	A |- (lambda b1 | ... | bn): t
  */
-local Cell *
+static Cell *
 ty_list(Branch *branch)
 {
 	Cell	*type;
@@ -344,7 +344,7 @@ ty_list(Branch *branch)
  * Because pn is at the front of the list, and we want to check e after
  * checking the p's, a rather messy recursion is required.
  */
-local Cell *
+static Cell *
 ty_branch(Branch *branch)
 {
 	Cell	*type;
@@ -364,7 +364,7 @@ ty_branch(Branch *branch)
 	return type;
 }
 
-local Cell *
+static Cell *
 ty_formals(Expr *formals, Cell *type)
 {
 	Cell	*newtype;
@@ -378,7 +378,7 @@ ty_formals(Expr *formals, Cell *type)
 	return type;
 }
 
-local DefType *
+static DefType *
 get_functor(Expr *expr)
 {
 	switch (expr->e_class) {
@@ -396,7 +396,7 @@ get_functor(Expr *expr)
  *	Type variable scopes.
  */
 
-local void
+static void
 init_vars(void)
 {
 static	Cell	*first_vtype[MAX_VARIABLES];
@@ -412,7 +412,7 @@ static	Cell	**local_table[MAX_SCOPES];
  *	New scope: allocate and initialize a new type variable
  *	for each program variable introduced in the branch.
  */
-local void
+static void
 new_vars(int n)
 {
 	*--variables = next_vtype;
@@ -423,7 +423,7 @@ new_vars(int n)
 		*next_vtype++ = new_tvar();
 }
 
-local void
+static void
 del_vars(void)
 {
 	next_vtype = *variables++;
@@ -434,7 +434,7 @@ del_vars(void)
  *	to enlighten the user about a type error.
  */
 
-local void
+static void
 show_argument(Expr *func, Expr *arg, Cell *arg_type)
 {
 	String	name;
@@ -450,7 +450,7 @@ show_argument(Expr *func, Expr *arg, Cell *arg_type)
 		show_expr_type(arg, arg_type);
 }
 
-local void
+static void
 show_expr_type(Expr *expr, Cell *type)
 {
 	start_err_line();
@@ -461,7 +461,7 @@ show_expr_type(Expr *expr, Cell *type)
 	(void)fprintf(errout, "\n");
 }
 
-local void
+static void
 show_expr(Expr *expr)
 {
 	start_err_line();
@@ -470,7 +470,7 @@ show_expr(Expr *expr)
 	(void)fprintf(errout, "\n");
 }
 
-local void
+static void
 show_branch(Branch *branch)
 {
 	for ( ; branch != NULL; branch = branch->br_next) {

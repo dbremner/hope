@@ -25,23 +25,23 @@ Cons	*nil, *cons, *succ, *true, *false;
 //TODO was local
 static	DefType	*cur_deftype;		/* type currently being defined */
 static	TypeList *cur_varlist;		/* its new formal parameters */
-local	Type	*cur_newtype;		/* application of the above */
-local	Bool	already_defined;	/* current type is already defined */
+static Type	*cur_newtype;		/* application of the above */
+static Bool	already_defined;	/* current type is already defined */
 
-local	String	mu_names[MAX_MU_DEPTH];	/* stack of mu type variables */
-local	String	*mu_top;
+static String	mu_names[MAX_MU_DEPTH];	/* stack of mu type variables */
+static String	*mu_top;
 
-local	Type	*current_newtype(void);
-local	Bool	args_repeated(TypeList *varlist);
-local	Bool	is_header(Type *type, DefType *deftype);
-local	int	ty_length(TypeList *typelist);
+static Type	*current_newtype(void);
+static Bool	args_repeated(TypeList *varlist);
+static Bool	is_header(Type *type, DefType *deftype);
+static int	ty_length(TypeList *typelist);
 
-local	int	nr_type(Type *type);
-local	void	nv_type(Type *type);
-local	int	nv_tvar(String name);
+static int	nr_type(Type *type);
+static void	nv_type(Type *type);
+static int	nv_tvar(String name);
 
-local	Type	*multi_pair_type(TypeList *args);
-local	Type	*multi_func_type(TypeList *args, Type *result);
+static Type	*multi_pair_type(TypeList *args);
+static Type	*multi_func_type(TypeList *args, Type *result);
 
 void
 start_dec_type()
@@ -101,7 +101,7 @@ new_deftype(String name, Bool tupled, TypeList *vars)
 	return dt;
 }
 
-local Type *
+static Type *
 current_newtype(void)
 {
 	ASSERT( cur_deftype != NULL );
@@ -169,7 +169,7 @@ type_syn(DefType *deftype, Type *type)
 /*
  *	Is the expansion of type headed by deftype?
  */
-local Bool
+static Bool
 is_header(Type *type, DefType *deftype)
 {
 	for (;;) {
@@ -268,7 +268,7 @@ decl_type(DefType *deftype, Cons *conslist)
 /*
  *	Check a list of type variables for repetitions.
  */
-local Bool
+static Bool
 args_repeated(TypeList *varlist)
 {
 	TypeList *vp;
@@ -312,7 +312,7 @@ alt_cons(Cons *constr, Cons *next)
  *	Type structures.
  */
 
-local int
+static int
 ty_length(TypeList *typelist)
 {
 	int	len;
@@ -451,14 +451,14 @@ func_type(Type *type1, Type *type2)
 		cons_type(type1, cons_type(type2, (TypeList *)NULL)));
 }
 
-local Type *
+static Type *
 multi_pair_type(TypeList *args)
 {
 	return args->ty_tail == NULL ? args->ty_head :
 		pair_type(args->ty_head, multi_pair_type(args->ty_tail));
 }
 
-local Type *
+static Type *
 multi_func_type(TypeList *args, Type *result)
 {
 	return args == NULL ? result :
@@ -487,10 +487,10 @@ qualified_type(Type *type)
  *	Numbering of type variables.
  */
 
-local	String	*base_vars_seen;
-local	String	*last_vars_seen;
+static String	*base_vars_seen;
+static String	*last_vars_seen;
 
-local int
+static int
 nr_type(Type *type)
 {
 	String	vars_seen[MAX_TVARS_IN_TYPE];
@@ -500,7 +500,7 @@ nr_type(Type *type)
 	return last_vars_seen - vars_seen;
 }
 
-local void
+static void
 nv_type(Type *type)
 {
 	TypeList *argp;
@@ -522,7 +522,7 @@ nv_type(Type *type)
 	}
 }
 
-local int
+static int
 nv_tvar(String name)
 {
 	String	*varp;

@@ -4,8 +4,8 @@
 #include "char_array.h"
 #include "memory.h"
 
-local	LCase	*copy_lcase(LCase *old);
-local	UCase	*new_reference(UCase *node);
+static LCase	*copy_lcase(LCase *old);
+static UCase	*new_reference(UCase *node);
 
 /*
  *	Upper case expressions.
@@ -144,7 +144,7 @@ char_case(UCase *def)
 	return lcase;
 }
 
-local LCase *
+static LCase *
 copy_lcase(LCase *old)
 {
 	LCase	*new;
@@ -170,7 +170,7 @@ copy_lcase(LCase *old)
 	return new;
 }
 
-local UCase *
+static UCase *
 new_reference(UCase *node)
 {
 	if (node->uc_class == UC_CASE)

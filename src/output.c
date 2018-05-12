@@ -60,8 +60,8 @@ print_value(Cell *value)
  *	Direct a list-valued output to the terminal or a file
  */
 
-local	FILE	*out_file;
-local	const	char	*out_name;
+static FILE	*out_file;
+static const	char	*out_name;
 
 #define	TEMPFILE "TempFile"
 

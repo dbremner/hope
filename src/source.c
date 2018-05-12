@@ -16,24 +16,24 @@
 
 FILE	*errout;
 
-local	Bool	gen_listing;	/* generate a listing */
+static Bool	gen_listing;	/* generate a listing */
 
-local	Bool	atend;
+static Bool	atend;
 
 typedef	struct {
 	FILE	*file;
 	int	lineno;
 } Source;
 
-local	Source	source[MAX_DEPTH];
-local	Source	*cur_source;
+static Source	source[MAX_DEPTH];
+static Source	*cur_source;
 
-local	Bool	istty;		/* top level input is a terminal */
+static Bool	istty;		/* top level input is a terminal */
 
-local	char	src_line[MAX_LINE];
+static char	src_line[MAX_LINE];
 const	Byte	*inptr;
 
-local	const	char	prompt[] = ">: ";	/* the Hope command prompt */
+static const	char	prompt[] = ">: ";	/* the Hope command prompt */
 
 #ifdef RE_EDIT
 #define	MAX_COMMAND	100	/* max. length of sh command (not checked) */
@@ -47,10 +47,10 @@ local	const	char	prompt[] = ">: ";	/* the Hope command prompt */
  * Errors in the script cause the editor to be re-invoked (see below).
  */
 
-local	const	char	tmp_stem[] = "/tmp/hope";
+static const	char	tmp_stem[] = "/tmp/hope";
 #define	MAX_TEMP	(sizeof(tmp_stem)+6)
 
-local	const	char	*script;
+static const	char	*script;
 #define	in_script()	(cur_source == source+1 && script != NULL)
 
 /*
@@ -64,17 +64,17 @@ local	const	char	*script;
  */
 
 /* extension for listing files of Hope modules */
-local	const	char	list_extension[] = ".LST";
+static const	char	list_extension[] = ".LST";
 
-local	int	first_error;	/* line no. of first error */
-local	char	list_file[MAX_FILENAME];
+static int	first_error;	/* line no. of first error */
+static char	list_file[MAX_FILENAME];
 
-local	time_t	mtime(const char *file);
-local	void	re_edit_script(void);
-local	void	get_script(char *buf);
-local	void	temp_name(char *buf);
-local	void	head(int lines, const char *filename, FILE *to);
-local	void	remove_messages(const char *fromname, const char *toname);
+static time_t	mtime(const char *file);
+static void	re_edit_script(void);
+static void	get_script(char *buf);
+static void	temp_name(char *buf);
+static void	head(int lines, const char *filename, FILE *to);
+static void	remove_messages(const char *fromname, const char *toname);
 #endif
 
 /*
@@ -83,10 +83,10 @@ local	void	remove_messages(const char *fromname, const char *toname);
  * edited, to obtain the new version of the source file.  The prefix
  * should not normally occur at the start of a line in a Hope program.
  */
-local	const	char	list_prefix[] = "@ ";
+static const	char	list_prefix[] = "@ ";
 
 /* level (if any) at which we are creating a listing file */
-local	Source	*listing;
+static Source	*listing;
 
 void
 init_source(FILE *src, Bool listing_flag)
@@ -362,7 +362,7 @@ _getline(void)
 /*
  *	Copy the indicated number of initial lines from filename into "to".
  */
-local void
+static void
 head(int lines, const char *filename, FILE *to)
 {
 	FILE	*from;
@@ -427,7 +427,7 @@ set_script(const char *filename)
 	}
 }
 
-local void
+static void
 get_script(char *buf)
 {
 	if (script)
@@ -438,7 +438,7 @@ get_script(char *buf)
 	}
 }
 
-local void
+static void
 temp_name(char *buf)
 {
 	(void)sprintf(buf, "%sXXXXXX", tmp_stem);
@@ -448,7 +448,7 @@ temp_name(char *buf)
 #include <sys/types.h>
 #include <sys/stat.h>
 
-local time_t
+static time_t
 mtime(const char *file)
 {
 	struct	stat	buf;
@@ -458,7 +458,7 @@ mtime(const char *file)
 	return buf.st_mtime;
 }
 
-local void
+static void
 re_edit_script(void)
 {
 	char	command[MAX_COMMAND];
@@ -484,7 +484,7 @@ re_edit_script(void)
 	restart(tmp_file);
 }
 
-local void
+static void
 remove_messages(const char *fromname, const char *toname)
 {
 	FILE	*from;

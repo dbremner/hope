@@ -8,17 +8,17 @@
  *	Definition of 'functors'.
  */
 
-local	Expr	*expr_of_type(Type *type);
-local	Expr	*expr_of_typelist(TypeList *typelist);
-local	Expr	*multi_apply_expr(Expr *func, TypeList *typelist);
-local	Expr	*pat_of_constr(Cons *cp);
-local	Expr	*body_of_constr(Cons *cp);
+static Expr	*expr_of_type(Type *type);
+static Expr	*expr_of_typelist(TypeList *typelist);
+static Expr	*multi_apply_expr(Expr *func, TypeList *typelist);
+static Expr	*pat_of_constr(Cons *cp);
+static Expr	*body_of_constr(Cons *cp);
 
 /*
  * Identifier STRINGs, different from each other and any real String.
  * The are 26 of them, so that's the maximum arity of data constructors.
  */
-local	String	variable[] = {
+static String	variable[] = {
 	"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
 	"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 };
@@ -72,7 +72,7 @@ def_functor(DefType *dt)
 	fn_local(dt->dt_name)->f_explicit_def = FALSE;
 }
 
-local Expr *
+static Expr *
 pat_of_constr(Cons *cp)
 {
 	Expr	*pat;
@@ -84,7 +84,7 @@ pat_of_constr(Cons *cp)
 	return pat;
 }
 
-local Expr *
+static Expr *
 body_of_constr(Cons *cp)
 {
 	Expr	*body;
@@ -101,7 +101,7 @@ body_of_constr(Cons *cp)
 	return body;
 }
 
-local Expr *
+static Expr *
 expr_of_type(Type *type)
 {
 	return type->ty_class == TY_VAR ?
@@ -116,7 +116,7 @@ expr_of_type(Type *type)
 					 type->ty_args);
 }
 
-local Expr *
+static Expr *
 expr_of_typelist(TypeList *typelist)
 {
 	return typelist->ty_tail == NULL ? expr_of_type(typelist->ty_head) :
@@ -124,7 +124,7 @@ expr_of_typelist(TypeList *typelist)
 			  expr_of_typelist(typelist->ty_tail));
 }
 
-local Expr *
+static Expr *
 multi_apply_expr(Expr *func, TypeList *typelist)
 {
 	while (typelist != NULL) {

@@ -11,10 +11,10 @@
  *	Printing of types.
  */
 
-local	void	pr_tycons(FILE *f, DefType *dt, TypeList *args);
-local	void	ty_print(FILE *f, Type *type, int context);
-local	int	ty_precedence(Type *type);
-local	void	pr_alt(FILE *f, Cons *alt);
+static void	pr_tycons(FILE *f, DefType *dt, TypeList *args);
+static void	ty_print(FILE *f, Type *type, int context);
+static int	ty_precedence(Type *type);
+static void	pr_alt(FILE *f, Cons *alt);
 
 void
 pr_qtype(FILE *f, QType *qtype)
@@ -28,7 +28,7 @@ pr_type(FILE *f, Type *type)
 	ty_print(f, type, PREC_BODY);
 }
 
-local void
+static void
 ty_print(FILE *f, Type *type, int context)
 {
 	int	prec;
@@ -54,7 +54,7 @@ ty_print(FILE *f, Type *type, int context)
 		(void)fprintf(f, ")");
 }
 
-local void
+static void
 pr_tycons(FILE *f, DefType *dt, TypeList *args)
 {
 	Op	*op;
@@ -80,7 +80,7 @@ pr_tycons(FILE *f, DefType *dt, TypeList *args)
 	}
 }
 
-local int
+static int
 ty_precedence(Type *type)
 {
 	Op	*op;
@@ -140,7 +140,7 @@ pr_deftype(FILE *f, DefType *dt, Bool full)
 	(void)fprintf(f, ";\n");
 }
 
-local void
+static void
 pr_alt(FILE *f, Cons *alt)
 {
 	Op	*op;

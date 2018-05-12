@@ -10,27 +10,27 @@
  *	Resolve identifiers.
  */
 
-local	Bool	nv_branch(Branch *branch);
-local	Bool	nv_rec_eqn(Branch *branch, Expr *arg);
-local	Bool	nv_mu_expr(Expr *muvar, Expr *body);
-local	Bool	nv_pattern(Expr *p, Path path);
-local	Bool	nv_constructor(Expr *p, int level, Path *pathp);
-local	Bool	nv_expr(Expr *expr);
-local	Bool	nv_var(Expr *expr);
+static Bool	nv_branch(Branch *branch);
+static Bool	nv_rec_eqn(Branch *branch, Expr *arg);
+static Bool	nv_mu_expr(Expr *muvar, Expr *body);
+static Bool	nv_pattern(Expr *p, Path path);
+static Bool	nv_constructor(Expr *p, int level, Path *pathp);
+static Bool	nv_expr(Expr *expr);
+static Bool	nv_var(Expr *expr);
 
-local	int	arity_formals(Expr *formals);
+static int	arity_formals(Expr *formals);
 
 /*
  *	Management of variable scopes
  */
-local	Expr	**base_var;
-local	Expr	**next_var;
+static Expr	**base_var;
+static Expr	**next_var;
 
-local	Expr	***base_level;
-local	Expr	***ref_level;
+static Expr	***base_level;
+static Expr	***ref_level;
 
-local	Bool	enter_scope(Expr *formals);
-local	void	leave_scope(Expr *formals);
+static Bool	enter_scope(Expr *formals);
+static void	leave_scope(Expr *formals);
 
 Bool
 nr_branch(Branch *branch)
@@ -43,7 +43,7 @@ nr_branch(Branch *branch)
 	return nv_branch(branch);
 }
 
-local Bool
+static Bool
 nv_branch(Branch *branch)
 {
 	if (! enter_scope(branch->br_formals))
@@ -54,7 +54,7 @@ nv_branch(Branch *branch)
 	return TRUE;
 }
 
-local Bool
+static Bool
 nv_rec_eqn(Branch *branch, Expr *arg)
 {
 	if (! enter_scope(branch->br_formals))
@@ -65,7 +65,7 @@ nv_rec_eqn(Branch *branch, Expr *arg)
 	return TRUE;
 }
 
-local Bool
+static Bool
 nv_mu_expr(Expr *muvar, Expr *body)
 {
 	if (! enter_scope(muvar))
@@ -76,7 +76,7 @@ nv_mu_expr(Expr *muvar, Expr *body)
 	return TRUE;
 }
 
-local Bool
+static Bool
 enter_scope(Expr *formals)
 {
 	if (formals != NULL && formals->e_class == E_APPLY) {
@@ -98,14 +98,14 @@ enter_scope(Expr *formals)
 	return TRUE;
 }
 
-local void
+static void
 leave_scope(Expr *formals)
 {
 	ref_level -= arity_formals(formals);
 	next_var = *ref_level;
 }
 
-local Bool
+static Bool
 nv_pattern(Expr *p, Path path)
 {
 	Expr	**vp;
@@ -183,7 +183,7 @@ nv_pattern(Expr *p, Path path)
  * so that the path for pi+1 can be derived from that for pi.
  * Hence the wierd bottom-up construction of paths here.
  */
-local Bool
+static Bool
 nv_constructor(Expr *p, int level, Path *pathp)
 {
 	Cons	*cp;
@@ -232,7 +232,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 	}
 }
 
-local Bool
+static Bool
 nv_expr(Expr *expr)
 {
 	Branch	*br;
@@ -279,7 +279,7 @@ nv_expr(Expr *expr)
 	}
 }
 
-local int
+static int
 arity_formals(Expr *formals)
 {
 	int	n;
@@ -291,7 +291,7 @@ arity_formals(Expr *formals)
 	return n;
 }
 
-local Bool
+static Bool
 nv_var(Expr *expr)
 {
 	String	name;

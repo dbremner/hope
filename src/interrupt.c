@@ -4,8 +4,8 @@
 
 #include <signal.h>
 
-local	RETSIGTYPE	onintr(int sig);
-local	RETSIGTYPE	onalarm(int sig);
+static RETSIGTYPE	onintr(int sig);
+static RETSIGTYPE	onalarm(int sig);
 
 void
 disable_interrupt(void)
@@ -29,7 +29,7 @@ enable_interrupt(void)
 }
 
 /*ARGSUSED*/
-local RETSIGTYPE
+static RETSIGTYPE
 onintr(int sig)
 {
 	disable_interrupt();
@@ -37,7 +37,7 @@ onintr(int sig)
 }
 
 /*ARGSUSED*/
-local RETSIGTYPE
+static RETSIGTYPE
 onalarm(int sig)
 {
 	disable_interrupt();

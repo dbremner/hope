@@ -14,10 +14,10 @@
  * Table of open streams,
  * so we can close any left open at the end of evaluation.
  */
-local	FILE	*str_table[MAX_STREAMS];
+static FILE	*str_table[MAX_STREAMS];
 
-local	int	get_one_char(void);
-local	void	end_stream(FILE *f);
+static int	get_one_char(void);
+static void	end_stream(FILE *f);
 
 Cell *
 open_stream(Cell *arg)
@@ -55,8 +55,8 @@ read_stream(Cell *cell)
 		new_pair(new_char((Char)c), new_stream(cell->c_file)));
 }
 
-local	char	str_line[MAX_INPUTLINE];
-local	const	Byte	*str_lptr;
+static char	str_line[MAX_INPUTLINE];
+static const	Byte	*str_lptr;
 
 void
 reset_streams(void)
@@ -72,7 +72,7 @@ reset_streams(void)
  * Line-buffering for standard input, because if not all the input is used,
  * we want to discard the rest of the last line input.
  */
-local int
+static int
 get_one_char(void)
 {
 	if (*str_lptr == '\0') {
@@ -85,7 +85,7 @@ get_one_char(void)
 	return FetchChar(&str_lptr);
 }
 
-local void
+static void
 end_stream(FILE *f)
 {
 	FILE	**fp;

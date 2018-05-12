@@ -10,7 +10,7 @@
 #include "type_check.h"
 #include "exceptions.h"
 
-local	Bool	create_environment(Expr *expr);
+static Bool	create_environment(Expr *expr);
 
 /*
  *	Evaluation of expressions.
@@ -18,7 +18,7 @@ local	Bool	create_environment(Expr *expr);
 
 jmp_buf	execerror;
 
-local Bool
+static Bool
 create_environment(Expr *expr)
 {
 	return nr_branch(new_unary(id_expr(newstring("input")),

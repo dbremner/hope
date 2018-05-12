@@ -33,9 +33,9 @@ p_stash(Path p)
 }
 
 /* temporary storage for a number of paths */
-local	char	*p_buffer;
-local	char	*pb_end;
-local	int	pb_size;	/* not checked at present */
+static char	*p_buffer;
+static char	*pb_end;
+static int	pb_size;	/* not checked at present */
 
 void
 p_init(char *buf, int size)

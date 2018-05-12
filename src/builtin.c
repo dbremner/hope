@@ -16,23 +16,23 @@
 #	define	int_div	divide
 #endif
 
-local	void	def_builtin(const char *name, Function *fn);
-local	void	def_1math(const char *name, Unary *fn);
-local	void	def_2math(const char *name, Binary *fn);
-local	Bool	check_arity(Type *type, int n);
+static void	def_builtin(const char *name, Function *fn);
+static void	def_1math(const char *name, Unary *fn);
+static void	def_2math(const char *name, Binary *fn);
+static Bool	check_arity(Type *type, int n);
 
-local	Cell	*ord(Cell *arg);
-local	Cell	*chr(Cell *arg);
-local	Cell	*num2str(Cell *arg);
-local	Cell	*str2num(Cell *arg);
-local	Cell	*user_error(Cell *arg);
+static Cell	*ord(Cell *arg);
+static Cell	*chr(Cell *arg);
+static Cell	*num2str(Cell *arg);
+static Cell	*str2num(Cell *arg);
+static Cell	*user_error(Cell *arg);
 
-local	Num	plus(Num x, Num y);
-local	Num	minus(Num x, Num y);
-local	Num	times_(Num x, Num y);
-local	Num	divide(Num x, Num y);
-local	Num	int_div(Num x, Num y);
-local	Num	mod(Num x, Num y);
+static Num	plus(Num x, Num y);
+static Num	minus(Num x, Num y);
+static Num	times_(Num x, Num y);
+static Num	divide(Num x, Num y);
+static Num	int_div(Num x, Num y);
+static Num	mod(Num x, Num y);
 
 void
 init_builtins(void)
@@ -89,7 +89,7 @@ init_builtins(void)
 #endif
 }
 
-local void
+static void
 def_builtin(const char *name, Function *fn)
 {
 	Func	*bu;
@@ -102,7 +102,7 @@ def_builtin(const char *name, Function *fn)
 	bu->f_branch = NULL;
 }
 
-local void
+static void
 def_1math(const char *name, Unary *fn)
 {
 	Func	*bu;
@@ -117,7 +117,7 @@ def_1math(const char *name, Unary *fn)
 	bu->f_branch = NULL;
 }
 
-local void
+static void
 def_2math(const char *name, Binary *fn)
 {
 	Func	*bu;
@@ -132,7 +132,7 @@ def_2math(const char *name, Binary *fn)
 	bu->f_branch = NULL;
 }
 
-local Bool
+static Bool
 check_arity(Type *type, int n)
 {
 	if (! (type->ty_class == TY_CONS &&
@@ -151,13 +151,13 @@ check_arity(Type *type, int n)
  *	Implementations of built-in functions.
  */
 
-local Cell *
+static Cell *
 ord(Cell *arg)
 {
 	return new_num((Num)(arg->c_char));
 }
 
-local Cell *
+static Cell *
 chr(Cell *arg)
 {
 	if (arg->c_num < Zero || arg->c_num > (Num)MaxChar) {
@@ -170,7 +170,7 @@ chr(Cell *arg)
 	return new_char((Char)(arg->c_num));
 }
 
-local Cell *
+static Cell *
 num2str(Cell *arg)
 {
 	Byte	strval[MAX_TMP_STRING];
@@ -179,7 +179,7 @@ num2str(Cell *arg)
 	return c2hope(strval);
 }
 
-local Cell *
+static Cell *
 str2num(Cell *arg)
 {
 	Byte	strval[MAX_TMP_STRING];
@@ -188,7 +188,7 @@ str2num(Cell *arg)
 	return new_num(atoNUM((char *)strval));
 }
 
-local Cell *
+static Cell *
 user_error(Cell *arg)
 {
 	char	strval[MAX_TMP_STRING];
@@ -236,11 +236,11 @@ hope2c(Byte *s, int n, Cell *arg)
  *	Arithmetic operators.
  */
 
-local Num plus(Num x, Num y)	{ return x + y; }
-local Num minus(Num x, Num y)	{ return x - y; }
-local Num times_(Num x, Num y)	{ return x * y; }
+static Num plus(Num x, Num y)	{ return x + y; }
+static Num minus(Num x, Num y)	{ return x - y; }
+static Num times_(Num x, Num y)	{ return x * y; }
 
-local Num
+static Num
 divide(Num x, Num y)
 {
 	if (y == Zero)
@@ -249,7 +249,7 @@ divide(Num x, Num y)
 }
 
 #ifdef REALS
-local Num
+static Num
 int_div(Num x, Num y)
 {
 	if (y == Zero)
@@ -257,7 +257,7 @@ int_div(Num x, Num y)
 	return floor(x/y);
 }
 
-local Num
+static Num
 mod(Num x, Num y)
 {
 	if (y == Zero)
@@ -265,7 +265,7 @@ mod(Num x, Num y)
 	return fmod(x, y);
 }
 #else
-local Num
+static Num
 mod(Num x, Num y)
 {
 	if (y == Zero)

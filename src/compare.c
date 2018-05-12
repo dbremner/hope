@@ -13,11 +13,11 @@
  * This is all complicated by the fact that comparisons are done lazily.
  */
 
-local	Expr	*e_cmp, *e_cmppair;
-local	Cons	*c_less, *c_equal, *c_greater;
+static Expr	*e_cmp, *e_cmppair;
+static Cons	*c_less, *c_equal, *c_greater;
 
-local	Cell	*compare(Cell *arg);
-local	Cons	*cmp_args(Cell *first, Cell *second);
+static Cell	*compare(Cell *arg);
+static Cons	*cmp_args(Cell *first, Cell *second);
 
 /*
  *	Set up comparison code
@@ -62,7 +62,7 @@ init_cmps(void)
  *	Comparison of functions should be excluded by the type-checker.
  *	For now, a kludge called chk_argument() in the interpreter does it.
  */
-local Cell *
+static Cell *
 compare(Cell *arg)
 {
 	switch (arg->c_left->c_class) {
@@ -84,7 +84,7 @@ compare(Cell *arg)
 	}
 }
 
-local Cons *
+static Cons *
 cmp_args(Cell *first, Cell *second)
 {
 	switch (first->c_class) {

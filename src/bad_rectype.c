@@ -12,15 +12,15 @@ typedef enum {	/* return types for check_recursion() */
 	REC_FAIL	/* type contains an error (already reported) */
 } RecType;
 
-local	RecType	check_recursion(DefType *head, Type *type);
-local	Bool	visited(DefType *deftype);
+static RecType	check_recursion(DefType *head, Type *type);
+static Bool	visited(DefType *deftype);
 
 /*
  *	Stack of type synonyms whose expansions we are in.
  *	Runs upwards.
  */
-local	DefType	**dt_base;
-local	DefType	**dt_top;
+static DefType	**dt_base;
+static DefType	**dt_top;
 
 /*
  *	Stack of arguments of type synonyms whose expansions we are in.
@@ -29,7 +29,7 @@ local	DefType	**dt_top;
  *	Complex arguments are represented as -1, which cannot match.
  *	Runs downwards.
  */
-local	short	*arg_top;
+static short	*arg_top;
 
 #define	COMPLEX_ARG	(-1)
 
@@ -53,7 +53,7 @@ bad_rectype(DefType *head, Type *type)
 	return check_recursion(head, type) == REC_FAIL;
 }
 
-local RecType
+static RecType
 check_recursion(DefType *head, Type *type)
 {
 	TypeList *argp, *argp2;
@@ -170,7 +170,7 @@ check_recursion(DefType *head, Type *type)
 /*
  *	Is deftype on the stack of expanded type synonyms?
  */
-local Bool
+static Bool
 visited(DefType *deftype)
 {
 	DefType	**dp;

@@ -27,7 +27,7 @@ typedef struct {
 } Symbol;
 
 /* reserved identifiers */
-local	Symbol	reserved[] = {
+static Symbol	reserved[] = {
 #ifdef UTF_LIBS
 	{ "\xce\xbb",	LAMBDA	},
 	{ "\xce\xbc",	MU	},
@@ -82,12 +82,12 @@ local	Symbol	reserved[] = {
 	{ NULL, 0}
 };
 
-local	String	text_rep(int token);
-local	Bool	scan_string(void);
-local	Char	charesc(void);
-local	Char	hexdigit(Char c);
-local	Char	octdigit(Char c);
-local	int	lookup(String s);
+static String	text_rep(int token);
+static Bool	scan_string(void);
+static Char	charesc(void);
+static Char	hexdigit(Char c);
+static Char	octdigit(Char c);
+static int	lookup(String s);
 
 void
 init_lex(void)
@@ -126,7 +126,7 @@ init_lex(void)
 	n_none	= newstring("none");
 }
 
-local String
+static String
 text_rep(int token)
 {
 	Symbol	*p;
@@ -271,7 +271,7 @@ yylex(void)
 	}
 }
 
-local Bool
+static Bool
 scan_string(void)
 {
 static	SChar	literal[MAX_STRING+1]; /* space for string constants */
@@ -305,7 +305,7 @@ static	Text	lit_text;
 /*
  *	Escaped character sequence -- last char was a backslash.
  */
-local Char
+static Char
 charesc(void)
 {
 	Char	c;
@@ -340,7 +340,7 @@ charesc(void)
 	}
 }
 
-local Char
+static Char
 hexdigit(Char c)
 {
 	Char	d;
@@ -356,7 +356,7 @@ hexdigit(Char c)
 	return c;
 }
 
-local Char
+static Char
 octdigit(Char c)
 {
 	Char	d;
@@ -368,7 +368,7 @@ octdigit(Char c)
 	return c;
 }
 
-local int
+static int
 lookup(String s)
 {
 	Symbol	*p;

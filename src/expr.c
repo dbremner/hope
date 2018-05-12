@@ -21,7 +21,7 @@ Expr	*e_true, *e_false, *e_cons, *e_nil;
 Func	*f_id;
 
 /* the following is different from any String */
-local	const	char	bound_variable[] = "x'";
+static const	char	bound_variable[] = "x'";
 
 Expr *
 char_expr(Char c)
@@ -367,7 +367,7 @@ def_value(Expr *formals, Expr *body)
 	}
 }
 
-local	Expr	*textlist(const char *const *sp);
+static Expr	*textlist(const char *const *sp);
 
 void
 init_argv(void)
@@ -375,7 +375,7 @@ init_argv(void)
 	def_value(id_expr(newstring("argv")), textlist(cmd_args));
 }
 
-local Expr *
+static Expr *
 textlist(const char *const *sp)
 {
 	return *sp == NULL ? e_nil :

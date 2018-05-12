@@ -58,9 +58,9 @@
 #	define	SHOW2(fmt,arg)
 #endif
 
-local	void	run(Cell *current);
-local	Cell	*take(Cell *current);
-local	void	chk_argument(Cell *arg);
+static void	run(Cell *current);
+static Cell	*take(Cell *current);
+static void	chk_argument(Cell *arg);
 
 String	cur_function;	/* for error reporting */
 
@@ -83,9 +83,9 @@ String	cur_function;	/* for error reporting */
 
 /* #define MORE_STATS */
 #ifdef MORE_STATS
-local	int	do_cell[C_NCLASSES];
-local	int	do_expr[E_NCLASSES];
-local	int	do_dir[P_NCLASSES];
+static int	do_cell[C_NCLASSES];
+static int	do_expr[E_NCLASSES];
+static int	do_dir[P_NCLASSES];
 #endif
 
 /*
@@ -142,7 +142,7 @@ evaluate(Cell *value)
 	return Pop();
 }
 
-local void
+static void
 run(Cell *current)
 {
 /*
@@ -480,7 +480,7 @@ run(Cell *current)
     }
 }
 
-local Cell *
+static Cell *
 take(Cell *current)
 {
 	while (IsUpdate())
@@ -492,7 +492,7 @@ take(Cell *current)
  *	Desperate kludge to catch comparison of functions.
  *	Cf init_cmps() in compare.c
  */
-local void
+static void
 chk_argument(Cell *arg)
 {
 	if (arg->c_class == C_SUSP &&

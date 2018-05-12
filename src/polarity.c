@@ -67,7 +67,7 @@ check_polarities(TypeList *decl_vars, TypeList *def_vars)
 #define	MAX_TYCON_ARITY	10	/* max. arity of a type cons. (not checked) */
 #define	NIL	(-1)
 
-local	struct {
+static struct {
 	int	equiv;	/* towards root of class, or NIL if this is the root */
 	int	dual;	/* root: root of dual class if any */
 	Bool	pos;	/* root: any of these variables occur positively */
@@ -78,13 +78,13 @@ local	struct {
 static	DefType	*cur_deftype;		/* type currently being defined */
 static	TypeList *cur_varlist;		/* its new formal parameters */
 
-local	int	tycon_find(int n);
-local	void	tycon_union(int n1, int n2);
-local	void	set_equiv(int n1, int n2);
-local	void	set_dual(int n1, int n2);
-local	void	set_pos(int n);
-local	void	set_neg(int n);
-local	void	do_polarities(Type *type, Bool pos, Bool neg);
+static int	tycon_find(int n);
+static void	tycon_union(int n1, int n2);
+static void	set_equiv(int n1, int n2);
+static void	set_dual(int n1, int n2);
+static void	set_pos(int n);
+static void	set_neg(int n);
+static void	do_polarities(Type *type, Bool pos, Bool neg);
 
 void
 start_polarities(DefType *deftype, TypeList *varlist)
@@ -105,7 +105,7 @@ compute_polarities(Type *type)
 	do_polarities(type, TRUE, FALSE);
 }
 
-local void
+static void
 do_polarities(Type *type, Bool pos, Bool neg)
 		/* in a positive and/or negative context */
 {
@@ -178,7 +178,7 @@ finish_polarities(void)
  *		ty_arg[r1].dual == r2 <=> ty_arg[r2].dual == r1
  */
 
-local int
+static int
 tycon_find(int n)
 {
 	while (ty_arg[n].equiv != NIL)
@@ -186,7 +186,7 @@ tycon_find(int n)
 	return n;
 }
 
-local void
+static void
 tycon_union(int n1, int n2)
 {
 	n1 = tycon_find(n1);
@@ -202,13 +202,13 @@ tycon_union(int n1, int n2)
 	}
 }
 
-local void
+static void
 set_equiv(int n1, int n2)
 {
 	tycon_union(n1, n2);
 }
 
-local void
+static void
 set_dual(int n1, int n2)
 {
 	n1 = tycon_find(n1);
@@ -223,13 +223,13 @@ set_dual(int n1, int n2)
 	}
 }
 
-local void
+static void
 set_pos(int n)
 {
 	ty_arg[tycon_find(n)].pos = TRUE;
 }
 
-local void
+static void
 set_neg(int n)
 {
 	ty_arg[tycon_find(n)].neg = TRUE;

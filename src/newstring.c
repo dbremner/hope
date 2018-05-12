@@ -12,8 +12,8 @@ struct _Ident {
 };
 #define	SizeIdent(n)	(sizeof(Ident) - ALIGNMENT + 1 + (n))
 
-local	Ident	*table[TABSIZ];
-local	Natural	hash(const Byte *s, int n);
+static Ident	*table[TABSIZ];
+static Natural	hash(const Byte *s, int n);
 
 void
 init_strings(void)
@@ -50,7 +50,7 @@ newnstring(const char *s, int n)
 #define	B 89
 #define	C 167
 
-local Natural
+static Natural
 hash(const Byte *s, int n)
 {
 	return n <= 0 ? 0 :

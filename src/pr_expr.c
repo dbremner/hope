@@ -7,19 +7,19 @@
 #include "pr_value.h"
 #include "names.h"
 
-local	void	pr_f_expr(FILE *f, String name, Expr *arg,
+static void	pr_f_expr(FILE *f, String name, Expr *arg,
 				int level, int context);
-local	Bool	is_list(Expr *expr);
-local	void	pr_elist(FILE *f, Expr *expr, int level);
-local	Bool	is_string(Expr *expr);
-local	void	pr_string(FILE *f, Expr *expr);
-local	void	pr_lambda(FILE *f, Branch *branch, int level);
-local	void	pr_formals(FILE *f, Expr *formals);
-local	void	pr_presection(FILE *f, Expr *expr, int level);
-local	void	pr_postsection(FILE *f, Expr *expr, int level);
-local	int	precedence(Expr *expr);
+static Bool	is_list(Expr *expr);
+static void	pr_elist(FILE *f, Expr *expr, int level);
+static Bool	is_string(Expr *expr);
+static void	pr_string(FILE *f, Expr *expr);
+static void	pr_lambda(FILE *f, Branch *branch, int level);
+static void	pr_formals(FILE *f, Expr *formals);
+static void	pr_presection(FILE *f, Expr *expr, int level);
+static void	pr_postsection(FILE *f, Expr *expr, int level);
+static int	precedence(Expr *expr);
 
-local	Bool	in_definition;		/* initially FALSE */
+static Bool	in_definition;		/* initially FALSE */
 
 /*
  *	Printing of functions.
@@ -193,7 +193,7 @@ pr_c_expr(FILE *f, Expr *expr, int level, int context)
 		(void)fprintf(f, ")");
 }
 
-local void
+static void
 pr_f_expr(FILE *f, String name, Expr *arg, int level, int context)
 {
 	Op	*op;
@@ -227,13 +227,13 @@ pr_f_expr(FILE *f, String name, Expr *arg, int level, int context)
  * An expression is printed as a list if it was input as a list,
  * signified by being built with e_cons (and e_nil).
  */
-local Bool
+static Bool
 is_list(Expr *expr)
 {
 	return expr->e_class == E_APPLY && expr->e_func == e_cons;
 }
 
-local void
+static void
 pr_elist(FILE *f, Expr *expr, int level)
 {
 	(void)fprintf(f, "[");
@@ -249,7 +249,7 @@ pr_elist(FILE *f, Expr *expr, int level)
 /*
  *	Is expr a string?  (We already know it's a list)
  */
-local Bool
+static Bool
 is_string(Expr *expr)
 {
 	while (expr->e_class == E_APPLY &&
@@ -258,7 +258,7 @@ is_string(Expr *expr)
 	return expr->e_class == E_CONS;		/* i.e. nil */
 }
 
-local void
+static void
 pr_string(FILE *f, Expr *expr)
 {
 	(void)fprintf(f, "\"");
@@ -295,7 +295,7 @@ pr_char(FILE *f, Char c)
 	}
 }
 
-local void
+static void
 pr_lambda(FILE *f, Branch *branch, int level)
 {
 	(void)fprintf(f, "%s ", n_lambda);
@@ -315,7 +315,7 @@ pr_branch(FILE *f, Branch *branch, int level)
 	pr_c_expr(f, branch->br_expr, level, PREC_LAMBDA);
 }
 
-local void
+static void
 pr_formals(FILE *f, Expr *formals)
 {
 	if (formals != NULL && formals->e_class == E_APPLY) {
@@ -325,7 +325,7 @@ pr_formals(FILE *f, Expr *formals)
 	}
 }
 
-local void
+static void
 pr_presection(FILE *f, Expr *expr, int level)
 {
 	pr_c_expr(f, expr->e_arg->e_left, level, PREC_COMMA+1);
@@ -334,7 +334,7 @@ pr_presection(FILE *f, Expr *expr, int level)
 				expr->e_func->e_const->c_name);
 }
 
-local void
+static void
 pr_postsection(FILE *f, Expr *expr, int level)
 {
 	(void)fprintf(f, "%s ", expr->e_func->e_class == E_DEFUN ?
@@ -367,7 +367,7 @@ expr_name(Expr *expr, int level)
 	}
 }
 
-local int
+static int
 precedence(Expr *expr)
 {
 	switch (expr->e_class) {

@@ -20,14 +20,14 @@
 
 StkElt	*stack;
 StkElt	*last_update;
-local	StkElt	*stack_limit;
-local	Cell	*heap, *heap_limit;
+static StkElt	*stack_limit;
+static Cell	*heap, *heap_limit;
 
 #ifdef	STATS
-local	long	max_heap;	/* max. size of heap */
-local	long	max_stack;	/* max. size of stack */
-local	int	collections;	/* no. of garbage collections */
-local	long	gc_time;	/* amount of time spent collecting garbage */
+static long	max_heap;	/* max. size of heap */
+static long	max_stack;	/* max. size of stack */
+static int	collections;	/* no. of garbage collections */
+static long	gc_time;	/* amount of time spent collecting garbage */
 
 #define	StackOverflow	"stack overflow"
 #define	FixedHeapOverflow	"fixed heap overflow"
@@ -42,8 +42,8 @@ local	long	gc_time;	/* amount of time spent collecting garbage */
 #define	NearlyThrashing	"out of memory"
 #endif
 
-local	Cell	*free_list;
-local	long	num_free;	/* number of free cells */
+static Cell	*free_list;
+static long	num_free;	/* number of free cells */
 
 /*
  *	Set up the heap and free list, but not garbage collection.
@@ -122,8 +122,8 @@ new_cell(int class)
 	return cell;
 }
 
-local	void	gc(Cell *current);
-local	void	reach(Cell *cell);
+static void	gc(Cell *current);
+static void	reach(Cell *cell);
 
 /*
  *	Make sure that the free list has the required number of cells.
@@ -172,7 +172,7 @@ chk_heap(Cell *current, int required)	/* required no. of free cells */
 #define	GC_UnMark(cell)	((cell)->c_class &= ~GC_MARK)
 #define	GC_Marked(cell)	((cell)->c_class & GC_MARK)
 
-local void
+static void
 gc(Cell *current)
 {
 	Cell	*cp;
@@ -220,7 +220,7 @@ gc(Cell *current)
 		error(EXECERR, NearlyThrashing);
 }
 
-local void
+static void
 reach(Cell *cell)
 {
 	while (cell != NOCELL && GC_Marked(cell)) {

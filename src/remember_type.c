@@ -11,7 +11,7 @@ typedef struct {
 	DefType	**type_ref;
 } NoteType;
 
-local	NoteType note_type[] = {
+static NoteType note_type[] = {
 #ifdef UTF_LIBS
 	{ "\xe2\x86\x92", &function },
 	{ "\xc3\x97",	&product },
@@ -32,7 +32,7 @@ typedef struct {
 	Expr	**expr_ref;
 } NoteCons;
 
-local	NoteCons note_cons[] = {
+static NoteCons note_cons[] = {
 	{ "nil",	&nil,		&e_nil },
 	{ "::",		&cons,		&e_cons },
 	{ "succ",	&succ,		NULL },

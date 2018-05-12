@@ -24,8 +24,8 @@ struct _CharArray {
  * changing the step factor, but that's a bit too tricky for me.
  */
 
-local	Natural	ca_lookup(SChar *array, Natural size, Char c);
-local	void	ca_insert(CharArray *array, Char c, ArrayElement x);
+static Natural	ca_lookup(SChar *array, Natural size, Char c);
+static void	ca_insert(CharArray *array, Char c, ArrayElement x);
 
 CharArray *
 ca_new(ArrayElement x)
@@ -64,7 +64,7 @@ ca_copy(CharArray *array)
  *	Binary search for element in ordered array.
  *	Returns index of c in array if successful, otherwise size.
  */
-local Natural
+static Natural
 ca_lookup(SChar *array, Natural size, Char c)
 {
 	Natural	low, mid, high;
@@ -96,7 +96,7 @@ ca_index(CharArray *array, Char c)
 	return n == array->ca_size ? array->ca_default : array->ca_value[n];
 }
 
-local void
+static void
 ca_insert(CharArray *array, Char c, ArrayElement x)
 {
 	Natural	size;

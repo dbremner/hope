@@ -18,26 +18,26 @@ typedef struct {
 	Cell	*type_value;
 } Memo;
 
-local	Bool	real_unify(Cell *type1, Cell *type2);
-local	void	assign(Cell *var, Cell *type);
-local	void	assign_no_trail(Cell *var, Cell *type);
+static Bool	real_unify(Cell *type1, Cell *type2);
+static void	assign(Cell *var, Cell *type);
+static void	assign_no_trail(Cell *var, Cell *type);
 
-local	void	identify_types(Cell *type1, Cell *type2);
-local	void	expand_aux(Cell *type, Memo *last_type_memo);
-local	Bool	same_args(Cell *tp1, Cell *tp2);
+static void	identify_types(Cell *type1, Cell *type2);
+static void	expand_aux(Cell *type, Memo *last_type_memo);
+static Bool	same_args(Cell *tp1, Cell *tp2);
 
-local	Cell	*cp_type(Type *type, Cell *type_arg);
-local	Cell	*cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top);
-local	Cell	*cp_list(TypeList *typelist, Cell *type_arg, Cell **mu_top);
+static Cell	*cp_type(Type *type, Cell *type_arg);
+static Cell	*cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top);
+static Cell	*cp_list(TypeList *typelist, Cell *type_arg, Cell **mu_top);
 
-local	Cell	*type_var_list(Natural n, Cell *(*elt)(void));
-local	Cell	*type_arg_lookup(Cell *type_arg, Natural n);
+static Cell	*type_var_list(Natural n, Cell *(*elt)(void));
+static Cell	*type_arg_lookup(Cell *type_arg, Natural n);
 
-local	void	add_trail(Cell *cp);
-local	void	untrail(Trail *tp);
+static void	add_trail(Cell *cp);
+static void	untrail(Trail *tp);
 
 /* stack of cells changed by the current unification */
-local	Trail	*top_trail;
+static Trail	*top_trail;
 
 /*
  *	Is type an instance of inf_type?
@@ -68,7 +68,7 @@ unify(Cell *type1, Cell *type2)
 	return FALSE;
 }
 
-local Bool
+static Bool
 real_unify(Cell *type1, Cell *type2)
 {
 	DefType	*tcons1, *tcons2;
@@ -133,7 +133,7 @@ real_unify(Cell *type1, Cell *type2)
  * to the deeper.
  * (Doing it that way gives more compact presentations of inferred types.)
  */
-local void
+static void
 identify_types(Cell *type1, Cell *type2)
 {
 	ASSERT( type1->c_class == C_TCONS );
@@ -164,7 +164,7 @@ deref(Cell *cell)
 /*
  *	Assign a dereferenced term to a cell.
  */
-local void
+static void
 assign(Cell *var, Cell *type)
 {
 	add_trail(var);
@@ -176,7 +176,7 @@ assign(Cell *var, Cell *type)
 	}
 }
 
-local void
+static void
 assign_no_trail(Cell *abbr, Cell *full)
 {
 	ASSERT( abbr->c_class == C_TCONS );
@@ -196,7 +196,7 @@ assign_no_trail(Cell *abbr, Cell *full)
  *	The trail.
  */
 
-local void
+static void
 add_trail(Cell *cp)
 {
 	top_trail->location = cp;
@@ -204,7 +204,7 @@ add_trail(Cell *cp)
 	top_trail++;
 }
 
-local void
+static void
 untrail(Trail *tp)
 {
 	while (top_trail > tp) {
@@ -217,7 +217,7 @@ untrail(Trail *tp)
  *	Memoized expansion of type synonyms.
  */
 
-local	Memo	*first_type_memo;
+static Memo	*first_type_memo;
 
 Cell *
 expand_type(Cell *type)
@@ -229,7 +229,7 @@ expand_type(Cell *type)
 	return deref(type);
 }
 
-local void
+static void
 expand_aux(Cell *type, Memo *last_type_memo)
 {
 	DefType	*tcons;
@@ -275,7 +275,7 @@ expand_aux(Cell *type, Memo *last_type_memo)
 	}
 }
 
-local Bool
+static Bool
 same_args(Cell *tp1, Cell *tp2)	/* known to have the same length */
 {
 	while (tp1 != NOCELL) {
@@ -302,7 +302,7 @@ copy_type(Type *type, Natural ntvars, Bool frozen)
 					   frozen ? new_frozen : new_tvar)));
 }
 
-local Cell *
+static Cell *
 type_var_list(Natural n, Cell *(*elt)(void))
 {
 	Cell	*var_list;
@@ -317,7 +317,7 @@ type_var_list(Natural n, Cell *(*elt)(void))
 /*
  * return a copy of the type, guaranteed not a reference.
  */
-local Cell *
+static Cell *
 cp_type(Type *type, Cell *type_arg)
 {
 	Cell	*mu_var[MAX_MU_DEPTH];
@@ -325,7 +325,7 @@ cp_type(Type *type, Cell *type_arg)
 	return cp_type_aux(type, type_arg, mu_var);
 }
 
-local Cell *
+static Cell *
 cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top)
 {
 	Cell	*ty_value;
@@ -352,7 +352,7 @@ cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top)
 	}
 }
 
-local Cell *
+static Cell *
 type_arg_lookup(Cell *type_arg, Natural n)
 {
 	Natural	i;
@@ -367,7 +367,7 @@ type_arg_lookup(Cell *type_arg, Natural n)
 	return type_arg->c_head;
 }
 
-local Cell *
+static Cell *
 cp_list(TypeList *typelist, Cell *type_arg, Cell **mu_top)
 {
 	return typelist == NULL ? NOCELL :

@@ -12,13 +12,13 @@
 #include "names.h"
 #include "error.h"
 
-local	void	pr_c_ty_value(FILE *f, Cell *type, int context);
-local	int	n_ty_precedence(Cell *type);
+static void	pr_c_ty_value(FILE *f, Cell *type, int context);
+static int	n_ty_precedence(Cell *type);
 
-local	Bool	occurs(Cell *type1, Cell *type2);
+static Bool	occurs(Cell *type1, Cell *type2);
 
 /* number of known type variables (including mu's) */
-local	int	var_count;
+static int	var_count;
 
 void
 init_pr_ty_value(void)
@@ -37,7 +37,7 @@ pr_ty_value(FILE *f, Cell *type)
  *	The occurs check for mu-types makes this quadratic, but I can't
  *	think of anything better (and maybe it's not too bad).
  */
-local void
+static void
 pr_c_ty_value(FILE *f, Cell *type, int context)
 {
 	Op	*op;
@@ -118,7 +118,7 @@ pr_c_ty_value(FILE *f, Cell *type, int context)
  *	Does type1 occur as a proper sub-type of type2?
  *	(both are dereferenced.)
  */
-local Bool
+static Bool
 occurs(Cell *type1, Cell *type2)
 {
 	Cell	*arg;
@@ -142,7 +142,7 @@ occurs(Cell *type1, Cell *type2)
 	return FALSE;
 }
 
-local int
+static int
 n_ty_precedence(Cell *type)
 {
 	Op	*op;

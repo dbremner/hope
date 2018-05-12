@@ -41,9 +41,9 @@
 #define	SESSION_NAME	"<Session>"
 #define	STANDARD_NAME	"Standard"
 
-local	const	char	extension[] = ".hop";
+static const	char	extension[] = ".hop";
 
-local	const	char	**dir;
+static const	char	**dir;
 
 typedef	struct _Module	Module;
 struct _Module {
@@ -61,7 +61,7 @@ struct _Module {
 
 TVar	alpha;
 
-local	String	Standard_name;
+static String	Standard_name;
 
 /* special modules */
 #define SESSION 0	/* the terminal interaction */
@@ -70,60 +70,60 @@ local	String	Standard_name;
 /*
  *	List of all modules ever encountered.
  */
-local	Module	*mod_list[MAX_MODULES];
-local	Natural	mod_count;
-local	SET(mod_unread, MAX_MODULES);	/* modules yet to be read */
+static Module	*mod_list[MAX_MODULES];
+static Natural	mod_count;
+static SET(mod_unread, MAX_MODULES);	/* modules yet to be read */
 /*
  *	Stack of modules being read to satisfy `uses' commands.
  *	The top module is the one currently being read; the bottom one is
  *	the current session.
  */
-local	Module	*mod_stack[MAX_MODULES];
-local	Module	**mod_current;
+static Module	*mod_stack[MAX_MODULES];
+static Module	**mod_current;
 
-local	FILE	*disp_file;
+static FILE	*disp_file;
 
-local	TVar	tvar_list[MAX_TVARS];
-local	Natural	tvar_count;
+static TVar	tvar_list[MAX_TVARS];
+static Natural	tvar_count;
 
 typedef	void	*LookFn(String name, Module *mod);
 
-local	Module	*mod_new(String name);
-local	void	mod_clear(Module *mod);
-local	void	mod_copy(Module *mod1, Module *mod2);
-local	Module	*module(String name);
-local	void	mark_as_private(TabElt *p);
-local	void	reset_private(TabElt *p);
-local	void	fix_syn_depth(TabElt *p);
-local	void	us_display(Module *mod);
-local	Bool	mod_read(Module *mod);
-local	FILE	*mod_create(String name);
+static Module	*mod_new(String name);
+static void	mod_clear(Module *mod);
+static void	mod_copy(Module *mod1, Module *mod2);
+static Module	*module(String name);
+static void	mark_as_private(TabElt *p);
+static void	reset_private(TabElt *p);
+static void	fix_syn_depth(TabElt *p);
+static void	us_display(Module *mod);
+static Bool	mod_read(Module *mod);
+static FILE	*mod_create(String name);
 
-local	void	*look_here(String name, LookFn *look_fn);
-local	void	*look_everywhere(String name, LookFn *look_fn);
+static void	*look_here(String name, LookFn *look_fn);
+static void	*look_everywhere(String name, LookFn *look_fn);
 
-local	void	*op_mod_lookup(String name, Module *mod);
-local	void	op_display(TabElt *p);
+static void	*op_mod_lookup(String name, Module *mod);
+static void	op_display(TabElt *p);
 
-local	void	tv_display(Module *mod);
-local	String	tv_trim(String name);
-local	TVar	tv_var(Natural n);
+static void	tv_display(Module *mod);
+static String	tv_trim(String name);
+static TVar	tv_var(Natural n);
 
-local	void	*dt_mod_lookup(String name, Module *mod);
-local	void	*cons_mod_lookup(String name, Module *mod);
-local	void	ty_cons_lookup(TabElt *p);
-local	void	ty_display(TabElt *p);
-local	void	ty_abs_display(TabElt *p);
-local	void	ty_def_display(TabElt *p);
-local	void	pr_fdecl(FILE *f, Func *fn);
-local	void	*fn_mod_lookup(String name, Module *mod);
-local	void	fn_display(TabElt *p);
-local	void	dec_display(TabElt *p);
-local	void	def_display(TabElt *p);
-local	void	dec_functor(DefType *dt);
+static void	*dt_mod_lookup(String name, Module *mod);
+static void	*cons_mod_lookup(String name, Module *mod);
+static void	ty_cons_lookup(TabElt *p);
+static void	ty_display(TabElt *p);
+static void	ty_abs_display(TabElt *p);
+static void	ty_def_display(TabElt *p);
+static void	pr_fdecl(FILE *f, Func *fn);
+static void	*fn_mod_lookup(String name, Module *mod);
+static void	fn_display(TabElt *p);
+static void	dec_display(TabElt *p);
+static void	def_display(TabElt *p);
+static void	dec_functor(DefType *dt);
 
-local	void	split_path(void);
-local	void	default_path(void);
+static void	split_path(void);
+static void	default_path(void);
 
 /*
  *	Set up the special modules
@@ -142,7 +142,7 @@ mod_init(void)
 	mod_fetch();
 }
 
-local void
+static void
 split_path(void)
 {
 	int	n;
@@ -190,7 +190,7 @@ split_path(void)
 #endif
 }
 
-local void
+static void
 default_path(void)
 {
 	dir = NEWARRAY(const char *, 3);
@@ -211,7 +211,7 @@ mod_system(void)
 	return (*mod_current)->mod_num == STANDARD;
 }
 
-local Module *
+static Module *
 mod_new(String name)
 {
 	Module	*mod;
@@ -228,7 +228,7 @@ mod_new(String name)
 	return mod;
 }
 
-local void
+static void
 mod_clear(Module *mod)
 {
 	CLEAR(mod->mod_uses);
@@ -241,7 +241,7 @@ mod_clear(Module *mod)
 	mod->mod_public = NULL;
 }
 
-local void
+static void
 mod_copy(Module *mod1, Module *mod2)
 {
 	UNION(mod1->mod_uses, mod2->mod_uses);
@@ -254,7 +254,7 @@ mod_copy(Module *mod1, Module *mod2)
 	mod1->mod_public = mod2->mod_public;
 }
 
-local Module *
+static Module *
 module(String name)
 {
 	Module	*mod;
@@ -319,7 +319,7 @@ mod_fetch(void)
 		}
 }
 
-local void
+static void
 mark_as_private(TabElt *p)
 {
 	DefType	*dt;
@@ -365,7 +365,7 @@ mod_private(void)
 /*
  *	Reset data types and type synonyms defined after the "private".
  */
-local void
+static void
 reset_private(TabElt *p)
 {
 	DefType	*dt;
@@ -395,7 +395,7 @@ fix_synonyms(void)
 		t_foreach(&(current->mod_public->mod_types), fix_syn_depth);
 }
 
-local void
+static void
 fix_syn_depth(TabElt *p)
 {
 	DefType	*dt, *syn;
@@ -504,7 +504,7 @@ mod_file(char *buf, String name)
 	(void)sprintf(buf, "%s%s", name, extension);
 }
 
-local void
+static void
 us_display(Module *mod)
 {
 	Natural	i;
@@ -527,7 +527,7 @@ us_display(Module *mod)
  *	Open a module for reading.
  *	The module is sought in each directory of the path in turn.
  */
-local Bool
+static Bool
 mod_read(Module *mod)
 {
 	FILE	*f;
@@ -559,7 +559,7 @@ mod_read(Module *mod)
 /*
  *	Create a new module in the current directory.
  */
-local FILE *
+static FILE *
 mod_create(String name)
 {
 	FILE	*f;
@@ -580,7 +580,7 @@ mod_create(String name)
 /*
  *	Look for a name in the current module
  */
-local void *
+static void *
 look_here(String name,
 		void * (*look_fn)(String name, Module *mod))
 {
@@ -596,7 +596,7 @@ look_here(String name,
 /*
  *	Look for a name in the current module and all those it uses
  */
-local void *
+static void *
 look_everywhere(String name,
 		void * (*look_fn)(String name, Module *mod))
 {
@@ -629,7 +629,7 @@ op_declare(String name, int prec, Assoc assoc)
 	t_insert(&((*mod_current)->mod_ops), (TabElt *)op);
 }
 
-local void *
+static void *
 op_mod_lookup(String name, Module *mod)
 {
 	return (void *)t_lookup(&(mod->mod_ops), name);
@@ -641,7 +641,7 @@ op_lookup(String name)
 	return (Op *)look_everywhere(name, op_mod_lookup);
 }
 
-local void
+static void
 op_display(TabElt *p)
 {
 	Op	*op;
@@ -695,7 +695,7 @@ tv_lookup(String name)
 /*
  *	Remove primes from a type variable identifier.
  */
-local String
+static String
 tv_trim(String name)
 {
 	const	char	*s;
@@ -727,7 +727,7 @@ tv_print(FILE *f, Natural n)
  *	There must be at least 2 (alpha and beta);
  *	if n is too large, wrap around.
  */
-local TVar
+static TVar
 tv_var(Natural n)
 {
 	Natural	tvn;
@@ -745,7 +745,7 @@ tv_var(Natural n)
 	return tvar_list[tvn];
 }
 
-local void
+static void
 tv_display(Module *mod)
 {
 	Natural	n;
@@ -777,7 +777,7 @@ dt_declare(DefType *dt)
 	dec_functor(dt);
 }
 
-local void *
+static void *
 dt_mod_lookup(String name, Module *mod)
 {
 	return (void *)t_lookup(&(mod->mod_types), name);
@@ -795,10 +795,10 @@ dt_local(String name)
 	return (DefType *)look_here(name, dt_mod_lookup);
 }
 
-local	Cons	*cons_found;
-local	String	cons_name;
+static Cons	*cons_found;
+static String	cons_name;
 
-local void
+static void
 ty_cons_lookup(TabElt *p)
 {
 	DefType	*dt;
@@ -813,7 +813,7 @@ ty_cons_lookup(TabElt *p)
 			}
 }
 
-local void *
+static void *
 cons_mod_lookup(String name, Module *mod)
 {
 	cons_name = name;
@@ -834,19 +834,19 @@ cons_local(String name)
 	return (Cons *)look_here(name, cons_mod_lookup);
 }
 
-local void
+static void
 ty_display(TabElt *p)
 {
 	pr_deftype(disp_file, (DefType *)p, TRUE);
 }
 
-local void
+static void
 ty_abs_display(TabElt *p)
 {
 	pr_deftype(disp_file, (DefType *)p, FALSE);
 }
 
-local void
+static void
 ty_def_display(TabElt *p)
 {
 	DefType	*dt;
@@ -876,7 +876,7 @@ new_fn(String name, QType *qtype)
 	t_insert(&((*mod_current)->mod_fns), (TabElt *)fn);
 }
 
-local void
+static void
 dec_functor(DefType *dt)
 {
 	Func	*fn;
@@ -898,7 +898,7 @@ del_fn(Func *fn)
 	t_delete(&((*mod_current)->mod_fns), (TabElt *)fn);
 }
 
-local void *
+static void *
 fn_mod_lookup(String name, Module *mod)
 {
 	return (void *)t_lookup(&(mod->mod_fns), name);
@@ -916,7 +916,7 @@ fn_local(String name)
 	return (Func *)look_here(name, fn_mod_lookup);
 }
 
-local void
+static void
 fn_display(TabElt *p)
 {
 	Func	*fn;
@@ -929,7 +929,7 @@ fn_display(TabElt *p)
 	}
 }
 
-local void
+static void
 dec_display(TabElt *p)
 {
 	Func	*fn;
@@ -939,7 +939,7 @@ dec_display(TabElt *p)
 		pr_fdecl(disp_file, fn);
 }
 
-local void
+static void
 def_display(TabElt *p)
 {
 	Func	*fn;
@@ -951,7 +951,7 @@ def_display(TabElt *p)
 	}
 }
 
-local void
+static void
 pr_fdecl(FILE *f, Func *fn)
 {
 	(void)fprintf(f, "%s %s : ", n_dec, fn->f_name);

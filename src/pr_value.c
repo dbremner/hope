@@ -20,17 +20,17 @@
 #define	cur_env()	Top()
 #define	clr_env()	Pop_void()
 
-local	void	safe_pr_value(FILE *f, Cell *value, int context);
-local	void	real_pr_value(FILE *f, Cell *value, int context);
-local	void	pr_vlist(FILE *f, Cell *value);
-local	Bool	is_vlist(Cell *value);
-local	Bool	is_vstring(Cell *value);
-local	Cell	*get_actual(int level, Path path);
-local	void	safe_pr_f_value(FILE *f, String name, Cell *arg, int context);
-local	void	pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context);
-local	void	pr_papp(FILE *f, Expr *expr, Cell *env, int nargs, int context);
-local	void	pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context);
-local	int	prec_value(Cell *value);
+static void	safe_pr_value(FILE *f, Cell *value, int context);
+static void	real_pr_value(FILE *f, Cell *value, int context);
+static void	pr_vlist(FILE *f, Cell *value);
+static Bool	is_vlist(Cell *value);
+static Bool	is_vstring(Cell *value);
+static Cell	*get_actual(int level, Path path);
+static void	safe_pr_f_value(FILE *f, String name, Cell *arg, int context);
+static void	pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context);
+static void	pr_papp(FILE *f, Expr *expr, Cell *env, int nargs, int context);
+static void	pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context);
+static int	prec_value(Cell *value);
 
 void
 pr_value(FILE *f, Cell *value)
@@ -65,7 +65,7 @@ pr_l_match(Expr *func, Cell *env)
  *	The value is first pushed on the stack, so that it isn't treated
  *	as garbage.
  */
-local void
+static void
 safe_pr_value(FILE *f, Cell *value, int context)
 {
 	chk_stack(1);
@@ -74,7 +74,7 @@ safe_pr_value(FILE *f, Cell *value, int context)
 	Pop_void();
 }
 
-local void
+static void
 real_pr_value(FILE *f, Cell *value, int context)
 {
 	int	prec;
@@ -141,7 +141,7 @@ real_pr_value(FILE *f, Cell *value, int context)
 		(void)fprintf(f, ")");
 }
 
-local void
+static void
 pr_papp(FILE *f, Expr *expr, Cell *env, int nargs, int context)
 {
 	if (nargs == 0) {
@@ -159,7 +159,7 @@ pr_papp(FILE *f, Expr *expr, Cell *env, int nargs, int context)
 	}
 }
 
-local void
+static void
 pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context)
 {
 	if (nargs == 0)
@@ -183,7 +183,7 @@ pr_f_papp(FILE *f, String name, Cell *env, int nargs, int context)
 /*
  * Print the value, which has been forced, and is known to be a non-empty list.
  */
-local void
+static void
 pr_vlist(FILE *f, Cell *value)
 {
 	if (is_vstring(value)) {
@@ -207,7 +207,7 @@ pr_vlist(FILE *f, Cell *value)
 /*
  * Is the value, which has been forced, a list?
  */
-local Bool
+static Bool
 is_vlist(Cell *value)
 {
 	while (value->c_class == C_CONS && value->c_cons == cons)
@@ -218,7 +218,7 @@ is_vlist(Cell *value)
 /*
  * Is the value, which has been forced and is known to be a list, a string?
  */
-local Bool
+static Bool
 is_vstring(Cell *value)
 {
 	while (value->c_class == C_CONS) {
@@ -229,7 +229,7 @@ is_vstring(Cell *value)
 	return TRUE;
 }
 
-local Cell *
+static Cell *
 get_actual(int level, Path path)
 {
 	Cell	*env;
@@ -255,7 +255,7 @@ pr_f_actual(FILE *f, String name, int level, Path path, int context)
 	safe_pr_f_value(f, name, get_actual(level, path), context);
 }
 
-local void
+static void
 safe_pr_f_value(FILE *f, String name, Cell *arg, int context)
 {
 	chk_stack(1);
@@ -264,7 +264,7 @@ safe_pr_f_value(FILE *f, String name, Cell *arg, int context)
 	Pop_void();
 }
 
-local void
+static void
 pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context)
 		/* a constructor arg is actually several */
 {
@@ -322,7 +322,7 @@ val_name(int level, Path path)
 	}
 }
 
-local int
+static int
 prec_value(Cell *value)
 {
 	switch (value->c_class) {

@@ -24,33 +24,33 @@ typedef	struct {
 #define	IsNumCase(m)	((m)->ncases == NUMCASE)
 #define	IsCharCase(m)	((m)->ncases == CHARCASE)
 
-local	Match	*m_end;
-local	const	Match	*cur_match;
-local	int	cur_size;
-local	UCase	*new_body;	/* the new body */
+static Match	*m_end;
+static const	Match	*cur_match;
+static int	cur_size;
+static UCase	*new_body;	/* the new body */
 
-local	void	add_match(int level, Path where, Natural ncases, Natural c_index);
-local	void	gen_char_match(int level, Path here, Char c);
-local	void	gen_num_match(int level, Path here, Num n);
-local	Natural	num_cases(Cons *constr);
-local	void	gen_matches(int level, Path here, Expr *pattern);
-local	void	gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern);
-local	void	scan_formals(int level, Expr *formals);
+static void	add_match(int level, Path where, Natural ncases, Natural c_index);
+static void	gen_char_match(int level, Path here, Char c);
+static void	gen_num_match(int level, Path here, Num n);
+static Natural	num_cases(Cons *constr);
+static void	gen_matches(int level, Path here, Expr *pattern);
+static void	gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern);
+static void	scan_formals(int level, Expr *formals);
 
-local	int	size_formals(Expr *formals);
-local	int	size_pattern(Expr *pattern);
-local	void	limb_map(LCase *e, EltMap *f);
+static int	size_formals(Expr *formals);
+static int	size_pattern(Expr *pattern);
+static void	limb_map(LCase *e, EltMap *f);
 
-local	UCase	*gen_tree(const Match *matches, UCase *failure);
-local	UCase	*new_node(const Match *matches, UCase *failure, UCase *subtree);
-local	UCase	*merge(UCase *old);
-local	UCase	*sub_merge(UCase *old);
-local	UCase	*compile(UCase *old_body, Expr *pattern, Expr *new);
+static UCase	*gen_tree(const Match *matches, UCase *failure);
+static UCase	*new_node(const Match *matches, UCase *failure, UCase *subtree);
+static UCase	*merge(UCase *old);
+static UCase	*sub_merge(UCase *old);
+static UCase	*compile(UCase *old_body, Expr *pattern, Expr *new);
 
 /*
  * add another match to the list.
  */
-local void
+static void
 add_match(int level, Path where, Natural ncases, Natural c_index)
 {
 	m_end->level = level;
@@ -60,13 +60,13 @@ add_match(int level, Path where, Natural ncases, Natural c_index)
 	m_end++;
 }
 
-local void
+static void
 gen_char_match(int level, Path here, Char c)
 {
 	add_match(level, here, CHARCASE, (Natural)c);
 }
 
-local void
+static void
 gen_num_match(int level, Path here, Num n)
 {
 	if (n > Zero) {
@@ -76,7 +76,7 @@ gen_num_match(int level, Path here, Num n)
 		add_match(level, here, NUMCASE, EQUAL);
 }
 
-local Natural
+static Natural
 num_cases(Cons *constr)
 {
 	while (constr->c_next != NULL)
@@ -87,7 +87,7 @@ num_cases(Cons *constr)
 /*
  * Generate the nodes of the matching tree given a path and a pattern.
  */
-local void
+static void
 gen_matches(int level, Path here, Expr *pattern)
 {
 	int	i;
@@ -129,7 +129,7 @@ gen_matches(int level, Path here, Expr *pattern)
 /*
  * Similar wierd recursion to nv_constructor() (qv)
  */
-local void
+static void
 gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 {
 	if (pattern->e_class == E_CONS) {
@@ -154,7 +154,7 @@ gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 	}
 }
 
-local void
+static void
 scan_formals(int level, Expr *formals)
 {
 	if (formals != NULL && formals->e_class == E_APPLY) {
@@ -163,7 +163,7 @@ scan_formals(int level, Expr *formals)
 	}
 }
 
-local int
+static int
 size_formals(Expr *formals)
 {
 	int	n;
@@ -176,7 +176,7 @@ size_formals(Expr *formals)
 	return n;
 }
 
-local int
+static int
 size_pattern(Expr *pattern)
 {
 	switch (pattern->e_class) {
@@ -199,7 +199,7 @@ size_pattern(Expr *pattern)
 	}
 }
 
-local void
+static void
 limb_map(LCase *lcase, EltMap *f)
 {
 	if (lcase->lc_class == LC_CHARACTER)
@@ -217,14 +217,14 @@ limb_map(LCase *lcase, EltMap *f)
  * Generate the skinny matching tree from the given nodes,
  * patching in "new_body" at the leaf, and "failure" at each side branch.
  */
-local UCase *
+static UCase *
 gen_tree(const Match *matches, UCase *failure)
 {
 	return matches == m_end ? new_body :
 		new_node(matches, failure, gen_tree(matches+1, failure));
 }
 
-local UCase *
+static UCase *
 new_node(const Match *matches, UCase *failure, UCase *subtree)
 {
 	LCase	*limbs;
@@ -244,7 +244,7 @@ new_node(const Match *matches, UCase *failure, UCase *subtree)
  * Given the current matching tree, merge it with the tree generated from
  * the given nodes and expression.
  */
-local UCase *
+static UCase *
 merge(UCase *old)
 {
 	Natural	i;
@@ -293,7 +293,7 @@ merge(UCase *old)
 	return old;
 }
 
-local UCase *
+static UCase *
 sub_merge(UCase *old)
 {
 	cur_match++;
@@ -306,7 +306,7 @@ sub_merge(UCase *old)
  * Given the current body, generate the new body as dictated by the given
  * pattern and expression.
  */
-local UCase *
+static UCase *
 compile(UCase *old_body, Expr *formals, Expr *new)
 {
 	Match	matchlist[MAX_MATCHES];
