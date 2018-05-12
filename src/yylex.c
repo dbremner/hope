@@ -304,19 +304,19 @@ charesc(void)
 
 	switch (c = FetchChar(&inptr)) {
 	case 'a': return '\007';	/* not all C's have \a */
-	when 'b': return '\b';
-	when 'f': return '\f';
-	when 'n': return '\n';
-	when 'r': return '\r';
-	when 't': return '\t';
-	when 'v': return '\013';	/* not all C's have \v */
-	when 'x': /* hexadecimal */
+	case 'b': return '\b';
+	case 'f': return '\f';
+	case 'n': return '\n';
+	case 'r': return '\r';
+	case 't': return '\t';
+	case 'v': return '\013';	/* not all C's have \v */
+	case 'x': /* hexadecimal */
 		return hexdigit(hexdigit((Char)0));
-	when 'X': /* long hexadecimal */
+	case 'X': /* long hexadecimal */
 		return hexdigit(hexdigit(hexdigit(hexdigit((Char)0))));
 	when '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7': /* octal */
 		return octdigit(octdigit(c - '0'));
-	when '\0':
+	case '\0':
 		/* will be reported as a non-terminated character or string */
 		BackChar(&inptr);
 		return '\\';

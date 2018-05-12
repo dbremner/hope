@@ -176,7 +176,7 @@ is_header(Type *type, DefType *deftype)
 		switch (type->ty_class) {
 		case TY_VAR:
 			return FALSE;
-		when TY_MU:
+		case TY_MU:
 			type = type->ty_body;
 		when TY_CONS:
 			if (type->ty_deftype == deftype)

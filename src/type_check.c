@@ -121,14 +121,14 @@ ty_expr(Expr *expr)
 	switch (expr->e_class) {
 	case E_NUM:
 		return new_const_type(num);
-	when E_CHAR:
+	case E_CHAR:
 		return new_const_type(character);
-	when E_DEFUN:
+	case E_DEFUN:
 		if ((dt = get_functor(expr)) != NULL)
 			return functor_type(dt);
 		return copy_type(expr->e_defun->f_type,
 				expr->e_defun->f_ntvars, FALSE);
-	when E_CONS:
+	case E_CONS:
 		/*
 		 * Restricted types of list and string syntax:
 		 */
@@ -146,11 +146,11 @@ ty_expr(Expr *expr)
 				expr->e_const->c_ntvars, FALSE);
 	when E_LAMBDA or E_PRESECT or E_POSTSECT:
 		return ty_list(expr->e_branch);
-	when E_PARAM:
+	case E_PARAM:
 		if ((dt = get_functor(expr)) != NULL)
 			return functor_type(dt);
 		return ty_pattern(expr->e_patt, expr->e_level);
-	when E_PLUS:
+	case E_PLUS:
 		type1 = new_const_type(num);
 		type2 = ty_expr(expr->e_rest);
 		if (! unify(type1, type2)) {
@@ -159,12 +159,12 @@ ty_expr(Expr *expr)
 			error(TYPEERR, "argument has wrong type");
 		}
 		return type1;
-	when E_VAR:
+	case E_VAR:
 		/*
 		 *	... , x: t, ... |- x: t
 		 */
 		return local_var[(int)expr->e_var];
-	when E_PAIR:
+	case E_PAIR:
 		/*
 		 *	A |- e1: t1
 		 *	A |- e2: t2
@@ -173,15 +173,15 @@ ty_expr(Expr *expr)
 		 */
 		return new_prod_type(ty_expr(expr->e_left),
 				     ty_expr(expr->e_right));
-	when E_IF:
+	case E_IF:
 		return ty_if(expr);
 	when E_WHERE or E_LET:
 		return ty_eqn(expr->e_func->e_branch, expr->e_arg);
 	when E_RWHERE or E_RLET:
 		return ty_rec_eqn(expr->e_func->e_branch, expr->e_arg);
-	when E_MU:
+	case E_MU:
 		return ty_mu_expr(expr->e_muvar, expr->e_body);
-	when E_APPLY:
+	case E_APPLY:
 		/*
 		 *	A |- e1: t2 -> t
 		 *	A |- e2: t2

@@ -68,14 +68,14 @@ compare(Cell *arg)
 	switch (arg->c_left->c_class) {
 	case C_NUM or C_CHAR or C_CONST:
 		return new_cnst(cmp_args(arg->c_left, arg->c_right));
-	when C_CONS:
+	case C_CONS:
 		return arg->c_left->c_cons == arg->c_right->c_cons ?
 			new_susp(e_cmp,
 				 new_pair(new_pair(arg->c_left->c_arg,
 						  arg->c_right->c_arg),
 					  NOCELL)) :
 			new_cnst(cmp_args(arg->c_left, arg->c_right));
-	when C_PAIR:
+	case C_PAIR:
 		return new_susp(e_cmppair, new_pair(arg, NOCELL));
 	default:
 		NOT_REACHED;
@@ -90,15 +90,15 @@ cmp_args(Cell *first, Cell *second)
 		return first->c_num == second->c_num ? c_equal :
 			first->c_num < second->c_num ?
 					c_less : c_greater;
-	when C_CHAR:
+	case C_CHAR:
 		return first->c_char == second->c_char ? c_equal :
 			first->c_char < second->c_char ?
 					c_less : c_greater;
-	when C_CONST:
+	case C_CONST:
 		return first->c_cons == second->c_cons ? c_equal :
 			first->c_cons->c_index < second->c_cons->c_index ?
 					c_less : c_greater;
-	when C_CONS:
+	case C_CONS:
 		return first->c_cons->c_index < second->c_cons->c_index ?
 					c_less : c_greater;
 	default:
