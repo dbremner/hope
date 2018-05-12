@@ -71,7 +71,7 @@ static char	list_file[MAX_FILENAME];
 
 static time_t	mtime(const char *file);
 static void	re_edit_script(void);
-static void	get_script(char *buf);
+static void	get_script(char *buf, size_t len);
 static void	temp_name(char *buf);
 static void	head(int lines, const char *filename, FILE *to);
 static void	remove_messages(const char *fromname, const char *toname);
@@ -402,7 +402,7 @@ edit(String name)
 	}
 	if (! interactive())
 		return;
-	get_script(tmp_file);
+	get_script(tmp_file, sizeof(tmp_file));
 	if (name != NULL)
 		mod_file(filename, name);
 	else
@@ -428,7 +428,7 @@ set_script(const char *filename)
 }
 
 static void
-get_script(char *buf)
+get_script(char *buf, size_t len)
 {
 	if (script)
 		(void)strcpy(buf, script);
@@ -466,7 +466,7 @@ re_edit_script(void)
 	char	tmp_file[MAX_TEMP];
 	time_t	before;
 
-	get_script(tmp_file);
+	get_script(tmp_file, sizeof(tmp_file));
 	before = mtime(list_file);
 	(void)snprintf(command, sizeof(command), "${EDITOR-vi} +%d %s", first_error, list_file);
 	(void)system(command);
