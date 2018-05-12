@@ -130,8 +130,8 @@ start_err_line(void)
 			char	input_file[MAX_FILENAME];
 
 			if (in_script()) {
-				(void)strcpy(input_file, script);
-				(void)strcpy(list_file, "/tmp/hopeXXXXXX");
+				(void)snprintf(input_file, sizeof(input_file), "%s", script);
+				(void)snprintf(list_file, sizeof(list_file), "/tmp/hopeXXXXXX");
 				(void)mktemp(list_file);
 			} else {
 				mod_file(input_file, mod_name());
@@ -406,7 +406,7 @@ edit(String name)
 	if (name != NULL)
 		mod_file(filename, name);
 	else
-		(void)strcpy(filename, tmp_file);
+		(void)snprintf(filename, sizeof(filename), "%s", tmp_file);
 	(void)snprintf(command, sizeof(command), "${EDITOR-vi} %s", filename);
 	(void)system(command);
 	restart(tmp_file);
@@ -431,7 +431,7 @@ static void
 get_script(char *buf, size_t len)
 {
 	if (script)
-		(void)strcpy(buf, script);
+        (void)snprintf(buf, len, "%s", script);
 	else {
 		temp_name(buf, len);
 		mod_dump(fopen(buf, "w"));
@@ -476,7 +476,7 @@ re_edit_script(void)
 		exit(0);
 	}
 	if (in_script())
-		(void)strcpy(filename, tmp_file);
+		(void)snprintf(filename, sizeof(filename), "%s", tmp_file);
 	else
 		mod_file(filename, mod_name());
 	remove_messages(list_file, filename);
