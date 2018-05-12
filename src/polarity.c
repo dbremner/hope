@@ -74,8 +74,9 @@ local	struct {
 	Bool	neg;	/* root: any of these variables occur negatively */
 } ty_arg[MAX_TYCON_ARITY];
 
-local	DefType	*cur_deftype;		/* type currently being defined */
-local	TypeList *cur_varlist;		/* its new formal parameters */
+//TODO was local
+static	DefType	*cur_deftype;		/* type currently being defined */
+static	TypeList *cur_varlist;		/* its new formal parameters */
 
 local	int	tycon_find(int n);
 local	void	tycon_union(int n1, int n2);

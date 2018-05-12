@@ -22,8 +22,9 @@ global	Cons	*nil, *cons, *succ, *true, *false;
  *	(not yet recorded in the tables, in case of error,
  *	except in the case of an abstract type being defined)
  */
-local	DefType	*cur_deftype;		/* type currently being defined */
-local	TypeList *cur_varlist;		/* its new formal parameters */
+//TODO was local
+static	DefType	*cur_deftype;		/* type currently being defined */
+static	TypeList *cur_varlist;		/* its new formal parameters */
 local	Type	*cur_newtype;		/* application of the above */
 local	Bool	already_defined;	/* current type is already defined */
 
