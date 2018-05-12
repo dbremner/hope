@@ -240,7 +240,7 @@ pr_elist(FILE *f, Expr *expr, int level)
 	repeat {
 		pr_c_expr(f, expr->e_arg->e_left, level, PREC_COMMA+1);
 		expr = expr->e_arg->e_right;
-	until(expr->e_const == nil);
+        if(expr->e_const == nil) break;
 		(void)fprintf(f, ", ");
 	}
 	(void)fprintf(f, "]");

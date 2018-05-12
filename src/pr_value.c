@@ -197,7 +197,7 @@ pr_vlist(FILE *f, Cell *value)
 		repeat {
 			real_pr_value(f, value->c_arg->c_left, PREC_COMMA+1);
 			value = value->c_arg->c_right;
-		until(value->c_class == C_CONST);
+		if(value->c_class == C_CONST) break;
 			(void)fprintf(f, ", ");
 		}
 		(void)fprintf(f, "]");

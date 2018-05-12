@@ -71,11 +71,11 @@ static	char	path_buf[MAX_PATH];
 	new = &path_buf[MAX_PATH-1];
 
 	repeat {
-	until(p_empty(old));
+        if(p_empty(old)) break;
 		dir = p_top(old);
 		new = p_push(dir, new);
 		old = p_pop(old);
-	until(dir != P_LEFT && dir != P_RIGHT);
+        if(dir != P_LEFT && dir != P_RIGHT) break;
 		new = p_push(P_UNROLL, new);
 	}
 	while (! p_empty(old)) {
