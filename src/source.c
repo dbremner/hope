@@ -72,7 +72,7 @@ static char	list_file[MAX_FILENAME];
 static time_t	mtime(const char *file);
 static void	re_edit_script(void);
 static void	get_script(char *buf, size_t len);
-static void	temp_name(char *buf);
+static void	temp_name(char *buf, size_t len);
 static void	head(int lines, const char *filename, FILE *to);
 static void	remove_messages(const char *fromname, const char *toname);
 #endif
@@ -433,13 +433,13 @@ get_script(char *buf, size_t len)
 	if (script)
 		(void)strcpy(buf, script);
 	else {
-		temp_name(buf);
+		temp_name(buf, len);
 		mod_dump(fopen(buf, "w"));
 	}
 }
 
 static void
-temp_name(char *buf)
+temp_name(char *buf, size_t len)
 {
 	(void)sprintf(buf, "%sXXXXXX", tmp_stem);
 	(void)mktemp(buf);
