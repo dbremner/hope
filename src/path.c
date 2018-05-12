@@ -31,7 +31,7 @@ p_stash(Path p)
 {
     const Natural len = strlen(p) + 1;
     char *dest = NEWARRAY(char, len);
-    strcpy(dest, p);
+    snprintf(dest, len, "%s", p);
 	return dest;
 }
 
