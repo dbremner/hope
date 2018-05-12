@@ -31,10 +31,6 @@
 #	define	DIR_SEPARATOR	'\\'
 #	define	PATH_SEPARATOR	';'
 #else
-#ifdef	Mac
-#	define	DIR_SEPARATOR	':'
-#else
-#endif
 #endif
 #endif
 
