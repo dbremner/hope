@@ -63,8 +63,6 @@ typedef	char	SBool;
 #define	TRUE	1
 #define	FALSE	0
 
-#define	when	break; case
-
 #define	repeat	for (;;)
 #define	until(c)	if (c) break
 
