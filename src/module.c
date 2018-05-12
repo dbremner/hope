@@ -34,9 +34,6 @@
 #ifdef	Mac
 #	define	DIR_SEPARATOR	':'
 #else
-#ifdef	AMIGA
-#	define	DIR_SEPARATOR	':'
-#endif
 #endif
 #endif
 #endif
