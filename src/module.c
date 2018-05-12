@@ -540,8 +540,7 @@ mod_read(Module *mod)
 #ifdef DIR_SEPARATOR
 	for (dp = dir; *dp != NULL; dp++)
 		if (strlen(*dp) + 1 + strlen(filename) < MAX_MODNAME) {
-		(void)snprintf(filename, sizeof(filename), "%s%c", *dp, DIR_SEPARATOR);
-		mod_file(filename + strlen(filename), mod->mod_name);
+		(void)snprintf(filename, sizeof(filename), "%s%c%s%s", *dp, DIR_SEPARATOR, mod->mod_name, extension);
 		f = fopen(filename, "r");
 		if (f != NULL)
 			break;
