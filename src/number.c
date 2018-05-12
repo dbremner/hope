@@ -119,11 +119,9 @@ nv_pattern(Expr *p, Path path)
 	case E_NUM:
     case E_CHAR:
 		return TRUE;
-        break;
     case E_PAIR:
 		return nv_pattern(p->e_left, p_push(P_LEFT, path)) &&
 			nv_pattern(p->e_right, p_push(P_RIGHT, path));
-        break;
     case E_APPLY:
 		if (p->e_func->e_class == E_VAR &&
 		    p->e_func->e_vname == newstring("+") &&
@@ -139,7 +137,6 @@ nv_pattern(Expr *p, Path path)
 			return nv_pattern(p->e_rest, path);
 		}
 		return nv_constructor(p, 0, &path);
-        break;
     case E_VAR:
 		if ((cp = cons_lookup(p->e_vname)) != NULL &&
 		    cp->c_nargs == 0) {
@@ -163,7 +160,6 @@ nv_pattern(Expr *p, Path path)
 		}
 		*next_var++ = p;
 		return TRUE;
-        break;
     case E_CONS:
 		if (p->e_const->c_nargs == 0)
 			return TRUE;
@@ -207,7 +203,6 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		p->e_const = cp;
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-        break;
     case E_CONS:
 		cp = p->e_const;
 		if (cp->c_nargs != level) {
@@ -216,7 +211,6 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-        break;
     case E_APPLY:
 		if (! nv_constructor(p->e_func, level+1, pathp))
 			return FALSE;
@@ -228,7 +222,6 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		/* last argument */
 		return nv_pattern(p->e_arg, *pathp);
-        break;
     default:
 		start_err_line();
 		(void)fprintf(errout, "  ");
@@ -249,23 +242,18 @@ nv_expr(Expr *expr)
     case E_CHAR:
     case E_CONS:
 		return TRUE;
-        break;
     case E_PAIR:
 		return nv_expr(expr->e_left) && nv_expr(expr->e_right);
-        break;
     case E_APPLY:
     case E_IF:
     case E_WHERE:
     case E_LET:
 		return nv_expr(expr->e_func) && nv_expr(expr->e_arg);
-        break;
     case E_RLET:
     case E_RWHERE:
 		return nv_rec_eqn(expr->e_func->e_branch, expr->e_arg);
-        break;
     case E_MU:
 		return nv_mu_expr(expr->e_muvar, expr->e_body);
-        break;
     case E_LAMBDA:
     case E_EQN:
     case E_PRESECT:
@@ -284,7 +272,6 @@ nv_expr(Expr *expr)
 				return FALSE;
 		}
 		return TRUE;
-        break;
     case E_VAR:
 		return nv_var(expr);
 	default:

@@ -322,7 +322,6 @@ charesc(void)
 		return hexdigit(hexdigit((Char)0));
 	case 'X': /* long hexadecimal */
 		return hexdigit(hexdigit(hexdigit(hexdigit((Char)0))));
-        break;
     case '0':
     case '1':
     case '2':

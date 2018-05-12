@@ -352,16 +352,12 @@ expr_name(Expr *expr, int level)
 	switch (expr->e_class) {
 	case E_DEFUN:
 		return expr->e_defun->f_name;
-        break;
     case E_CONS:
 		return expr->e_const->c_name;
-        break;
     case E_PLUS:
 		return newstring("+");
-        break;
     case E_VAR:
 		return expr->e_vname;
-        break;
     case E_PARAM:
 		if (expr->e_level < level)
 			return expr_name(expr->e_patt, 0);
@@ -378,55 +374,42 @@ precedence(Expr *expr)
 	case E_NUM:
     case E_CHAR:
 		return PREC_ATOMIC;
-        break;
     case E_PAIR:
 		return PREC_COMMA;
-        break;
     case E_LAMBDA:
 		return PREC_LAMBDA;
-        break;
     case E_MU:
 		return PREC_MU;
-        break;
     case E_PRESECT:
     case E_POSTSECT:
 		return in_definition ? PREC_INFIX : PREC_LAMBDA;
-        break;
     case E_WHERE:
     case E_RWHERE:
 		return PREC_WHERE;
-        break;
     case E_LET:
     case E_RLET:
 		return PREC_LET;
-        break;
     case E_IF:
 		return PREC_IF;
-        break;
     case E_APPLY:
 		return PREC_APPLY;
-        break;
     case E_CONS:
 		if (op_lookup(expr->e_const->c_name) != NULL)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;
-        break;
     case E_DEFUN:
 		if (op_lookup(expr->e_defun->f_name) != NULL)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;
-        break;
     case E_PLUS:
 		return op_lookup(newstring("+"))->op_prec;
-        break;
     case E_VAR:
 		if (op_lookup(expr->e_vname) != NULL)
 			return PREC_INFIX;
 		else
 			return PREC_ATOMIC;
-        break;
     case E_PARAM:
 		return precedence(expr->e_patt);
 	default:

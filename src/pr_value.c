@@ -306,13 +306,11 @@ val_name(int level, Path path)
 		switch (value->c_expr->e_class) {
 		case E_CONS:
 			return value->c_expr->e_const->c_name;
-            break;
         case E_DEFUN:
 			return value->c_expr->e_defun->f_name;
 		default:
 			return NULL;
 		}
-        break;
     case C_PAPP:
 		if (value->c_expr->e_class == E_DEFUN &&
 		    value->c_arity == value->c_expr->e_defun->f_arity)
@@ -332,10 +330,8 @@ prec_value(Cell *value)
     case C_CHAR:
     case C_CONST:
 		return PREC_ATOMIC;
-        break;
     case C_CONS:
 		return PREC_APPLY;
-        break;
     case C_PAPP:
 		switch (value->c_expr->e_class) {
 		case E_DEFUN:
@@ -343,7 +339,6 @@ prec_value(Cell *value)
 				return PREC_APPLY;
 			else
 				return PREC_ATOMIC;
-            break;
         case E_CONS:
 			if (value->c_expr->e_const->c_nargs > value->c_arity)
 				return PREC_APPLY;
@@ -352,7 +347,6 @@ prec_value(Cell *value)
 		default:
 			return PREC_APPLY;
 		}
-        break;
     case C_PAIR:
 		return PREC_COMMA;
 	default:

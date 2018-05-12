@@ -159,7 +159,6 @@ n_ty_precedence(Cell *type)
 		    (op = op_lookup(tcons->dt_name)) != NULL)
 			return op->op_prec;
 		return PREC_APPLY;
-        break;
     case C_TVAR:
 		return PREC_ATOMIC;
 	default:
