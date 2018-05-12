@@ -10,9 +10,7 @@ t_init(Table *table)
 }
 
 void
-t_insert(table, element)
-	Table	*table;
-	TabElt	*element;
+t_insert(Table *table, TabElt *element)
 {
 	*(table->t_end) = element;
 	table->t_end = &(element->t_next);
@@ -20,9 +18,7 @@ t_insert(table, element)
 }
 
 void
-t_delete(table, element)
-	Table	*table;
-	TabElt	*element;
+t_delete(Table *table, TabElt *element)
 {
 	TabElt	**ep;
 
