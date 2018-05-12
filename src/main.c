@@ -39,11 +39,11 @@ main(int argc, const char *const argv[])
         case 'r': restricted = TRUE;
             break;
         case 't': time_limit = atoi(ARGF());
+            break;
 #ifdef RE_EDIT
-            break;
         case 's': script_file = ARGF();
-#endif
             break;
+#endif
         default:
 			fprintf(stderr, "usage: %s -lr -f file -t nsecs\n",
 				argv0);
