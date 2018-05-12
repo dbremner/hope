@@ -499,7 +499,7 @@ mod_dump(FILE *f)
 }
 
 void
-mod_file(char *buf, String name)
+mod_file(char *buf, size_t len, String name)
 {
 	(void)sprintf(buf, "%s%s", name, extension);
 }
@@ -546,7 +546,7 @@ mod_read(Module *mod)
 			break;
 	}
 #else
-	mod_file(filename, mod->mod_name);
+	mod_file(filename, sizeof(filename), mod->mod_name);
 	f = fopen(filename, "r");
 #endif
 	if (f == NULL)
@@ -564,7 +564,7 @@ mod_create(String name)
 	FILE	*f;
 	char	filename[MAX_MODNAME];
 
-	mod_file(filename, name);
+	mod_file(filename, sizeof(filename), name);
 	if ((f = fopen(filename, "r")) != NULL) {
 		(void)fclose(f);
 		error(SEMERR, "'%s': a module with this name already exists",

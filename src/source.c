@@ -134,7 +134,7 @@ start_err_line(void)
 				(void)snprintf(list_file, sizeof(list_file), "/tmp/hopeXXXXXX");
 				(void)mktemp(list_file);
 			} else {
-				mod_file(input_file, mod_name());
+				mod_file(input_file, sizeof(input_file), mod_name());
 				(void)snprintf(list_file, sizeof(list_file), "%s%s",
 					mod_name(), list_extension);
 			}
@@ -404,7 +404,7 @@ edit(String name)
 		return;
 	get_script(tmp_file, sizeof(tmp_file));
 	if (name != NULL)
-		mod_file(filename, name);
+		mod_file(filename, sizeof(filename), name);
 	else
 		(void)snprintf(filename, sizeof(filename), "%s", tmp_file);
 	(void)snprintf(command, sizeof(command), "${EDITOR-vi} %s", filename);
@@ -478,7 +478,7 @@ re_edit_script(void)
 	if (in_script())
 		(void)snprintf(filename, sizeof(filename), "%s", tmp_file);
 	else
-		mod_file(filename, mod_name());
+		mod_file(filename, sizeof(filename), mod_name());
 	remove_messages(list_file, filename);
 	(void)remove(list_file);
 	restart(tmp_file);
