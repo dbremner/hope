@@ -64,7 +64,6 @@ typedef	char	SBool;
 #define	FALSE	0
 
 #define	when	break; case
-#define	or	: case
 #define	otherwise	break; default
 
 #define	repeat	for (;;)
