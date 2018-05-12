@@ -31,7 +31,8 @@ p_stash(Path p)
 {
     const Natural len = strlen(p) + 1;
     char *dest = NEWARRAY(char, len);
-	return strcpy(dest, p);
+    strcpy(dest, p);
+	return dest;
 }
 
 /* temporary storage for a number of paths */
