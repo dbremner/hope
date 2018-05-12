@@ -74,7 +74,6 @@ static struct {
 	Bool	neg;	/* root: any of these variables occur negatively */
 } ty_arg[MAX_TYCON_ARITY];
 
-//TODO was local
 static	DefType	*cur_deftype;		/* type currently being defined */
 static	TypeList *cur_varlist;		/* its new formal parameters */
 

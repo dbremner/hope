@@ -22,7 +22,6 @@ Cons	*nil, *cons, *succ, *true, *false;
  *	(not yet recorded in the tables, in case of error,
  *	except in the case of an abstract type being defined)
  */
-//TODO was local
 static	DefType	*cur_deftype;		/* type currently being defined */
 static	TypeList *cur_varlist;		/* its new formal parameters */
 static Type	*cur_newtype;		/* application of the above */
