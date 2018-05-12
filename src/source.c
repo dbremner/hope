@@ -252,7 +252,7 @@ static	const	char	*const	errname[] = {
 		if (gen_listing)	/* copy the rest to the listing */
 			while (_getline())
 				;
-		(void)exit(1);
+		exit(1);
 	}
 	if (mod_system())
 		error(LIBERR, "error in system module");
@@ -473,7 +473,7 @@ re_edit_script(void)
 	if (mtime(list_file) == before) {	/* no change */
 		(void)remove(list_file);
 		(void)remove(tmp_file);
-		(void)exit(0);
+		exit(0);
 	}
 	if (in_script())
 		(void)strcpy(filename, tmp_file);
