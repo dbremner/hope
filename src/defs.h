@@ -62,8 +62,6 @@ typedef	char	SBool;
 #define	TRUE	1
 #define	FALSE	0
 
-#define	repeat	for (;;)
-
 #define	SIZE(array)	(sizeof(array)/sizeof(array[0]))
 
 #include "error.h"
