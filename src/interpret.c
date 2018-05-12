@@ -177,26 +177,31 @@ run(Cell *current)
 	switch (current->c_class) {
 	case C_HOLE:
 		error(EXECERR, "infinite loop");
-	when C_NUM:
+        break;
+    case C_NUM:
 		SHOW("Num: "); SHOW2(NUMfmt, current->c_num); SHOW("\n");
 		top = take(current);
 		current = top == FORCE_MARK ? Pop() : top;
-	when C_CHAR:
+        break;
+    case C_CHAR:
 		SHOW2("CHAR: %c\n", current->c_char);
 		top = take(current);
 		current = top == FORCE_MARK ? Pop() : top;
-	when C_CONST:
+        break;
+    case C_CONST:
 		SHOW2("CONST: %s\n", current->c_cons->c_name);
 		top = take(current);
 		current = top == FORCE_MARK ? Pop() : top;
-	when C_CONS:
+        break;
+    case C_CONS:
 		SHOW2("CONS: %s\n", current->c_cons->c_name);
 		top = take(current);
 		if (top == FORCE_MARK)
 			Force(current->c_arg);
 		else	/* top is a normal value */
 			current = top;
-	when C_PAIR:
+        break;
+    case C_PAIR:
 		SHOW("PAIR\n");
 		top = take(current);
 		if (top == FORCE_MARK) {
@@ -207,10 +212,12 @@ run(Cell *current)
 			Force(current->c_left);
 		} else	/* top is a normal value */
 			current = top;
-	when C_STREAM:
+        break;
+    case C_STREAM:
 		SHOW("STREAM\n");
 		current = read_stream(current);
-	when C_DIRS:
+        break;
+    case C_DIRS:
 		SHOW("DIRS: ");
 		dir = p_top(current->c_path);
 		current->c_path = p_pop(current->c_path);
@@ -218,19 +225,24 @@ run(Cell *current)
 		case P_END:
 			SHOW("EMPTY\n");
 			EnterUpdate(current->c_val);
-		when P_LEFT:
+            break;
+        case P_LEFT:
 			SHOW("LEFT\n");
 			current->c_val = current->c_val->c_left;
-		when P_RIGHT:
+            break;
+        case P_RIGHT:
 			SHOW("RIGHT\n");
 			current->c_val = current->c_val->c_right;
-		when P_STRIP:
+            break;
+        case P_STRIP:
 			SHOW("STRIP\n");
 			current->c_val = current->c_val->c_arg;
-		when P_PRED:
+            break;
+        case P_PRED:
 			SHOW("PRED\n");
 			current->c_val = new_num(current->c_val->c_num - 1);
-		when P_UNROLL:
+            break;
+        case P_UNROLL:
 			SHOW("UNROLL\n");
 			Push(current);
 			EnterUpdate(current->c_val);
@@ -238,7 +250,8 @@ run(Cell *current)
         default:
 			NOT_REACHED;
 		}
-	when C_SUSP:
+        break;
+    case C_SUSP:
 		SHOW("SUSP: ");
 		env = current->c_env;
 		expr = current->c_expr;
@@ -248,14 +261,16 @@ run(Cell *current)
 			SHOW("PAIR\n");
 			current = new_pair(new_susp(expr->e_left, env),
 					   new_susp(expr->e_right, env));
-		when E_APPLY:
+            break;
+        case E_APPLY:
         case E_IF:
         case E_LET:
         case E_WHERE:
 			SHOW("APPLY\n");
 			Push(new_susp(expr->e_arg, env));
 			current = new_susp(expr->e_func, env);
-		when E_RLET:
+            break;
+        case E_RLET:
         case E_RWHERE:
 			SHOW("RLET\n");
 			/*
@@ -267,7 +282,8 @@ run(Cell *current)
 			env->c_left->c_env = env;
 			current = new_susp(expr->e_func->e_branch->br_expr,
 					env);
-		when E_MU:
+            break;
+        case E_MU:
 			SHOW("MU\n");
 			/*
 			 * another cyclic environment:
@@ -278,60 +294,71 @@ run(Cell *current)
 			env = new_pair(new_susp(expr->e_body, NULL_ENV), env);
 			current = env->c_left;
 			current->c_env = env;
-		when E_DEFUN:
+            break;
+        case E_DEFUN:
 			SHOW2("DEFUN: %s\n", expr->e_defun->f_name);
 			if (expr->e_defun->f_code == NULL)
 				error(EXECERR, "%s: undefined name",
 					expr->e_defun->f_name);
 			current = new_papp(expr, NULL_ENV,
 					expr->e_defun->f_arity);
-		when E_LAMBDA:
+            break;
+        case E_LAMBDA:
         case E_EQN:
         case E_PRESECT:
         case E_POSTSECT:
 			SHOW("LAMBDA\n");
 			current = new_papp(expr, env, expr->e_arity);
-		when E_NUM:
+            break;
+        case E_NUM:
 			SHOW("Num: ");
 			SHOW2(NUMfmt, expr->e_num);
 			SHOW("\n");
 			current = new_num(expr->e_num);
-		when E_CHAR:
+            break;
+        case E_CHAR:
 			SHOW2("CHAR: '%c'\n", expr->e_char);
 			current = new_char(expr->e_char);
-		when E_CONS:
+            break;
+        case E_CONS:
 			SHOW2("CONS: %s\n", expr->e_const->c_name);
 			current = expr->e_const->c_nargs == 0 ?
 				new_cnst(expr->e_const) :
 				new_papp(expr, NULL_ENV,
 						expr->e_const->c_nargs);
-		when E_PARAM:
+            break;
+        case E_PARAM:
 			SHOW2("PARAM(%d)\n", expr->e_level);
 			for (var = expr->e_level; var > 0; var--)
 				env = env->c_right;
 			current = new_dirs(expr->e_where, env->c_left);
-		when E_BUILTIN:
+            break;
+        case E_BUILTIN:
 			SHOW("BUILTIN\n");
 			/* Apply the built-in function to var 0,
 			 * i.e the first element of the environment
 			 */
 			current = (*(expr->e_fn))(env->c_left);
-		when E_BU_1MATH:
+            break;
+        case E_BU_1MATH:
 			SHOW("BU_1MATH\n");
 			current = new_num((*(expr->e_1math))
 					(env->c_left->c_num));
-		when E_BU_2MATH:
+            break;
+        case E_BU_2MATH:
 			SHOW("BU_2MATH\n");
 			current = new_num((*(expr->e_2math))
 					(env->c_left->c_left->c_num,
 					 env->c_left->c_right->c_num));
-		when E_RETURN:
+            break;
+        case E_RETURN:
 			SHOW("RETURN\n");
 			return;
 		default:
 			NOT_REACHED;
 		}
-	when C_PAPP:
+        break;
+    case C_PAPP:
 		SHOW2("PAPP(%d)\n", current->c_arity);
 		env = current->c_env;
 		expr = current->c_expr;
@@ -350,10 +377,12 @@ run(Cell *current)
 				while ((env = env->c_right) != NULL_ENV)
 					tmp = new_pair(env->c_left, tmp);
 				current = new_cons(expr->e_const, tmp);
-			when E_DEFUN:
+                break;
+            case E_DEFUN:
 				current =
 					new_ucase(expr->e_defun->f_code, env);
-			when E_LAMBDA:
+                break;
+            case E_LAMBDA:
             case E_EQN:
             case E_PRESECT:
             case E_POSTSECT:
@@ -372,7 +401,8 @@ run(Cell *current)
 						new_pair(top, env), arity-1);
 			}
 		}
-	when C_UCASE:
+        break;
+    case C_UCASE:
 		SHOW("UCASE: ");
 		code = current->c_code;
 		env = current->c_env;
@@ -382,11 +412,13 @@ run(Cell *current)
 			SHOW("F_NOMATCH\n");
 			pr_f_match(code->uc_defun, env);
 			error(EXECERR, "no match found");
-		when UC_L_NOMATCH:
+            break;
+        case UC_L_NOMATCH:
 			SHOW("L_NOMATCH\n");
 			pr_l_match(code->uc_who, env);
 			error(EXECERR, "no match found");
-		when UC_CASE:
+            break;
+        case UC_CASE:
 			SHOW("CASE\n");
 			tmp = env;
 			for (var = code->uc_level; var > 0; var--)
@@ -395,10 +427,12 @@ run(Cell *current)
 			Push(tmp);		/* arg to LCASE or NCASE */
 			Push(new_lcase(code->uc_cases, env));
 			EnterUpdate(tmp);
-		when UC_SUCCESS:
+            break;
+        case UC_SUCCESS:
 			SHOW("SUCCESS\n");
 			current = new_susp(code->uc_body, env);
-		when UC_STRICT:
+            break;
+        case UC_STRICT:
 			SHOW("STRICT\n");
 			/* force the evaluation of var 0,
 			 * i.e the first element of the environment,
@@ -410,7 +444,8 @@ run(Cell *current)
         default:
 			NOT_REACHED;
 		}
-	when C_LCASE:
+        break;
+    case C_LCASE:
 		SHOW("LCASE: ");
 		lcase = current->c_lcase;
 		env = current->c_env;
@@ -420,13 +455,15 @@ run(Cell *current)
 			SHOW("LCASE\n");
 			top = Pop();		/* arg (now updated) */
 			code = lcase->lc_limbs[top->c_cons->c_index];
-		when LC_NUMERIC:
+            break;
+        case LC_NUMERIC:
 			SHOW("NUMERIC\n");
 			top = Pop();		/* arg (now updated) */
 			code = lcase->lc_limbs[top->c_num < Zero ? LESS :
 						top->c_num == Zero ? EQUAL :
 							GREATER];
-		when LC_CHARACTER:
+            break;
+        case LC_CHARACTER:
 			SHOW("CHARACTER\n");
 			top = Pop();		/* arg (now updated) */
 			code = ca_index(lcase->lc_c_limbs, top->c_char);

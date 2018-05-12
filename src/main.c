@@ -33,11 +33,15 @@ main(int argc, const char *const argv[])
 #ifdef unix
 	ARGBEGIN {
 		case 'f': source_file = ARGF();
-		when 'l': gen_listing = TRUE;
-		when 'r': restricted = TRUE;
-		when 't': time_limit = atoi(ARGF());
+            break;
+        case 'l': gen_listing = TRUE;
+            break;
+        case 'r': restricted = TRUE;
+            break;
+        case 't': time_limit = atoi(ARGF());
 #ifdef RE_EDIT
-		when 's': script_file = ARGF();
+            break;
+        case 's': script_file = ARGF();
 #endif
             break;
         default:

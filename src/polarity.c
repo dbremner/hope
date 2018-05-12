@@ -118,13 +118,15 @@ do_polarities(Type *type, Bool pos, Bool neg)
 			set_pos(type->ty_index);
 		if (neg)
 			set_neg(type->ty_index);
-	when TY_MU:
+        break;
+    case TY_MU:
 		/*
 		 *	BUG: if the var occurs negatively in the body,
 		 *	should set both pos and neg.
 		 */
 		do_polarities(type->ty_body, pos, neg);
-	when TY_CONS:
+        break;
+    case TY_CONS:
 		if (type->ty_deftype == cur_deftype) {
 			for (actuals = type->ty_args,
 			     formals = cur_varlist;

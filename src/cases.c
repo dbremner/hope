@@ -83,14 +83,18 @@ copy_ucase(UCase *old)
 		new->uc_level = old->uc_level;
 		new->uc_path = old->uc_path;
 		new->uc_cases = copy_lcase(old->uc_cases);
-	when UC_F_NOMATCH:
+        break;
+    case UC_F_NOMATCH:
 		new->uc_defun = old->uc_defun;
-	when UC_L_NOMATCH:
+        break;
+    case UC_L_NOMATCH:
 		new->uc_who = old->uc_who;
-	when UC_SUCCESS:
+        break;
+    case UC_SUCCESS:
 		new->uc_body = old->uc_body;
 		new->uc_size = old->uc_size;
-	when UC_STRICT:
+        break;
+    case UC_STRICT:
 		new->uc_real = old->uc_real;
         break;
     default:
@@ -155,7 +159,8 @@ copy_lcase(LCase *old)
 		new->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
 		for (i = 0; i < old->lc_arity; i++)
 			new->lc_limbs[i] = new_reference(old->lc_limbs[i]);
-	when LC_CHARACTER:
+        break;
+    case LC_CHARACTER:
 		new->lc_c_limbs = ca_copy(old->lc_c_limbs);
 		ca_map(new->lc_c_limbs, new_reference);
         break;

@@ -39,10 +39,12 @@ ty_print(FILE *f, Type *type, int context)
 	switch (type->ty_class) {
 	case TY_VAR:
 		(void)fprintf(f, "%s", type->ty_var);
-	when TY_MU:
+        break;
+    case TY_MU:
 		(void)fprintf(f, "%s %s %s ", n_mu, type->ty_muvar, n_gives);
 		ty_print(f, type->ty_body, prec);
-	when TY_CONS:
+        break;
+    case TY_CONS:
 		pr_tycons(f, type->ty_deftype, type->ty_args);
         break;
     default:

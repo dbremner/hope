@@ -228,9 +228,11 @@ reach(Cell *cell)
 		switch (CellArity(cell->c_class)) {
 		case 0:
 			return;
-		when 1:
+            break;
+        case 1:
 			cell = cell->c_sub;
-		when 2:
+            break;
+        case 2:
 			reach(cell->c_sub1);
 			cell = cell->c_sub2;
             break;

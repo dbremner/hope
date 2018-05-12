@@ -85,28 +85,34 @@ real_pr_value(FILE *f, Cell *value, int context)
 	switch (value->c_class) {
 	case C_NUM:
 		(void)fprintf(f, NUMfmt, value->c_num);
-	when C_CHAR:
+        break;
+    case C_CHAR:
 		(void)fprintf(f, "'");
 		pr_char(f, value->c_char);
 		(void)fprintf(f, "'");
-	when C_CONST:
+        break;
+    case C_CONST:
 		(void)fprintf(f, "%s", value->c_cons->c_name);
-	when C_CONS:
+        break;
+    case C_CONS:
 		if (is_vlist(value))
 			pr_vlist(f, value);
 		else
 			pr_f_value(f, value->c_cons->c_name,
 				value->c_cons->c_nargs,
 				value->c_arg, InnerPrec(prec, context));
-	when C_PAIR:
+        break;
+    case C_PAIR:
 		real_pr_value(f, value->c_left, PREC_COMMA+1);
 		(void)fprintf(f, ", ");
 		real_pr_value(f, value->c_right, PREC_COMMA);
-	when C_SUSP:
+        break;
+    case C_SUSP:
 		set_env(value->c_env);
 		pr_c_expr(f, value->c_expr, 0, InnerPrec(prec, context));
 		clr_env();
-	when C_PAPP:
+        break;
+    case C_PAPP:
 		switch (value->c_expr->e_class) {
 		case E_DEFUN:
 			pr_f_papp(f, value->c_expr->e_defun->f_name,
@@ -114,7 +120,8 @@ real_pr_value(FILE *f, Cell *value, int context)
 				value->c_expr->e_defun->f_arity -
 					value->c_arity,
 				InnerPrec(prec, context));
-		when E_CONS:
+            break;
+        case E_CONS:
 			pr_f_papp(f, value->c_expr->e_const->c_name,
 				value->c_env,
 				value->c_expr->e_const->c_nargs -
@@ -299,12 +306,14 @@ val_name(int level, Path path)
 		switch (value->c_expr->e_class) {
 		case E_CONS:
 			return value->c_expr->e_const->c_name;
-		when E_DEFUN:
+            break;
+        case E_DEFUN:
 			return value->c_expr->e_defun->f_name;
 		default:
 			return NULL;
 		}
-	when C_PAPP:
+        break;
+    case C_PAPP:
 		if (value->c_expr->e_class == E_DEFUN &&
 		    value->c_arity == value->c_expr->e_defun->f_arity)
 			return value->c_expr->e_defun->f_name;
@@ -323,16 +332,19 @@ prec_value(Cell *value)
     case C_CHAR:
     case C_CONST:
 		return PREC_ATOMIC;
-	when C_CONS:
+        break;
+    case C_CONS:
 		return PREC_APPLY;
-	when C_PAPP:
+        break;
+    case C_PAPP:
 		switch (value->c_expr->e_class) {
 		case E_DEFUN:
 			if (value->c_expr->e_defun->f_arity > value->c_arity)
 				return PREC_APPLY;
 			else
 				return PREC_ATOMIC;
-		when E_CONS:
+            break;
+        case E_CONS:
 			if (value->c_expr->e_const->c_nargs > value->c_arity)
 				return PREC_APPLY;
 			else
@@ -340,7 +352,8 @@ prec_value(Cell *value)
 		default:
 			return PREC_APPLY;
 		}
-	when C_PAIR:
+        break;
+    case C_PAIR:
 		return PREC_COMMA;
 	default:
 		NOT_REACHED;

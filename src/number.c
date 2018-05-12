@@ -119,10 +119,12 @@ nv_pattern(Expr *p, Path path)
 	case E_NUM:
     case E_CHAR:
 		return TRUE;
-	when E_PAIR:
+        break;
+    case E_PAIR:
 		return nv_pattern(p->e_left, p_push(P_LEFT, path)) &&
 			nv_pattern(p->e_right, p_push(P_RIGHT, path));
-	when E_APPLY:
+        break;
+    case E_APPLY:
 		if (p->e_func->e_class == E_VAR &&
 		    p->e_func->e_vname == newstring("+") &&
 		    p->e_arg->e_class == E_PAIR &&
@@ -137,7 +139,8 @@ nv_pattern(Expr *p, Path path)
 			return nv_pattern(p->e_rest, path);
 		}
 		return nv_constructor(p, 0, &path);
-	when E_VAR:
+        break;
+    case E_VAR:
 		if ((cp = cons_lookup(p->e_vname)) != NULL &&
 		    cp->c_nargs == 0) {
 			p->e_class = E_CONS;
@@ -160,7 +163,8 @@ nv_pattern(Expr *p, Path path)
 		}
 		*next_var++ = p;
 		return TRUE;
-	when E_CONS:
+        break;
+    case E_CONS:
 		if (p->e_const->c_nargs == 0)
 			return TRUE;
         break;
@@ -203,7 +207,8 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		p->e_const = cp;
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-	when E_CONS:
+        break;
+    case E_CONS:
 		cp = p->e_const;
 		if (cp->c_nargs != level) {
 			error(SEMERR, "'%s': incorrect arity", cp->c_name);
@@ -211,7 +216,8 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-	when E_APPLY:
+        break;
+    case E_APPLY:
 		if (! nv_constructor(p->e_func, level+1, pathp))
 			return FALSE;
 		if (level > 0) {
@@ -243,19 +249,24 @@ nv_expr(Expr *expr)
     case E_CHAR:
     case E_CONS:
 		return TRUE;
-	when E_PAIR:
+        break;
+    case E_PAIR:
 		return nv_expr(expr->e_left) && nv_expr(expr->e_right);
-	when E_APPLY:
+        break;
+    case E_APPLY:
     case E_IF:
     case E_WHERE:
     case E_LET:
 		return nv_expr(expr->e_func) && nv_expr(expr->e_arg);
-	when E_RLET:
+        break;
+    case E_RLET:
     case E_RWHERE:
 		return nv_rec_eqn(expr->e_func->e_branch, expr->e_arg);
-	when E_MU:
+        break;
+    case E_MU:
 		return nv_mu_expr(expr->e_muvar, expr->e_body);
-	when E_LAMBDA:
+        break;
+    case E_LAMBDA:
     case E_EQN:
     case E_PRESECT:
     case E_POSTSECT:
@@ -273,7 +284,8 @@ nv_expr(Expr *expr)
 				return FALSE;
 		}
 		return TRUE;
-	when E_VAR:
+        break;
+    case E_VAR:
 		return nv_var(expr);
 	default:
 		NOT_REACHED;

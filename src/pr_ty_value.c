@@ -68,9 +68,11 @@ pr_c_ty_value(FILE *f, Cell *type, int context)
 			type->c_varno = var_count;
 		}
 		tv_print(f, (Natural)(type->c_varno - 1));
-	when C_VOID:
+        break;
+    case C_VOID:
 		tv_print(f, (Natural)(type->c_varno - 1));
-	when C_TCONS:
+        break;
+    case C_TCONS:
 		ASSERT( type->c_abbr->c_class == C_TSUB );
 		tcons = type->c_abbr->c_tcons;
 		targ = type->c_abbr->c_targ;
@@ -157,7 +159,8 @@ n_ty_precedence(Cell *type)
 		    (op = op_lookup(tcons->dt_name)) != NULL)
 			return op->op_prec;
 		return PREC_APPLY;
-	when C_TVAR:
+        break;
+    case C_TVAR:
 		return PREC_ATOMIC;
 	default:
 		NOT_REACHED;

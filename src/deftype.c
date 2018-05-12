@@ -178,7 +178,8 @@ is_header(Type *type, DefType *deftype)
 			return FALSE;
 		case TY_MU:
 			type = type->ty_body;
-		when TY_CONS:
+            break;
+        case TY_CONS:
 			if (type->ty_deftype == deftype)
 				return TRUE;
 			if (! IsSynType(type->ty_deftype))
@@ -508,9 +509,11 @@ nv_type(Type *type)
 	case TY_VAR:
 		if (! type->ty_mu_bound)
 			type->ty_index = nv_tvar(type->ty_var);
-	when TY_MU:
+        break;
+    case TY_MU:
 		nv_type(type->ty_body);
-	when TY_CONS:
+        break;
+    case TY_CONS:
 		for (argp = type->ty_args; argp != NULL; argp = argp->ty_tail)
 			nv_type(argp->ty_head);
         break;

@@ -95,24 +95,30 @@ gen_matches(int level, Path here, Expr *pattern)
 	switch (pattern->e_class) {
 	case E_CHAR:
 		gen_char_match(level, here, pattern->e_char);
-	when E_NUM:
+        break;
+    case E_NUM:
 		gen_num_match(level, here, pattern->e_num);
-	when E_CONS:
+        break;
+    case E_CONS:
 		ASSERT( pattern->e_const->c_nargs == 0 );
 		add_match(level, here, num_cases(pattern->e_const),
 			pattern->e_const->c_index);
-	when E_APPLY:
+        break;
+    case E_APPLY:
 		gen_match_constr(level, &here, 0, pattern);
-	when E_PLUS:
+        break;
+    case E_PLUS:
 		for (i = 0; i < pattern->e_incr; i++) {
 			add_match(level, here, NUMCASE, GREATER);
 			here = p_push(P_PRED, here);
 		}
 		gen_matches(level, here, pattern->e_arg);
-	when E_PAIR:
+        break;
+    case E_PAIR:
 		gen_matches(level, p_push(P_LEFT, here), pattern->e_left);
 		gen_matches(level, p_push(P_RIGHT, here), pattern->e_right);
-	when E_VAR:
+        break;
+    case E_VAR:
 		;
         break;
     default:
@@ -251,7 +257,8 @@ merge(UCase *old)
 	case UC_SUCCESS:
 		if (old->uc_size < cur_size)	/* maybe more specific */
 			return gen_tree(cur_match, old);
-	when UC_CASE:
+        break;
+    case UC_CASE:
 		if (cur_match < m_end &&
 		    (cur_match->level < old->uc_level ||
 		     (cur_match->level == old->uc_level &&
@@ -337,10 +344,12 @@ comp_expr(Expr *expr)
 		expr->e_code = l_nomatch(expr);
 		for (br = expr->e_branch; br != NULL; br = br->br_next)
 			expr->e_code = comp_branch(expr->e_code, br);
-	when E_PAIR:
+        break;
+    case E_PAIR:
 		comp_expr(expr->e_left);
 		comp_expr(expr->e_right);
-	when E_APPLY:
+        break;
+    case E_APPLY:
     case E_IF:
     case E_WHERE:
     case E_LET:
@@ -348,9 +357,11 @@ comp_expr(Expr *expr)
     case E_RLET:
 		comp_expr(expr->e_func);
 		comp_expr(expr->e_arg);
-	when E_MU:
+        break;
+    case E_MU:
 		comp_expr(expr->e_body);
-	when E_NUM:
+        break;
+    case E_NUM:
     case E_CHAR:
     case E_CONS:
     case E_DEFUN:

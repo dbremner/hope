@@ -225,7 +225,8 @@ yylex(void)
 					c = FetchChar(&inptr);
 				} while (c != '\0');
 				BackChar(&inptr);
-			when '\'':
+                break;
+            case '\'':
 				c = FetchChar(&inptr);
 				if (c == '\\')
 					c = charesc();
@@ -241,10 +242,12 @@ yylex(void)
 						yylval.charval);
 				else
 					return CHAR;
-			when '"':
+                break;
+            case '"':
 				if (scan_string())
 					return LITERAL;
-			when '(':
+                break;
+            case '(':
             case ')':
             case ',':
             case ';':
@@ -319,7 +322,8 @@ charesc(void)
 		return hexdigit(hexdigit((Char)0));
 	case 'X': /* long hexadecimal */
 		return hexdigit(hexdigit(hexdigit(hexdigit((Char)0))));
-	when '0':
+        break;
+    case '0':
     case '1':
     case '2':
     case '3':
