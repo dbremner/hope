@@ -144,7 +144,7 @@ yylex(void)
 	const	Byte	*start;
 	const	Byte	*save_pos;
 
-	repeat {
+	for(;;) {
 		start = inptr;
 		c = FetchChar(&inptr);
 		if (c == '\0') {

@@ -164,7 +164,7 @@ run(Cell *current)
 	UCase	*code;
 	LCase	*lcase;
 
-    repeat {
+    for(;;) {
 	chk_heap(current, MAX_NEWS);
 	chk_stack(MAX_PUSHES);
 #ifdef MORE_STATS

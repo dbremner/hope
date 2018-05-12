@@ -70,7 +70,7 @@ static	char	path_buf[MAX_PATH];
 	path_buf[MAX_PATH-1] = P_END;
 	new = &path_buf[MAX_PATH-1];
 
-	repeat {
+	for(;;) {
         if(p_empty(old)) break;
 		dir = p_top(old);
 		new = p_push(dir, new);

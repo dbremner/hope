@@ -237,7 +237,7 @@ local void
 pr_elist(FILE *f, Expr *expr, int level)
 {
 	(void)fprintf(f, "[");
-	repeat {
+	for(;;) {
 		pr_c_expr(f, expr->e_arg->e_left, level, PREC_COMMA+1);
 		expr = expr->e_arg->e_right;
         if(expr->e_const == nil) break;
