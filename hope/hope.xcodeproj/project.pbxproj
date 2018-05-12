@@ -511,6 +511,7 @@
 					"-Wno-padded",
 					"-Wno-cast-align",
 					"-Wno-unused-macros",
+					"-Wno-c++98-compat-pedantic",
 				);
 			};
 			name = Debug;
@@ -533,6 +534,7 @@
 					"-Wno-padded",
 					"-Wno-cast-align",
 					"-Wno-unused-macros",
+					"-Wno-c++98-compat-pedantic",
 				);
 			};
 			name = Release;
