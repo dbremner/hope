@@ -94,9 +94,6 @@ extern	const	char	*const	*cmd_args;	/* other arguments */
 
 #ifdef	HAVE_UNISTD_H
 #	include <unistd.h>
-#	ifndef	HAVE_REMOVE
-#		define	remove	unlink
-#	endif
 #endif
 
 #endif
