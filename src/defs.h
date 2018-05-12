@@ -63,7 +63,6 @@ typedef	char	SBool;
 #define	FALSE	0
 
 #define	repeat	for (;;)
-#define	until(c)	if (c) break
 
 #define	SIZE(array)	(sizeof(array)/sizeof(array[0]))
 
