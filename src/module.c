@@ -258,9 +258,7 @@ static Module *
 module(String name)
 {
 	Module	*mod;
-	Natural	i;
-
-	for (i = STANDARD; i < mod_count; i++)
+	for (decltype(mod_count) i = STANDARD; i < mod_count; i++)
 		if (mod_list[i]->mod_name == name)
 			return mod_list[i];	/* already here */
 	/* not here -- make a note to read it */
@@ -297,10 +295,8 @@ mod_use(String name)
 void
 mod_fetch(void)
 {
-	Natural	i;
-
 	/* unprocessed uses */
-	for (i = STANDARD; i < mod_count; i++)
+	for (decltype(mod_count) i = STANDARD; i < mod_count; i++)
 		if (MEMBER(mod_unread, i) &&
 		    MEMBER((*mod_current)->mod_uses, i)) {
 			if (mod_read(mod_list[i])) {
@@ -507,13 +503,12 @@ mod_file(char *buf, size_t len, String name)
 static void
 us_display(Module *mod)
 {
-	Natural	i;
 	Bool	first;
 
 	if (CARD(mod->mod_uses) > 1) {	/* any uses apart from STANDARD? */
 		(void)fprintf(disp_file, "%s ", n_uses);
 		first = TRUE;
-		for (i = ORDINARY; i < mod_count; i++)
+		for (decltype(mod_count) i = ORDINARY; i < mod_count; i++)
 			if (MEMBER(mod->mod_uses, i)) {
 				(void)fprintf(disp_file, first ? "%s" : ", %s",
 					mod_list[i]->mod_name);
@@ -600,11 +595,10 @@ look_everywhere(String name,
 		void * (*look_fn)(String name, Module *mod))
 {
 	void	*found;
-	Natural	i;
 
 	if ((found = look_here(name, look_fn)) != NULL)
 		return found;
-	for (i = mod_count-1; i >= STANDARD; i--)
+	for (auto i = mod_count-1; i >= STANDARD; i--)
 		if (MEMBER((*mod_current)->mod_all_uses, i) &&
 		    (found = (*look_fn)(name, mod_list[i])) != NULL)
 			return found;
@@ -662,7 +656,7 @@ op_display(TabElt *p)
 void
 tv_declare(String name)
 {
-	Natural	n;
+	decltype(tvar_count) n;
 
 	name = tv_trim(name);
 	for (n = 0; n < tvar_count && tvar_list[n] != name; n++)
@@ -681,10 +675,8 @@ tv_declare(String name)
 Bool
 tv_lookup(String name)
 {
-	Natural	n;
-
 	name = tv_trim(name);
-	for (n = 0; n < tvar_count; n++)
+	for (decltype(tvar_count) n = 0; n < tvar_count; n++)
 		if (tvar_list[n] == name &&
 		    MEMBER((*mod_current)->mod_all_tvars, n))
 			return TRUE;
@@ -729,13 +721,12 @@ tv_print(FILE *f, Natural n)
 static TVar
 tv_var(Natural n)
 {
-	Natural	tvn;
 	SetPtr	known;
 
 	ASSERT( tvar_count > 0 );
 	ASSERT( CARD((*mod_current)->mod_all_tvars) > 0 );
 	known = (*mod_current)->mod_all_tvars;
-	tvn = tvar_count-1;
+	auto tvn = tvar_count-1;
 	do {
 		do {
 			tvn = (tvn+1)%tvar_count;
@@ -747,13 +738,12 @@ tv_var(Natural n)
 static void
 tv_display(Module *mod)
 {
-	Natural	n;
 	Bool	first;
 
 	if (CARD(mod->mod_tvars) > 0) {
 		(void)fprintf(disp_file, "%s ", n_typevar);
 		first = TRUE;
-		for (n = 0; n < tvar_count; n++)
+		for (decltype(tvar_count) n = 0; n < tvar_count; n++)
 			if (MEMBER(mod->mod_tvars, n)) {
 				(void)fprintf(disp_file, first ? "%s" : ", %s",
 					tvar_list[n]);

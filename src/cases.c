@@ -111,13 +111,11 @@ LCase *
 alg_case(Natural arity, UCase *def)
 {
 	LCase	*lcase;
-	Natural	i;
-
 	lcase = NEW(LCase);
 	lcase->lc_class = LC_ALGEBRAIC;
 	lcase->lc_arity = arity;
 	lcase->lc_limbs = NEWARRAY(UCase *, arity);
-	for (i = 0; i < arity; i++)
+	for (decltype(arity) i = 0; i < arity; i++)
 		lcase->lc_limbs[i] = def;
 	return lcase;
 }

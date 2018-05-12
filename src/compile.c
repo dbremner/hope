@@ -247,7 +247,6 @@ new_node(const Match *matches, UCase *failure, UCase *subtree)
 static UCase *
 merge(UCase *old)
 {
-	Natural	i;
 	LCase	*lcase;
 
 	switch (old->uc_class) {
@@ -277,7 +276,7 @@ merge(UCase *old)
 		     p_less(old->uc_path, cur_match->where)))
 			limb_map(lcase, merge);
 		else {	/* same place -- keep following */
-			i = cur_match->index;
+			auto i = cur_match->index;
 			if (lcase->lc_class == LC_CHARACTER)
 				ca_assign(lcase->lc_c_limbs, i,
 					sub_merge(ca_index(

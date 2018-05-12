@@ -44,7 +44,7 @@ CharArray *
 ca_copy(CharArray *array)
 {
 	CharArray	*new_array;
-	Natural	n;
+	decltype(array->ca_size) n;
 
 	new_array = NEW(CharArray);
 	new_array->ca_size = array->ca_size;
@@ -67,7 +67,7 @@ ca_copy(CharArray *array)
 static Natural
 ca_lookup(SChar *array, Natural size, Char c)
 {
-	Natural	low, mid, high;
+	decltype(size) low, mid, high;
 
 	low = 0;
 	high = size;
@@ -90,26 +90,23 @@ ca_lookup(SChar *array, Natural size, Char c)
 ArrayElement
 ca_index(CharArray *array, Char c)
 {
-	Natural	n;
-
-	n = ca_lookup(array->ca_index, array->ca_size, c);
+	auto n = ca_lookup(array->ca_index, array->ca_size, c);
 	return n == array->ca_size ? array->ca_default : array->ca_value[n];
 }
 
 static void
 ca_insert(CharArray *array, Char c, ArrayElement x)
 {
-	Natural	size;
-	Natural	n;
-	Byte	*new_index;
-	ArrayElement	*new_value;
+    Byte    *new_index;
+    ArrayElement    *new_value;
 
-	/*
-	 * The array is full if the size is >= MIN_SIZE and is a power
-	 * of 2, which is what the following tricky '&' tests.
-	 * In this case, and we double its allocated size.
-	 */
-	size = array->ca_size;
+    /*
+     * The array is full if the size is >= MIN_SIZE and is a power
+     * of 2, which is what the following tricky '&' tests.
+     * In this case, and we double its allocated size.
+     */
+    auto size = array->ca_size;
+    decltype(size) n;
 	if (size >= MIN_SIZE && (size&(size-1)) == 0) {
 		new_index = NEWARRAY(SChar, size*2);
 		new_value = NEWARRAY(ArrayElement, size*2);
@@ -135,9 +132,7 @@ ca_insert(CharArray *array, Char c, ArrayElement x)
 void
 ca_assign(CharArray *array, Char c, ArrayElement x)
 {
-	Natural	n;
-
-	n = ca_lookup(array->ca_index, array->ca_size, c);
+	auto n = ca_lookup(array->ca_index, array->ca_size, c);
 	if (n < array->ca_size)
 		array->ca_value[n] = x;
 	else
@@ -147,7 +142,7 @@ ca_assign(CharArray *array, Char c, ArrayElement x)
 void
 ca_map(CharArray *array, EltMap *f)
 {
-	Natural	n;
+	decltype(array->ca_size) n;
 
 	for (n = 0; n < array->ca_size; n++)
 		array->ca_value[n] = (*f)(array->ca_value[n]);

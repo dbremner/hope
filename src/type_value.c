@@ -306,10 +306,8 @@ static Cell *
 type_var_list(Natural n, Cell *(*elt)(void))
 {
 	Cell	*var_list;
-	Natural i;
-
 	var_list = NOCELL;
-	for (i = 0; i < n; i++)
+	for (decltype(n) i = 0; i < n; i++)
 		var_list = new_tlist((*elt)(), var_list);
 	return var_list;
 }
@@ -355,9 +353,7 @@ cp_type_aux(Type *type, Cell *type_arg, Cell **mu_top)
 static Cell *
 type_arg_lookup(Cell *type_arg, Natural n)
 {
-	Natural	i;
-
-	for (i = 0; i < n; i++) {
+	for (decltype(n) i = 0; i < n; i++) {
 		ASSERT( type_arg != NOCELL );
 		ASSERT( type_arg->c_class == C_TLIST );
 		type_arg = type_arg->c_tail;
