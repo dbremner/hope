@@ -501,7 +501,7 @@ mod_dump(FILE *f)
 void
 mod_file(char *buf, size_t len, String name)
 {
-	(void)sprintf(buf, "%s%s", name, extension);
+	(void)snprintf(buf, len, "%s%s", name, extension);
 }
 
 static void
