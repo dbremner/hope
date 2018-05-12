@@ -29,7 +29,7 @@ local	Cell	*user_error(Cell *arg);
 
 local	Num	plus(Num x, Num y);
 local	Num	minus(Num x, Num y);
-local	Num	times(Num x, Num y);
+local	Num	times_(Num x, Num y);
 local	Num	divide(Num x, Num y);
 local	Num	int_div(Num x, Num y);
 local	Num	mod(Num x, Num y);
@@ -49,7 +49,7 @@ init_builtins(void)
 
 	def_2math("+",		plus		);
 	def_2math("-",		minus		);
-	def_2math("*",		times		);
+	def_2math("*",		times_		);
 	def_2math("/",		divide		);
 	def_2math("div",	int_div		);
 	def_2math("mod",	mod		);
@@ -238,7 +238,7 @@ hope2c(Byte *s, int n, Cell *arg)
 
 local Num plus(Num x, Num y)	{ return x + y; }
 local Num minus(Num x, Num y)	{ return x - y; }
-local Num times(Num x, Num y)	{ return x * y; }
+local Num times_(Num x, Num y)	{ return x * y; }
 
 local Num
 divide(Num x, Num y)
