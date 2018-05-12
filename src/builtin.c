@@ -12,9 +12,6 @@
 
 #define	MAX_TMP_STRING	1024
 
-#ifndef REALS
-#	define	int_div	divide
-#endif
 
 static void	def_builtin(const char *name, Function *fn);
 static void	def_1math(const char *name, Unary *fn);
@@ -54,7 +51,6 @@ init_builtins(void)
 	def_2math("div",	int_div		);
 	def_2math("mod",	mod		);
 
-#ifdef REALS
 #ifdef HAVE_LIBM
 	def_1math("acos",	acos		);
 	def_1math("asin",	asin		);
@@ -85,7 +81,6 @@ init_builtins(void)
 #endif
 #ifdef HAVE_HYPOT
 	def_2math("hypot",	hypot		);
-#endif
 #endif
 }
 
@@ -248,7 +243,6 @@ divide(Num x, Num y)
 	return x / y;
 }
 
-#ifdef REALS
 static Num
 int_div(Num x, Num y)
 {
@@ -264,12 +258,3 @@ mod(Num x, Num y)
 		error(EXECERR, "attempt to divide by zero");
 	return fmod(x, y);
 }
-#else
-static Num
-mod(Num x, Num y)
-{
-	if (y == Zero)
-		error(EXECERR, "attempt to divide by zero");
-	return x % y;
-}
-#endif

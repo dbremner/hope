@@ -174,7 +174,6 @@ yylex(void)
 			do {
 				c = FetchChar(&inptr);
 			} while (IsDigit(c));
-#ifdef REALS
 			if (c == '.') {
 				c = FetchChar(&inptr);
 				if (IsDigit(c))
@@ -198,7 +197,6 @@ yylex(void)
 				else
 					inptr = save_pos;
 			}
-#endif
 			BackChar(&inptr);
 			yylval.numval = atoNUM((const char *)start);
 			return NUMBER;
