@@ -44,7 +44,8 @@ ty_print(FILE *f, Type *type, int context)
 		ty_print(f, type->ty_body, prec);
 	when TY_CONS:
 		pr_tycons(f, type->ty_deftype, type->ty_args);
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	if (prec < context)

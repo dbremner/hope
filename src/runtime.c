@@ -233,7 +233,8 @@ reach(Cell *cell)
 		when 2:
 			reach(cell->c_sub1);
 			cell = cell->c_sub2;
-		otherwise:
+            break;
+        default:
 			NOT_REACHED;
 		}
 		/* reach(cell); return */

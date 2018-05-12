@@ -39,7 +39,8 @@ main(int argc, const char *const argv[])
 #ifdef RE_EDIT
 		when 's': script_file = ARGF();
 #endif
-		otherwise:
+            break;
+        default:
 			fprintf(stderr, "usage: %s -lr -f file -t nsecs\n",
 				argv0);
 			return 1;

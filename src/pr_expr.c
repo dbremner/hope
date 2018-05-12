@@ -168,7 +168,8 @@ pr_c_expr(FILE *f, Expr *expr, int level, int context)
 		(void)fprintf(f, " + %d", expr->e_incr);
 	when E_VAR:
 		(void)fprintf(f, "%s", expr->e_vname);
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	if (prec < context)
@@ -262,7 +263,8 @@ pr_char(FILE *f, Char c)
 	when '\r':	(void)fprintf(f, "\\r");
 	when '\t':	(void)fprintf(f, "\\t");
 	when '\013':	(void)fprintf(f, "\\v");
-	otherwise:
+        break;
+    default:
 		if (IsCntrl(c))
 			(void)fprintf(f, "\\%03o", c);
 		else

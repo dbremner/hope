@@ -234,7 +234,8 @@ run(Cell *current)
 			SHOW("UNROLL\n");
 			Push(current);
 			EnterUpdate(current->c_val);
-		otherwise:
+            break;
+        default:
 			NOT_REACHED;
 		}
 	when C_SUSP:
@@ -357,7 +358,8 @@ run(Cell *current)
             case E_PRESECT:
             case E_POSTSECT:
 				current = new_ucase(expr->e_code, env);
-			otherwise:
+                break;
+            default:
 				NOT_REACHED;
 			}
 		} else {
@@ -404,7 +406,8 @@ run(Cell *current)
 			 */
 			Push(new_susp(code->uc_real, env));
 			Force(env->c_left);
-		otherwise:
+            break;
+        default:
 			NOT_REACHED;
 		}
 	when C_LCASE:
@@ -427,11 +430,13 @@ run(Cell *current)
 			SHOW("CHARACTER\n");
 			top = Pop();		/* arg (now updated) */
 			code = ca_index(lcase->lc_c_limbs, top->c_char);
-		otherwise:
+            break;
+        default:
 			NOT_REACHED;
 		}
 		current = new_ucase(code, env);
-	otherwise:
+        break;
+    default:
 		(void)fprintf(stderr, "class: %d\n", current->c_class);
 		NOT_REACHED;
 	}

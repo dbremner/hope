@@ -163,7 +163,8 @@ nv_pattern(Expr *p, Path path)
 	when E_CONS:
 		if (p->e_const->c_nargs == 0)
 			return TRUE;
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	start_err_line();
@@ -221,7 +222,8 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		/* last argument */
 		return nv_pattern(p->e_arg, *pathp);
-	otherwise:
+        break;
+    default:
 		start_err_line();
 		(void)fprintf(errout, "  ");
 		pr_expr(errout, p);

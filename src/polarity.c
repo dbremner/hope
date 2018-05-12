@@ -149,7 +149,8 @@ do_polarities(Type *type, Bool pos, Bool neg)
 					    (neg && formals->ty_head->ty_neg),
 					(neg && formals->ty_head->ty_pos) ||
 					    (pos && formals->ty_head->ty_neg));
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 }

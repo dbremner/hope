@@ -92,7 +92,8 @@ copy_ucase(UCase *old)
 		new->uc_size = old->uc_size;
 	when UC_STRICT:
 		new->uc_real = old->uc_real;
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	return new;
@@ -157,7 +158,8 @@ copy_lcase(LCase *old)
 	when LC_CHARACTER:
 		new->lc_c_limbs = ca_copy(old->lc_c_limbs);
 		ca_map(new->lc_c_limbs, new_reference);
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	return new;

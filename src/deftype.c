@@ -184,7 +184,8 @@ is_header(Type *type, DefType *deftype)
 			if (! IsSynType(type->ty_deftype))
 				return FALSE;
 			type = type->ty_deftype->dt_type;
-		otherwise:
+            break;
+        default:
 			NOT_REACHED;
 		}
 	}
@@ -512,7 +513,8 @@ nv_type(Type *type)
 	when TY_CONS:
 		for (argp = type->ty_args; argp != NULL; argp = argp->ty_tail)
 			nv_type(argp->ty_head);
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 }

@@ -103,7 +103,8 @@ pr_c_ty_value(FILE *f, Cell *type, int context)
 			}
 		}
 		type->c_class = C_TCONS;
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 

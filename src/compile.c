@@ -114,7 +114,8 @@ gen_matches(int level, Path here, Expr *pattern)
 		gen_matches(level, p_push(P_RIGHT, here), pattern->e_right);
 	when E_VAR:
 		;
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 }
@@ -278,7 +279,8 @@ merge(UCase *old)
 				lcase->lc_limbs[i] =
 					sub_merge(lcase->lc_limbs[i]);
 		}
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	return old;
@@ -354,7 +356,8 @@ comp_expr(Expr *expr)
     case E_DEFUN:
     case E_PARAM:
 		;
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 }

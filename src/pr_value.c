@@ -120,12 +120,14 @@ real_pr_value(FILE *f, Cell *value, int context)
 				value->c_expr->e_const->c_nargs -
 					value->c_arity,
 				InnerPrec(prec, context));
-		otherwise:	/* LAMBDA and the like */
+            break;
+        default:	/* LAMBDA and the like */
 			pr_papp(f, value->c_expr, value->c_env,
 				value->c_expr->e_arity - value->c_arity,
 				InnerPrec(prec, context));
 		}
-	otherwise:
+        break;
+    default:
 		NOT_REACHED;
 	}
 	if (prec < context)
