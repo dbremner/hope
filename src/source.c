@@ -441,7 +441,7 @@ get_script(char *buf, size_t len)
 static void
 temp_name(char *buf, size_t len)
 {
-	(void)sprintf(buf, "%sXXXXXX", tmp_stem);
+	(void)snprintf(buf, len, "%sXXXXXX", tmp_stem);
 	(void)mktemp(buf);
 }
 
