@@ -139,9 +139,7 @@ ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr)
 Expr *
 let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 {
-	Expr	*expr;
-
-	expr = apply_expr(func_expr(
+	auto expr = apply_expr(func_expr(
 				new_unary(pattern, subexpr, (Branch *)0)),
 			body);
 	expr->e_class = recursive ? E_RLET : E_LET;
@@ -152,9 +150,7 @@ let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 Expr *
 where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 {
-	Expr	*expr;
-
-	expr = apply_expr(func_expr(
+	auto expr = apply_expr(func_expr(
 				new_unary(pattern, subexpr, (Branch *)0)),
 			body);
 	expr->e_class = recursive ? E_RWHERE : E_WHERE;
