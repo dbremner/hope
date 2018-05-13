@@ -29,7 +29,7 @@ init_memory(void)
 }
 
 void *
-s_alloc(Natural n)
+s_alloc(size_t n)
 {
 	auto start = top_string;
 	top_string += RoundUp(n);
