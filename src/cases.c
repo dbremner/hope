@@ -85,8 +85,6 @@ copy_ucase(UCase *old)
     case uc_type::UC_STRICT:
 		new_ucase->uc_real = old->uc_real;
         break;
-    default:
-		NOT_REACHED;
 	}
 	return new_ucase;
 }
@@ -143,8 +141,6 @@ copy_lcase(LCase *old)
 		new_lcase->lc_c_limbs = ca_copy(old->lc_c_limbs);
 		ca_map(new_lcase->lc_c_limbs, new_reference);
         break;
-    default:
-		NOT_REACHED;
 	}
 	return new_lcase;
 }
