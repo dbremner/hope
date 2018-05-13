@@ -149,13 +149,13 @@ cmd	:	TYPEVAR newtvlist
 	|	expr DEFEQ exprbody	/* variant abbreviated form */
 				{ def_value($1, $3); }
 	|	exprbody	{ eval_expr($1); }
-	|	WRITE expr	{ wr_expr($2, (const char *)0); }
+	|	WRITE expr	{ wr_expr($2, nullptr); }
 	|	WRITE expr TO LITERAL
 				{ wr_expr($2, (const char *)($4->t_start)); }
 	|	DISPLAY		{ display(); }
 	|	USES uselist	{ preserve(); }
 	|	SAVE ident	{ mod_save($2); }
-	|	EDIT		{ edit((String)0); }
+	|	EDIT		{ edit(nullptr); }
 	|	EDIT ident	{ edit($2); }
 	|	EXIT		{ YYACCEPT; }
 	|	MODSYM ident
@@ -354,7 +354,7 @@ exprlist:	expr		{ $$ = apply_expr(e_cons,
 	;
 
 rulelist:	formals GIVES expr		%prec '|'
-				{ $$ = new_branch($1, $3, (Branch *)0); }
+				{ $$ = new_branch($1, $3, nullptr); }
 	|	formals GIVES expr '|' rulelist
 				{ $$ = new_branch($1, $3, $5); }
 	;
@@ -368,7 +368,7 @@ rulelist:	formals GIVES expr		%prec '|'
  * changed, to ensure that the extra parentheses are printed.
  */
 
-formals	:	exprbody	{ $$ = apply_expr((Expr *)0, $1); }
+formals	:	exprbody	{ $$ = apply_expr(nullptr, $1); }
 	;
 
 /* *** Disabled: see above

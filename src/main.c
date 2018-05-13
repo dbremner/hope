@@ -97,7 +97,7 @@ main(int argc, const char *const argv[])
 void
 restart(const char *script_file)
 {
-	(void)execlp(argv0, argv0, "-s", script_file, (char *)0);
+	(void)execlp(argv0, argv0, "-s", script_file, nullptr);
 	error(FATALERR, "cannot restart");
 }
 #endif

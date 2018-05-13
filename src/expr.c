@@ -167,7 +167,7 @@ mu_expr(Expr *muvar, Expr *body)
 {
 	auto expr = NEW(Expr);
 	expr->e_class = E_MU;
-	expr->e_muvar = apply_expr((Expr *)0, muvar);
+	expr->e_muvar = apply_expr(nullptr, muvar);
 	expr->e_body = body;
 	return expr;
 }
@@ -179,7 +179,7 @@ presection(String operator_, Expr *arg)
 			id_expr(bound_variable),
 			apply_expr(id_expr(operator_),
 				pair_expr(arg, id_expr(bound_variable))),
-			(Branch *)0));
+			nullptr));
 	expr->e_class = E_PRESECT;
 	return expr;
 }
@@ -191,7 +191,7 @@ postsection(String operator_, Expr *arg)
 			id_expr(bound_variable),
 			apply_expr(id_expr(operator_),
 				pair_expr(id_expr(bound_variable), arg)),
-			(Branch *)0));
+			nullptr));
 	expr->e_class = E_POSTSECT;
 	return expr;
 }
@@ -244,7 +244,7 @@ new_branch(Expr *formals, Expr *expr, Branch *next)
 Branch *
 new_unary(Expr *pattern, Expr *expr, Branch *next)
 {
-	return new_branch(apply_expr((Expr *)0, pattern), expr, next);
+	return new_branch(apply_expr(nullptr, pattern), expr, next);
 }
 
 /*

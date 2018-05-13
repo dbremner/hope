@@ -23,7 +23,7 @@ create_environment(Expr *expr)
 {
 	return nr_branch(new_unary(id_expr(newstring("input")),
 			expr,
-			(Branch *)0));
+			nullptr));
 }
 
 void

@@ -22,7 +22,7 @@
 #define	CellClass(arity,n)	(((arity)<<C_CLASSBITS)|(n))
 #define	CellArity(c)		((c)>>C_CLASSBITS)
 
-#define	NOCELL	((Cell *)0)
+#define	NOCELL	(nullptr)
 
 struct _Cell {
 	char	c_class;
