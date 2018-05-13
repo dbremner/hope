@@ -8,7 +8,7 @@
  *	The upper part of case constructs.
  */
 
-enum {
+enum class uc_type : short {
 	UC_CASE,	/* upper level of case expression */
 	UC_F_NOMATCH,	/* no-match error on function */
 	UC_L_NOMATCH,	/* no-match error on lambda */
@@ -17,7 +17,7 @@ enum {
 };
 
 struct _UCase {
-	short	uc_class;
+	uc_type uc_class;
 	union {
 		struct {		/* CASE */
 			short	ucu_references;

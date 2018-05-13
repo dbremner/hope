@@ -246,14 +246,14 @@ merge(UCase *old)
 	LCase	*lcase;
 
 	switch (old->uc_class) {
-	case UC_F_NOMATCH:
-    case UC_L_NOMATCH:	/* do all the matching */
+    case uc_type::UC_F_NOMATCH:
+    case uc_type::UC_L_NOMATCH:	/* do all the matching */
 		return gen_tree(cur_match, old);
-	case UC_SUCCESS:
+	case uc_type::UC_SUCCESS:
 		if (old->uc_size < cur_size)	/* maybe more specific */
 			return gen_tree(cur_match, old);
         break;
-    case UC_CASE:
+    case uc_type::UC_CASE:
 		if (cur_match < m_end &&
 		    (cur_match->level < old->uc_level ||
 		     (cur_match->level == old->uc_level &&

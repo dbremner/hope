@@ -406,17 +406,17 @@ run(Cell *current)
 		env = current->c_env;
 		current->c_class = C_HOLE;
 		switch (code->uc_class) {
-		case UC_F_NOMATCH:
+		case uc_type::UC_F_NOMATCH:
 			SHOW("F_NOMATCH\n");
 			pr_f_match(code->uc_defun, env);
 			error(EXECERR, "no match found");
             break;
-        case UC_L_NOMATCH:
+        case uc_type::UC_L_NOMATCH:
 			SHOW("L_NOMATCH\n");
 			pr_l_match(code->uc_who, env);
 			error(EXECERR, "no match found");
             break;
-        case UC_CASE:
+        case uc_type::UC_CASE:
 			SHOW("CASE\n");
 			tmp = env;
 			for (var = code->uc_level; var > 0; var--)
@@ -426,11 +426,11 @@ run(Cell *current)
 			Push(new_lcase(code->uc_cases, env));
 			EnterUpdate(tmp);
             break;
-        case UC_SUCCESS:
+        case uc_type::UC_SUCCESS:
 			SHOW("SUCCESS\n");
 			current = new_susp(code->uc_body, env);
             break;
-        case UC_STRICT:
+        case uc_type::UC_STRICT:
 			SHOW("STRICT\n");
 			/* force the evaluation of var 0,
 			 * i.e the first element of the environment,

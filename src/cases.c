@@ -15,7 +15,7 @@ UCase *
 ucase(int level, Path path, LCase *cases)
 {
 	auto code = NEW(UCase);
-	code->uc_class = UC_CASE;
+	code->uc_class = uc_type::UC_CASE;
 	code->uc_references = 1;
 	code->uc_level = level;
 	code->uc_path = path;
@@ -27,7 +27,7 @@ UCase *
 f_nomatch(Func *defun)
 {
 	auto code = NEW(UCase);
-	code->uc_class = UC_F_NOMATCH;
+	code->uc_class = uc_type::UC_F_NOMATCH;
 	code->uc_defun = defun;
 	return code;
 }
@@ -36,7 +36,7 @@ UCase *
 l_nomatch(Expr *who)
 {
 	auto code = NEW(UCase);
-	code->uc_class = UC_L_NOMATCH;
+	code->uc_class = uc_type::UC_L_NOMATCH;
 	code->uc_who = who;
 	return code;
 }
@@ -45,7 +45,7 @@ UCase *
 success(Expr *body, int size)
 {
 	auto code = NEW(UCase);
-	code->uc_class = UC_SUCCESS;
+	code->uc_class = uc_type::UC_SUCCESS;
 	code->uc_body = body;
 	code->uc_size = size;
 	return code;
@@ -55,7 +55,7 @@ UCase *
 strict(Expr *real)
 {
 	auto code = NEW(UCase);
-	code->uc_class = UC_STRICT;
+	code->uc_class = uc_type::UC_STRICT;
 	code->uc_real = real;
 	return code;
 }
@@ -66,23 +66,23 @@ copy_ucase(UCase *old)
 	auto new_ucase = NEW(UCase);
 	new_ucase->uc_class = old->uc_class;
 	switch (old->uc_class) {
-	case UC_CASE:
+	case uc_type::UC_CASE:
 		new_ucase->uc_references = 1;
 		new_ucase->uc_level = old->uc_level;
 		new_ucase->uc_path = old->uc_path;
 		new_ucase->uc_cases = copy_lcase(old->uc_cases);
         break;
-    case UC_F_NOMATCH:
+    case uc_type::UC_F_NOMATCH:
 		new_ucase->uc_defun = old->uc_defun;
         break;
-    case UC_L_NOMATCH:
+    case uc_type::UC_L_NOMATCH:
 		new_ucase->uc_who = old->uc_who;
         break;
-    case UC_SUCCESS:
+    case uc_type::UC_SUCCESS:
 		new_ucase->uc_body = old->uc_body;
 		new_ucase->uc_size = old->uc_size;
         break;
-    case UC_STRICT:
+    case uc_type::UC_STRICT:
 		new_ucase->uc_real = old->uc_real;
         break;
     default:
@@ -152,7 +152,7 @@ copy_lcase(LCase *old)
 static UCase *
 new_reference(UCase *node)
 {
-	if (node->uc_class == UC_CASE)
+	if (node->uc_class == uc_type::UC_CASE)
 		node->uc_references++;
 	return node;
 }
