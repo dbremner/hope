@@ -40,7 +40,7 @@ s_alloc(Natural n)
 }
 
 void *
-t_alloc(Natural n)
+t_alloc(size_t n)
 {
 	base_temp -= RoundUp(n);
 	if (base_temp < lim_temp)

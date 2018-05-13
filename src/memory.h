@@ -46,7 +46,7 @@ extern	void	clean_slate(void);
  */
 
 extern	void	*s_alloc(Natural nbytes);
-extern	void	*t_alloc(Natural nbytes);
+extern	void	*t_alloc(size_t nbytes);
 
 extern	void	heap_stats(void);
 
