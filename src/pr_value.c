@@ -126,7 +126,29 @@ real_pr_value(FILE *f, Cell *value, int context)
 					value->c_arity,
 				InnerPrec(prec, context));
             break;
-        default:	/* LAMBDA and the like */
+        case expr_type::E_BU_1MATH:
+        case expr_type::E_BU_2MATH:
+        case expr_type::E_BUILTIN:
+        case expr_type::E_RETURN:
+        case expr_type::E_NCLASSES:
+        case expr_type::E_PLUS:
+        case expr_type::E_VAR:
+        case expr_type::E_IF:
+        case expr_type::E_MU:
+        case expr_type::E_LET:
+        case expr_type::E_NUM:
+        case expr_type::E_CHAR:
+        case expr_type::E_PARAM:
+        case expr_type::E_PAIR:
+        case expr_type::E_RLET:
+        case expr_type::E_APPLY:
+        case expr_type::E_WHERE:
+        case expr_type::E_RWHERE:
+        case expr_type::E_EQN:
+        case expr_type::E_LAMBDA:
+        case expr_type::E_PRESECT:
+        case expr_type::E_POSTSECT:
+        /* LAMBDA and the like */
 			pr_papp(f, value->c_expr, value->c_env,
 				value->c_expr->e_arity - value->c_arity,
 				InnerPrec(prec, context));
@@ -302,7 +324,28 @@ val_name(int level, Path path)
 			return value->c_expr->e_const->c_name;
         case expr_type::E_DEFUN:
 			return value->c_expr->e_defun->f_name;
-		default:
+        case expr_type::E_BU_1MATH:
+        case expr_type::E_BU_2MATH:
+        case expr_type::E_BUILTIN:
+        case expr_type::E_RETURN:
+        case expr_type::E_NCLASSES:
+        case expr_type::E_PLUS:
+        case expr_type::E_VAR:
+        case expr_type::E_IF:
+        case expr_type::E_MU:
+        case expr_type::E_LET:
+        case expr_type::E_NUM:
+        case expr_type::E_CHAR:
+        case expr_type::E_PARAM:
+        case expr_type::E_PAIR:
+        case expr_type::E_RLET:
+        case expr_type::E_APPLY:
+        case expr_type::E_WHERE:
+        case expr_type::E_RWHERE:
+        case expr_type::E_EQN:
+        case expr_type::E_LAMBDA:
+        case expr_type::E_PRESECT:
+        case expr_type::E_POSTSECT:
 			return nullptr;
 		}
     case C_PAPP:
@@ -338,7 +381,28 @@ prec_value(Cell *value)
 				return PREC_APPLY;
 			else
 				return PREC_ATOMIC;
-		default:
+        case expr_type::E_BU_1MATH:
+        case expr_type::E_BU_2MATH:
+        case expr_type::E_BUILTIN:
+        case expr_type::E_RETURN:
+        case expr_type::E_NCLASSES:
+        case expr_type::E_PLUS:
+        case expr_type::E_VAR:
+        case expr_type::E_IF:
+        case expr_type::E_MU:
+        case expr_type::E_LET:
+        case expr_type::E_NUM:
+        case expr_type::E_CHAR:
+        case expr_type::E_PARAM:
+        case expr_type::E_PAIR:
+        case expr_type::E_RLET:
+        case expr_type::E_APPLY:
+        case expr_type::E_WHERE:
+        case expr_type::E_RWHERE:
+        case expr_type::E_EQN:
+        case expr_type::E_LAMBDA:
+        case expr_type::E_PRESECT:
+        case expr_type::E_POSTSECT:
 			return PREC_APPLY;
 		}
     case C_PAIR:

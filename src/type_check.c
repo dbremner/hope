@@ -199,7 +199,12 @@ ty_expr(Expr *expr)
 			error(TYPEERR, "argument has wrong type");
 		}
 		return deref(type1)->c_targ2;
-	default:
+    case expr_type::E_EQN:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
 		NOT_REACHED;
 	}
 }
@@ -368,7 +373,29 @@ get_functor(Expr *expr)
 			return expr->e_defun->f_tycons;
 		else
 			return nullptr;
-	default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_PLUS:
+    case expr_type::E_VAR:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_NUM:
+    case expr_type::E_CHAR:
+    case expr_type::E_PARAM:
+    case expr_type::E_PAIR:
+    case expr_type::E_RLET:
+    case expr_type::E_APPLY:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
+    case expr_type::E_CONS:
 		return nullptr;
 	}
 }

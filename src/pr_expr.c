@@ -186,7 +186,12 @@ pr_c_expr(FILE *f, Expr *expr, int level, int context)
     case expr_type::E_VAR:
 		(void)fprintf(f, "%s", expr->e_vname);
         break;
-    default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_EQN:
 		NOT_REACHED;
 	}
 	if (prec < context)
@@ -362,7 +367,25 @@ expr_name(Expr *expr, int level)
 		if (expr->e_level < level)
 			return expr_name(expr->e_patt, 0);
 		return val_name(expr->e_level - level, expr->e_where);
-	default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_NUM:
+    case expr_type::E_CHAR:
+    case expr_type::E_PAIR:
+    case expr_type::E_RLET:
+    case expr_type::E_APPLY:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
 		return nullptr;
 	}
 }
@@ -412,7 +435,12 @@ precedence(Expr *expr)
 			return PREC_ATOMIC;
     case expr_type::E_PARAM:
 		return precedence(expr->e_patt);
-	default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_EQN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_RETURN:
 		NOT_REACHED;
 	}
 }

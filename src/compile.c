@@ -119,7 +119,23 @@ gen_matches(int level, Path here, Expr *pattern)
     case expr_type::E_VAR:
 		;
         break;
-    default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_PARAM:
+    case expr_type::E_RLET:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
+    case expr_type::E_DEFUN:
 		NOT_REACHED;
 	}
 }
@@ -192,7 +208,23 @@ size_pattern(Expr *pattern)
 		return 1;
 	case expr_type::E_VAR:
 		return 0;
-	default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_PARAM:
+    case expr_type::E_RLET:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
+    case expr_type::E_DEFUN:
 		NOT_REACHED;
 	}
 }
@@ -282,7 +314,7 @@ merge(UCase *old)
 					sub_merge(lcase->lc_limbs[i]);
 		}
         break;
-    default:
+    case uc_type::UC_STRICT:
 		NOT_REACHED;
 	}
 	return old;
@@ -361,7 +393,13 @@ comp_expr(Expr *expr)
     case expr_type::E_PARAM:
 		;
         break;
-    default:
+    case expr_type::E_VAR:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_PLUS:
+    case expr_type::E_RETURN:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
 		NOT_REACHED;
 	}
 }

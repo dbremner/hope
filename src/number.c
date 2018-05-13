@@ -164,7 +164,24 @@ nv_pattern(Expr *p, Path path)
 		if (p->e_const->c_nargs == 0)
 			return TRUE;
         break;
-    default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_PLUS:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_PARAM:
+    case expr_type::E_RLET:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
+    case expr_type::E_DEFUN:
 		NOT_REACHED;
 	}
 	start_err_line();
@@ -222,7 +239,27 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		/* last argument */
 		return nv_pattern(p->e_arg, *pathp);
-    default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_PLUS:
+    case expr_type::E_IF:
+    case expr_type::E_MU:
+    case expr_type::E_LET:
+    case expr_type::E_NUM:
+    case expr_type::E_CHAR:
+    case expr_type::E_PARAM:
+    case expr_type::E_PAIR:
+    case expr_type::E_RLET:
+    case expr_type::E_WHERE:
+    case expr_type::E_RWHERE:
+    case expr_type::E_EQN:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
+    case expr_type::E_DEFUN:
 		start_err_line();
 		(void)fprintf(errout, "  ");
 		pr_expr(errout, p);
@@ -272,7 +309,14 @@ nv_expr(Expr *expr)
 		return TRUE;
     case expr_type::E_VAR:
 		return nv_var(expr);
-	default:
+    case expr_type::E_BU_1MATH:
+    case expr_type::E_BU_2MATH:
+    case expr_type::E_BUILTIN:
+    case expr_type::E_RETURN:
+    case expr_type::E_NCLASSES:
+    case expr_type::E_PLUS:
+    case expr_type::E_DEFUN:
+    case expr_type::E_PARAM:
 		NOT_REACHED;
 	}
 }
