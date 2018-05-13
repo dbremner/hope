@@ -458,8 +458,6 @@ run(Cell *current)
 			Push(new_susp(code->uc_real, env));
 			Force(env->c_left);
             break;
-        default:
-			NOT_REACHED;
 		}
         break;
     case C_LCASE:
