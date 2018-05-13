@@ -126,7 +126,6 @@ char_case(UCase *def)
 static LCase *
 copy_lcase(LCase *old)
 {
-	int	i;
 	auto new_lcase = NEW(LCase);
 	new_lcase->lc_class = old->lc_class;
 	new_lcase->lc_arity = old->lc_arity;
@@ -134,7 +133,7 @@ copy_lcase(LCase *old)
 	case lc_type::LC_ALGEBRAIC:
     case lc_type::LC_NUMERIC:
 		new_lcase->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
-		for (i = 0; i < old->lc_arity; i++)
+		for (decltype(old->lc_arity) i = 0; i < old->lc_arity; i++)
 			new_lcase->lc_limbs[i] = new_reference(old->lc_limbs[i]);
         break;
     case lc_type::LC_CHARACTER:
