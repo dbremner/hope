@@ -140,7 +140,7 @@ Expr *
 let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 {
 	auto expr = apply_expr(func_expr(
-				new_unary(pattern, subexpr, (Branch *)0)),
+				new_unary(pattern, subexpr, nullptr)),
 			body);
 	expr->e_class = recursive ? E_RLET : E_LET;
 	expr->e_func->e_class = E_EQN;
@@ -151,7 +151,7 @@ Expr *
 where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 {
 	auto expr = apply_expr(func_expr(
-				new_unary(pattern, subexpr, (Branch *)0)),
+				new_unary(pattern, subexpr, nullptr)),
 			body);
 	expr->e_class = recursive ? E_RWHERE : E_WHERE;
 	expr->e_func->e_class = E_EQN;
