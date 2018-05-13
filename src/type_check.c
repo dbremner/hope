@@ -117,16 +117,16 @@ ty_expr(Expr *expr)
 	DefType	*dt;
 
 	switch (expr->e_class) {
-	case E_NUM:
+	case expr_type::E_NUM:
 		return new_const_type(num);
-	case E_CHAR:
+	case expr_type::E_CHAR:
 		return new_const_type(character);
-	case E_DEFUN:
+	case expr_type::E_DEFUN:
 		if ((dt = get_functor(expr)) != nullptr)
 			return functor_type(dt);
 		return copy_type(expr->e_defun->f_type,
 				expr->e_defun->f_ntvars, FALSE);
-	case E_CONS:
+	case expr_type::E_CONS:
 		/*
 		 * Restricted types of list and string syntax:
 		 */
@@ -142,15 +142,15 @@ ty_expr(Expr *expr)
 		}
 		return copy_type(expr->e_const->c_type,
 				expr->e_const->c_ntvars, FALSE);
-    case E_LAMBDA:
-    case E_PRESECT:
-    case E_POSTSECT:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
 		return ty_list(expr->e_branch);
-	case E_PARAM:
+	case expr_type::E_PARAM:
 		if ((dt = get_functor(expr)) != nullptr)
 			return functor_type(dt);
 		return ty_pattern(expr->e_patt, expr->e_level);
-	case E_PLUS:
+	case expr_type::E_PLUS:
 		type1 = new_const_type(num);
 		type2 = ty_expr(expr->e_rest);
 		if (! unify(type1, type2)) {
@@ -159,12 +159,12 @@ ty_expr(Expr *expr)
 			error(TYPEERR, "argument has wrong type");
 		}
 		return type1;
-	case E_VAR:
+	case expr_type::E_VAR:
 		/*
 		 *	... , x: t, ... |- x: t
 		 */
 		return local_var[(int)expr->e_var];
-	case E_PAIR:
+	case expr_type::E_PAIR:
 		/*
 		 *	A |- e1: t1
 		 *	A |- e2: t2
@@ -173,17 +173,17 @@ ty_expr(Expr *expr)
 		 */
 		return new_prod_type(ty_expr(expr->e_left),
 				     ty_expr(expr->e_right));
-	case E_IF:
+	case expr_type::E_IF:
 		return ty_if(expr);
-    case E_WHERE:
-    case E_LET:
+    case expr_type::E_WHERE:
+    case expr_type::E_LET:
 		return ty_eqn(expr->e_func->e_branch, expr->e_arg);
-    case E_RWHERE:
-    case E_RLET:
+    case expr_type::E_RWHERE:
+    case expr_type::E_RLET:
 		return ty_rec_eqn(expr->e_func->e_branch, expr->e_arg);
-	case E_MU:
+	case expr_type::E_MU:
 		return ty_mu_expr(expr->e_muvar, expr->e_body);
-	case E_APPLY:
+	case expr_type::E_APPLY:
 		/*
 		 *	A |- e1: t2 -> t
 		 *	A |- e2: t2
@@ -341,7 +341,7 @@ ty_branch(Branch *branch)
 	*tp = ty_expr(branch->br_expr);
 	/* delete all the variables pushed by ty_formals() */
 	for (auto formals = branch->br_formals;
-	     formals != nullptr && formals->e_class == E_APPLY;
+	     formals != nullptr && formals->e_class == expr_type::E_APPLY;
 	     formals = formals->e_func)
 		del_vars();
 	return type;
@@ -350,7 +350,7 @@ ty_branch(Branch *branch)
 static Cell *
 ty_formals(Expr *formals, Cell *type)
 {
-	if (formals == nullptr || formals->e_class != E_APPLY)
+	if (formals == nullptr || formals->e_class != expr_type::E_APPLY)
 		return type;
 	auto newtype = new_func_type(NOCELL, type);
 	type = ty_formals(formals->e_func, newtype);
@@ -363,7 +363,7 @@ static DefType *
 get_functor(Expr *expr)
 {
 	switch (expr->e_class) {
-	case E_DEFUN:
+	case expr_type::E_DEFUN:
 		if (! expr->e_defun->f_explicit_dec)
 			return expr->e_defun->f_tycons;
 		else
@@ -420,7 +420,7 @@ show_argument(Expr *func, Expr *arg, Cell *arg_type)
 {
 	String	name;
 
-	if (arg->e_class == E_PAIR &&
+	if (arg->e_class == expr_type::E_PAIR &&
 	    (name = expr_name(func, MAX_SCOPES)) != nullptr &&
 	    op_lookup(name) != nullptr) {
 		arg_type = deref(arg_type);

@@ -79,7 +79,7 @@ nv_mu_expr(Expr *muvar, Expr *body)
 static Bool
 enter_scope(Expr *formals)
 {
-	if (formals != nullptr && formals->e_class == E_APPLY) {
+	if (formals != nullptr && formals->e_class == expr_type::E_APPLY) {
 		/*
 		 * The first argument in the reverse-order list
 		 * is the innermost scope.
@@ -116,20 +116,20 @@ nv_pattern(Expr *p, Path path)
 	if (p == nullptr)		/* error in apply_pat() */
 		return FALSE;
 	switch (p->e_class) {
-	case E_NUM:
-    case E_CHAR:
+	case expr_type::E_NUM:
+    case expr_type::E_CHAR:
 		return TRUE;
-    case E_PAIR:
+    case expr_type::E_PAIR:
 		return nv_pattern(p->e_left, p_push(P_LEFT, path)) &&
 			nv_pattern(p->e_right, p_push(P_RIGHT, path));
-    case E_APPLY:
-		if (p->e_func->e_class == E_VAR &&
+    case expr_type::E_APPLY:
+		if (p->e_func->e_class == expr_type::E_VAR &&
 		    p->e_func->e_vname == newstring("+") &&
-		    p->e_arg->e_class == E_PAIR &&
-		    p->e_arg->e_right->e_class == E_NUM) {
+		    p->e_arg->e_class == expr_type::E_PAIR &&
+		    p->e_arg->e_right->e_class == expr_type::E_NUM) {
 			/* change to a PLUS */
 			arg = p->e_arg;
-			p->e_class = E_PLUS;
+			p->e_class = expr_type::E_PLUS;
 			p->e_incr = (int)(arg->e_right->e_num);
 			p->e_rest = arg->e_left;
 			for (i = 0; i < p->e_incr; i++)
@@ -137,10 +137,10 @@ nv_pattern(Expr *p, Path path)
 			return nv_pattern(p->e_rest, path);
 		}
 		return nv_constructor(p, 0, &path);
-    case E_VAR:
+    case expr_type::E_VAR:
 		if ((cp = cons_lookup(p->e_vname)) != nullptr &&
 		    cp->c_nargs == 0) {
-			p->e_class = E_CONS;
+			p->e_class = expr_type::E_CONS;
 			p->e_const = cp;
 			return TRUE;
 		}
@@ -160,7 +160,7 @@ nv_pattern(Expr *p, Path path)
 		}
 		*next_var++ = p;
 		return TRUE;
-    case E_CONS:
+    case expr_type::E_CONS:
 		if (p->e_const->c_nargs == 0)
 			return TRUE;
         break;
@@ -189,7 +189,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 	Cons	*cp;
 
 	switch (p->e_class) {
-	case E_VAR:
+	case expr_type::E_VAR:
 		if ((cp = cons_lookup(p->e_vname)) == nullptr) {
 			error(SEMERR, "'%s': unknown constructor",
 				p->e_vname);
@@ -199,11 +199,11 @@ nv_constructor(Expr *p, int level, Path *pathp)
 			error(SEMERR, "'%s': incorrect arity", cp->c_name);
 			return FALSE;
 		}
-		p->e_class = E_CONS;
+		p->e_class = expr_type::E_CONS;
 		p->e_const = cp;
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-    case E_CONS:
+    case expr_type::E_CONS:
 		cp = p->e_const;
 		if (cp->c_nargs != level) {
 			error(SEMERR, "'%s': incorrect arity", cp->c_name);
@@ -211,7 +211,7 @@ nv_constructor(Expr *p, int level, Path *pathp)
 		}
 		*pathp = p_push(cp == succ ? P_PRED : P_STRIP, *pathp);
 		return TRUE;
-    case E_APPLY:
+    case expr_type::E_APPLY:
 		if (! nv_constructor(p->e_func, level+1, pathp))
 			return FALSE;
 		if (level > 0) {
@@ -236,26 +236,26 @@ static Bool
 nv_expr(Expr *expr)
 {
 	switch (expr->e_class) {
-	case E_NUM:
-    case E_CHAR:
-    case E_CONS:
+	case expr_type::E_NUM:
+    case expr_type::E_CHAR:
+    case expr_type::E_CONS:
 		return TRUE;
-    case E_PAIR:
+    case expr_type::E_PAIR:
 		return nv_expr(expr->e_left) && nv_expr(expr->e_right);
-    case E_APPLY:
-    case E_IF:
-    case E_WHERE:
-    case E_LET:
+    case expr_type::E_APPLY:
+    case expr_type::E_IF:
+    case expr_type::E_WHERE:
+    case expr_type::E_LET:
 		return nv_expr(expr->e_func) && nv_expr(expr->e_arg);
-    case E_RLET:
-    case E_RWHERE:
+    case expr_type::E_RLET:
+    case expr_type::E_RWHERE:
 		return nv_rec_eqn(expr->e_func->e_branch, expr->e_arg);
-    case E_MU:
+    case expr_type::E_MU:
 		return nv_mu_expr(expr->e_muvar, expr->e_body);
-    case E_LAMBDA:
-    case E_EQN:
-    case E_PRESECT:
-    case E_POSTSECT:
+    case expr_type::E_LAMBDA:
+    case expr_type::E_EQN:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
 		for (auto br = expr->e_branch; br != nullptr; br = br->br_next) {
 			if (arity_formals(br->br_formals) != expr->e_arity) {
 				start_err_line();
@@ -270,7 +270,7 @@ nv_expr(Expr *expr)
 				return FALSE;
 		}
 		return TRUE;
-    case E_VAR:
+    case expr_type::E_VAR:
 		return nv_var(expr);
 	default:
 		NOT_REACHED;
@@ -283,7 +283,7 @@ arity_formals(Expr *formals)
 	int	n;
 
 	n = 0;
-	for ( ; formals != nullptr && formals->e_class == E_APPLY;
+	for ( ; formals != nullptr && formals->e_class == expr_type::E_APPLY;
 	     formals = formals->e_func)
 		n++;
 	return n;
@@ -299,7 +299,7 @@ nv_var(Expr *expr)
 	ASSERT( next_var == *ref_level );
 	for (vp = next_var-1; vp >= base_var; vp--)
 		if ((*vp)->e_vname == name) {
-			expr->e_class = E_PARAM;
+			expr->e_class = expr_type::E_PARAM;
 			expr->e_patt = *vp;
 			for (def_level = base_level;
 			     *def_level <= vp;
@@ -312,11 +312,11 @@ nv_var(Expr *expr)
 	/* fiddle: succ constructor becomes succ function */
 	if ((expr->e_const = cons_lookup(name)) != nullptr &&
 	    expr->e_const != succ) {
-		expr->e_class = E_CONS;
+		expr->e_class = expr_type::E_CONS;
 		return TRUE;
 	}
 	if ((expr->e_defun = fn_lookup(name)) != nullptr) {
-		expr->e_class = E_DEFUN;
+		expr->e_class = expr_type::E_DEFUN;
 		return TRUE;
 	}
 	error(SEMERR, "%s: undefined variable", name);

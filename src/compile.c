@@ -91,32 +91,32 @@ static void
 gen_matches(int level, Path here, Expr *pattern)
 {
 	switch (pattern->e_class) {
-	case E_CHAR:
+	case expr_type::E_CHAR:
 		gen_char_match(level, here, pattern->e_char);
         break;
-    case E_NUM:
+    case expr_type::E_NUM:
 		gen_num_match(level, here, pattern->e_num);
         break;
-    case E_CONS:
+    case expr_type::E_CONS:
 		ASSERT( pattern->e_const->c_nargs == 0 );
 		add_match(level, here, num_cases(pattern->e_const),
 			pattern->e_const->c_index);
         break;
-    case E_APPLY:
+    case expr_type::E_APPLY:
 		gen_match_constr(level, &here, 0, pattern);
         break;
-    case E_PLUS:
+    case expr_type::E_PLUS:
 		for (decltype(pattern->e_incr) i = 0; i < pattern->e_incr; i++) {
 			add_match(level, here, NUMCASE, GREATER);
 			here = p_push(P_PRED, here);
 		}
 		gen_matches(level, here, pattern->e_arg);
         break;
-    case E_PAIR:
+    case expr_type::E_PAIR:
 		gen_matches(level, p_push(P_LEFT, here), pattern->e_left);
 		gen_matches(level, p_push(P_RIGHT, here), pattern->e_right);
         break;
-    case E_VAR:
+    case expr_type::E_VAR:
 		;
         break;
     default:
@@ -130,7 +130,7 @@ gen_matches(int level, Path here, Expr *pattern)
 static void
 gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 {
-	if (pattern->e_class == E_CONS) {
+	if (pattern->e_class == expr_type::E_CONS) {
 		if (pattern->e_const == succ) {
 			add_match(level, *here_ptr, NUMCASE, GREATER);
 			*here_ptr = p_push(P_PRED, *here_ptr);
@@ -141,7 +141,7 @@ gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 			*here_ptr = p_push(P_STRIP, *here_ptr);
 		}
 	} else {
-		ASSERT( pattern->e_class == E_APPLY );
+		ASSERT( pattern->e_class == expr_type::E_APPLY );
 		gen_match_constr(level, here_ptr, arity+1, pattern->e_func);
 		if (arity > 0) {
 			gen_matches(level, p_push(P_LEFT, *here_ptr),
@@ -155,7 +155,7 @@ gen_match_constr(int level, Path *here_ptr, int arity, Expr *pattern)
 static void
 scan_formals(int level, Expr *formals)
 {
-	if (formals != nullptr && formals->e_class == E_APPLY) {
+	if (formals != nullptr && formals->e_class == expr_type::E_APPLY) {
 		scan_formals(level+1, formals->e_func);
 		gen_matches(level, p_new(), formals->e_arg);
 	}
@@ -167,7 +167,7 @@ size_formals(Expr *formals)
 	int	n;
 
 	n = 0;
-	while (formals != nullptr && formals->e_class == E_APPLY) {
+	while (formals != nullptr && formals->e_class == expr_type::E_APPLY) {
 		n += size_pattern(formals->e_arg);
 		formals = formals->e_func;
 	}
@@ -178,19 +178,19 @@ static int
 size_pattern(Expr *pattern)
 {
 	switch (pattern->e_class) {
-	case E_APPLY:
+	case expr_type::E_APPLY:
 		return size_pattern(pattern->e_arg) + 1;
-	case E_PAIR:
+	case expr_type::E_PAIR:
 		return size_pattern(pattern->e_left) +
 			size_pattern(pattern->e_right);
-	case E_PLUS:
+	case expr_type::E_PLUS:
 		return size_pattern(pattern->e_rest) + pattern->e_incr;
-	case E_NUM:
+	case expr_type::E_NUM:
 		return (int)(pattern->e_num) + 1;
-	case E_CONS:
-    case E_CHAR:
+	case expr_type::E_CONS:
+    case expr_type::E_CHAR:
 		return 1;
-	case E_VAR:
+	case expr_type::E_VAR:
 		return 0;
 	default:
 		NOT_REACHED;
@@ -330,35 +330,35 @@ void
 comp_expr(Expr *expr)
 {
 	switch (expr->e_class) {
-	case E_LAMBDA:
-    case E_EQN:
-    case E_PRESECT:
-    case E_POSTSECT:
+	case expr_type::E_LAMBDA:
+    case expr_type::E_EQN:
+    case expr_type::E_PRESECT:
+    case expr_type::E_POSTSECT:
 		expr->e_code = l_nomatch(expr);
 		for (auto br = expr->e_branch; br != nullptr; br = br->br_next)
 			expr->e_code = comp_branch(expr->e_code, br);
         break;
-    case E_PAIR:
+    case expr_type::E_PAIR:
 		comp_expr(expr->e_left);
 		comp_expr(expr->e_right);
         break;
-    case E_APPLY:
-    case E_IF:
-    case E_WHERE:
-    case E_LET:
-    case E_RWHERE:
-    case E_RLET:
+    case expr_type::E_APPLY:
+    case expr_type::E_IF:
+    case expr_type::E_WHERE:
+    case expr_type::E_LET:
+    case expr_type::E_RWHERE:
+    case expr_type::E_RLET:
 		comp_expr(expr->e_func);
 		comp_expr(expr->e_arg);
         break;
-    case E_MU:
+    case expr_type::E_MU:
 		comp_expr(expr->e_body);
         break;
-    case E_NUM:
-    case E_CHAR:
-    case E_CONS:
-    case E_DEFUN:
-    case E_PARAM:
+    case expr_type::E_NUM:
+    case expr_type::E_CHAR:
+    case expr_type::E_CONS:
+    case expr_type::E_DEFUN:
+    case expr_type::E_PARAM:
 		;
         break;
     default:

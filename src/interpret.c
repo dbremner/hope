@@ -255,21 +255,21 @@ run(Cell *current)
 		expr = current->c_expr;
 		current->c_class = C_HOLE;
 		switch (expr->e_class) {
-		case E_PAIR:
+		case expr_type::E_PAIR:
 			SHOW("PAIR\n");
 			current = new_pair(new_susp(expr->e_left, env),
 					   new_susp(expr->e_right, env));
             break;
-        case E_APPLY:
-        case E_IF:
-        case E_LET:
-        case E_WHERE:
+        case expr_type::E_APPLY:
+        case expr_type::E_IF:
+        case expr_type::E_LET:
+        case expr_type::E_WHERE:
 			SHOW("APPLY\n");
 			Push(new_susp(expr->e_arg, env));
 			current = new_susp(expr->e_func, env);
             break;
-        case E_RLET:
-        case E_RWHERE:
+        case expr_type::E_RLET:
+        case expr_type::E_RWHERE:
 			SHOW("RLET\n");
 			/*
 			 * build a cyclic environment:
@@ -281,7 +281,7 @@ run(Cell *current)
 			current = new_susp(expr->e_func->e_branch->br_expr,
 					env);
             break;
-        case E_MU:
+        case expr_type::E_MU:
 			SHOW("MU\n");
 			/*
 			 * another cyclic environment:
@@ -293,7 +293,7 @@ run(Cell *current)
 			current = env->c_left;
 			current->c_env = env;
             break;
-        case E_DEFUN:
+        case expr_type::E_DEFUN:
 			SHOW2("DEFUN: %s\n", expr->e_defun->f_name);
 			if (expr->e_defun->f_code == nullptr)
 				error(EXECERR, "%s: undefined name",
@@ -301,55 +301,55 @@ run(Cell *current)
 			current = new_papp(expr, NULL_ENV,
 					expr->e_defun->f_arity);
             break;
-        case E_LAMBDA:
-        case E_EQN:
-        case E_PRESECT:
-        case E_POSTSECT:
+        case expr_type::E_LAMBDA:
+        case expr_type::E_EQN:
+        case expr_type::E_PRESECT:
+        case expr_type::E_POSTSECT:
 			SHOW("LAMBDA\n");
 			current = new_papp(expr, env, expr->e_arity);
             break;
-        case E_NUM:
+        case expr_type::E_NUM:
 			SHOW("Num: ");
 			SHOW2(NUMfmt, expr->e_num);
 			SHOW("\n");
 			current = new_num(expr->e_num);
             break;
-        case E_CHAR:
+        case expr_type::E_CHAR:
 			SHOW2("CHAR: '%c'\n", expr->e_char);
 			current = new_char(expr->e_char);
             break;
-        case E_CONS:
+        case expr_type::E_CONS:
 			SHOW2("CONS: %s\n", expr->e_const->c_name);
 			current = expr->e_const->c_nargs == 0 ?
 				new_cnst(expr->e_const) :
 				new_papp(expr, NULL_ENV,
 						expr->e_const->c_nargs);
             break;
-        case E_PARAM:
+        case expr_type::E_PARAM:
 			SHOW2("PARAM(%d)\n", expr->e_level);
 			for (var = expr->e_level; var > 0; var--)
 				env = env->c_right;
 			current = new_dirs(expr->e_where, env->c_left);
             break;
-        case E_BUILTIN:
+        case expr_type::E_BUILTIN:
 			SHOW("BUILTIN\n");
 			/* Apply the built-in function to var 0,
 			 * i.e the first element of the environment
 			 */
 			current = (*(expr->e_fn))(env->c_left);
             break;
-        case E_BU_1MATH:
+        case expr_type::E_BU_1MATH:
 			SHOW("BU_1MATH\n");
 			current = new_num((*(expr->e_1math))
 					(env->c_left->c_num));
             break;
-        case E_BU_2MATH:
+        case expr_type::E_BU_2MATH:
 			SHOW("BU_2MATH\n");
 			current = new_num((*(expr->e_2math))
 					(env->c_left->c_left->c_num,
 					 env->c_left->c_right->c_num));
             break;
-        case E_RETURN:
+        case expr_type::E_RETURN:
 			SHOW("RETURN\n");
 			return;
 		default:
@@ -364,7 +364,7 @@ run(Cell *current)
 		if (arity == 0) {
 			current->c_class = C_HOLE;
 			switch (expr->e_class) {
-			case E_CONS:
+			case expr_type::E_CONS:
 				/*
 				 * The internal representation of
 				 *	c v1 ... vn-1 vn
@@ -376,14 +376,14 @@ run(Cell *current)
 					tmp = new_pair(env->c_left, tmp);
 				current = new_cons(expr->e_const, tmp);
                 break;
-            case E_DEFUN:
+            case expr_type::E_DEFUN:
 				current =
 					new_ucase(expr->e_defun->f_code, env);
                 break;
-            case E_LAMBDA:
-            case E_EQN:
-            case E_PRESECT:
-            case E_POSTSECT:
+            case expr_type::E_LAMBDA:
+            case expr_type::E_EQN:
+            case expr_type::E_PRESECT:
+            case expr_type::E_POSTSECT:
 				current = new_ucase(expr->e_code, env);
                 break;
             default:
@@ -492,7 +492,7 @@ static void
 chk_argument(Cell *arg)
 {
 	if (arg->c_class == C_SUSP &&
-	    arg->c_expr->e_class == E_APPLY &&
-	    arg->c_expr->e_arg->e_class == E_BUILTIN)
+	    arg->c_expr->e_class == expr_type::E_APPLY &&
+	    arg->c_expr->e_arg->e_class == expr_type::E_BUILTIN)
 		error(EXECERR, "attempt to compare functions");
 }

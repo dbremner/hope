@@ -27,7 +27,7 @@ Expr *
 char_expr(Char c)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_CHAR;
+	expr->e_class = expr_type::E_CHAR;
 	expr->e_char = c;
 	return expr;
 }
@@ -48,7 +48,7 @@ Expr *
 num_expr(Num n)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_NUM;
+	expr->e_class = expr_type::E_NUM;
 	expr->e_num = n;
 	return expr;
 }
@@ -57,7 +57,7 @@ Expr *
 cons_expr(Cons *constr)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_CONS;
+	expr->e_class = expr_type::E_CONS;
 	expr->e_const = constr;
 	return expr;
 }
@@ -70,7 +70,7 @@ Expr *
 id_expr(String name)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_VAR;
+	expr->e_class = expr_type::E_VAR;
 	expr->e_vname = name;
 	return expr;
 }
@@ -79,7 +79,7 @@ Expr *
 dir_expr(Path where)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_PARAM;
+	expr->e_class = expr_type::E_PARAM;
 	expr->e_level = 0;
 	expr->e_where = p_stash(p_reverse(where));
 	return expr;
@@ -89,7 +89,7 @@ Expr *
 pair_expr(Expr *left, Expr *right)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_PAIR;
+	expr->e_class = expr_type::E_PAIR;
 	expr->e_left = left;
 	expr->e_right = right;
 	return expr;
@@ -99,7 +99,7 @@ Expr *
 apply_expr(Expr *func, Expr *arg)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_APPLY;
+	expr->e_class = expr_type::E_APPLY;
 	expr->e_func = func;
 	expr->e_arg = arg;
 	return expr;
@@ -109,12 +109,12 @@ Expr *
 func_expr(Branch *branches)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_LAMBDA;
+	expr->e_class = expr_type::E_LAMBDA;
 	expr->e_branch = branches;
 	expr->e_arity = 0;
 	/* use the first branch for the arity: checked later in nv_expr() */
 	for (auto formals = branches->br_formals;
-	     formals != nullptr && formals->e_class == E_APPLY;
+	     formals != nullptr && formals->e_class == expr_type::E_APPLY;
 	     formals = formals->e_func)
 		expr->e_arity++;
 	return expr;
@@ -132,7 +132,7 @@ ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr)
 					if_expr),
 				then_expr),
 			else_expr);
-	expr->e_class = E_IF;
+	expr->e_class = expr_type::E_IF;
 	return expr;
 }
 
@@ -142,8 +142,8 @@ let_expr(Expr *pattern, Expr *body, Expr *subexpr, Bool recursive)
 	auto expr = apply_expr(func_expr(
 				new_unary(pattern, subexpr, nullptr)),
 			body);
-	expr->e_class = recursive ? E_RLET : E_LET;
-	expr->e_func->e_class = E_EQN;
+	expr->e_class = recursive ? expr_type::E_RLET : expr_type::E_LET;
+	expr->e_func->e_class = expr_type::E_EQN;
 	return expr;
 }
 
@@ -153,8 +153,8 @@ where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 	auto expr = apply_expr(func_expr(
 				new_unary(pattern, subexpr, nullptr)),
 			body);
-	expr->e_class = recursive ? E_RWHERE : E_WHERE;
-	expr->e_func->e_class = E_EQN;
+	expr->e_class = recursive ? expr_type::E_RWHERE : expr_type::E_WHERE;
+	expr->e_func->e_class = expr_type::E_EQN;
 	return expr;
 }
 
@@ -162,7 +162,7 @@ Expr *
 mu_expr(Expr *muvar, Expr *body)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_MU;
+	expr->e_class = expr_type::E_MU;
 	expr->e_muvar = apply_expr(nullptr, muvar);
 	expr->e_body = body;
 	return expr;
@@ -176,7 +176,7 @@ presection(String operator_, Expr *arg)
 			apply_expr(id_expr(operator_),
 				pair_expr(arg, id_expr(bound_variable))),
 			nullptr));
-	expr->e_class = E_PRESECT;
+	expr->e_class = expr_type::E_PRESECT;
 	return expr;
 }
 
@@ -188,7 +188,7 @@ postsection(String operator_, Expr *arg)
 			apply_expr(id_expr(operator_),
 				pair_expr(id_expr(bound_variable), arg)),
 			nullptr));
-	expr->e_class = E_POSTSECT;
+	expr->e_class = expr_type::E_POSTSECT;
 	return expr;
 }
 
@@ -200,7 +200,7 @@ Expr *
 builtin_expr(Function *fn)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_BUILTIN;
+	expr->e_class = expr_type::E_BUILTIN;
 	expr->e_fn = fn;
 	return expr;
 }
@@ -209,7 +209,7 @@ Expr *
 bu_1math_expr(Unary *fn)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_BU_1MATH;
+	expr->e_class = expr_type::E_BU_1MATH;
 	expr->e_1math = fn;
 	return expr;
 }
@@ -218,7 +218,7 @@ Expr *
 bu_2math_expr(Binary *fn)
 {
 	auto expr = NEW(Expr);
-	expr->e_class = E_BU_2MATH;
+	expr->e_class = expr_type::E_BU_2MATH;
 	expr->e_2math = fn;
 	return expr;
 }
@@ -278,14 +278,14 @@ def_value(Expr *formals, Expr *body)
 		return;
 
 	/* special treatment of if-then-else */
-	if (formals->e_class == E_IF)
-		formals->e_class = E_APPLY;
+	if (formals->e_class == expr_type::E_IF)
+		formals->e_class = expr_type::E_APPLY;
 
 	arity = 0;
-	for (head = formals; head->e_class == E_APPLY; head = head->e_func)
+	for (head = formals; head->e_class == expr_type::E_APPLY; head = head->e_func)
 		arity++;
 
-	if (head->e_class != E_VAR)
+	if (head->e_class != expr_type::E_VAR)
 		error(SEMERR, "illegal left-hand-side");
 	else if ((fn = fn_local(head->e_vname)) == nullptr)
 		error(SEMERR, "'%s': value identifier not locally declared",
@@ -308,7 +308,7 @@ def_value(Expr *formals, Expr *body)
 			fn->f_branch = nullptr;
 			fn->f_explicit_def = TRUE;
 		}
-		head->e_class = E_DEFUN;
+		head->e_class = expr_type::E_DEFUN;
 		head->e_defun = fn;
 		fn->f_arity = arity;
 		/* add the branch at the end */

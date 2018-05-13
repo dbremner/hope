@@ -42,7 +42,7 @@ extern	void	def_value(Expr *formals, Expr *body);
  *	Expressions, including patterns.
  */
 
-enum {
+enum class expr_type : char{
 /* kinds of input expression that also appear as patterns */
 	E_NUM,		/* integer constant */
 	E_CHAR,		/* character constant */
@@ -81,7 +81,7 @@ enum {
 typedef	char	ExprClass;
 
 struct _Expr {
-	ExprClass	e_class;
+	enum expr_type	e_class;
 	char	e_misc_num;	/* VAR, PARAM, LAMBDA, APPLY in branch */
 	union {	/* grab bag -- see the definitions below */
 		Num	eu_num;		/* Num */

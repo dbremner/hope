@@ -22,7 +22,7 @@ void
 init_print(void)
 {
 	e_return = NEW(Expr);
-	e_return->e_class = E_RETURN;
+    e_return->e_class = expr_type::E_RETURN;
 	auto fn = fn_lookup(newstring("return"));
 	ASSERT( fn != nullptr );
 	fn->f_code = success(e_return, 0);
@@ -30,13 +30,13 @@ init_print(void)
 	fn = fn_lookup(newstring("print"));
 	ASSERT( fn != nullptr );
 	e_print = NEW(Expr);
-	e_print->e_class = E_DEFUN;
+	e_print->e_class = expr_type::E_DEFUN;
 	e_print->e_defun = fn;
 
 	fn = fn_lookup(newstring("write_list"));
 	ASSERT( fn != nullptr );
 	e_wr_list = NEW(Expr);
-	e_wr_list->e_class = E_DEFUN;
+	e_wr_list->e_class = expr_type::E_DEFUN;
 	e_wr_list->e_defun = fn;
 }
 

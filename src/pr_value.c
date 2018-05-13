@@ -50,7 +50,7 @@ void
 pr_l_match(Expr *func, Cell *env)
 {
 	start_err_line();
-	if (func->e_class == E_EQN) {
+	if (func->e_class == expr_type::E_EQN) {
 		pr_c_expr(errout, func->e_branch->br_formals->e_arg,
 			0, PREC_BODY);
 		(void)fprintf(errout, " %s ", n_eq);
@@ -112,14 +112,14 @@ real_pr_value(FILE *f, Cell *value, int context)
         break;
     case C_PAPP:
 		switch (value->c_expr->e_class) {
-		case E_DEFUN:
+		case expr_type::E_DEFUN:
 			pr_f_papp(f, value->c_expr->e_defun->f_name,
 				value->c_env,
 				value->c_expr->e_defun->f_arity -
 					value->c_arity,
 				InnerPrec(prec, context));
             break;
-        case E_CONS:
+        case expr_type::E_CONS:
 			pr_f_papp(f, value->c_expr->e_const->c_name,
 				value->c_env,
 				value->c_expr->e_const->c_nargs -
@@ -298,15 +298,15 @@ val_name(int level, Path path)
 	switch (value->c_class) {
 	case C_SUSP:
 		switch (value->c_expr->e_class) {
-		case E_CONS:
+		case expr_type::E_CONS:
 			return value->c_expr->e_const->c_name;
-        case E_DEFUN:
+        case expr_type::E_DEFUN:
 			return value->c_expr->e_defun->f_name;
 		default:
 			return nullptr;
 		}
     case C_PAPP:
-		if (value->c_expr->e_class == E_DEFUN &&
+		if (value->c_expr->e_class == expr_type::E_DEFUN &&
 		    value->c_arity == value->c_expr->e_defun->f_arity)
 			return value->c_expr->e_defun->f_name;
 		else
@@ -328,12 +328,12 @@ prec_value(Cell *value)
 		return PREC_APPLY;
     case C_PAPP:
 		switch (value->c_expr->e_class) {
-		case E_DEFUN:
+		case expr_type::E_DEFUN:
 			if (value->c_expr->e_defun->f_arity > value->c_arity)
 				return PREC_APPLY;
 			else
 				return PREC_ATOMIC;
-        case E_CONS:
+        case expr_type::E_CONS:
 			if (value->c_expr->e_const->c_nargs > value->c_arity)
 				return PREC_APPLY;
 			else
