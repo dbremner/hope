@@ -22,6 +22,7 @@ static Cell	*ord(Cell *arg);
 static Cell	*chr(Cell *arg);
 static Cell	*num2str(Cell *arg);
 static Cell	*str2num(Cell *arg);
+[[noreturn]]
 static Cell	*user_error(Cell *arg);
 
 static Num	plus(Num x, Num y);
@@ -177,6 +178,7 @@ str2num(Cell *arg)
 	return new_num(atoNUM((char *)strval));
 }
 
+[[noreturn]]
 static Cell *
 user_error(Cell *arg)
 {
