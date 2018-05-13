@@ -41,14 +41,13 @@ static void
 pr_c_ty_value(FILE *f, Cell *type, int context)
 {
 	Op	*op;
-	int	prec;
 	Bool	is_mu;
 	DefType	*tcons;
 	Cell	*targ;
 
 	type = deref(type);
 	is_mu = type->c_class == C_VOID || occurs(type, type);
-	prec = is_mu ? PREC_MU : n_ty_precedence(type);
+	int prec = is_mu ? PREC_MU : n_ty_precedence(type);
 
 	if (prec < context)
 		(void)fprintf(f, "(");

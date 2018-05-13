@@ -96,13 +96,11 @@ void
 interpret(Expr *action, Expr *expr)
 {
 #ifdef MORE_STATS
-	int	i;
-
-	for (i = 0; i < C_NCLASSES; i++)
+	for (int i = 0; i < C_NCLASSES; i++)
 		do_cell[i] = 0;
-	for (i = 0; i < E_NCLASSES; i++)
+	for (int i = 0; i < E_NCLASSES; i++)
 		do_expr[i] = 0;
-	for (i = 0; i < P_NCLASSES; i++)
+	for (int i = 0; i < P_NCLASSES; i++)
 		do_dir[i] = 0;
 #endif
 	start_stack();
@@ -112,7 +110,7 @@ interpret(Expr *action, Expr *expr)
 	run(new_susp(action, NULL_ENV));
 	disable_interrupt();
 #ifdef MORE_STATS
-	for (i = 0; i < C_NCLASSES; i++) {
+	for (int i = 0; i < C_NCLASSES; i++) {
 		int	j;
 
 		printf("cell %d: %d\n", i, do_cell[i]);
