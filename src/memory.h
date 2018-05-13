@@ -50,7 +50,7 @@ extern	void	*t_alloc(Natural nbytes);
 
 extern	void	heap_stats(void);
 
-#define	NEWARRAY(type,size)	((type *)t_alloc((Natural)sizeof(type)*(size)))
+#define	NEWARRAY(type,size)	(static_cast<type * _Nonnull>(t_alloc(static_cast<Natural>(sizeof(type)*(size)))))
 #define	NEW(type)	NEWARRAY(type, 1)
 
 extern	char	*base_memory, *top_memory;
