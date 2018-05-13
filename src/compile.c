@@ -200,7 +200,7 @@ size_pattern(Expr *pattern)
 static void
 limb_map(LCase *lcase, EltMap *f)
 {
-	if (lcase->lc_class == LC_CHARACTER)
+	if (lcase->lc_class == lc_type::LC_CHARACTER)
 		ca_map(lcase->lc_c_limbs, f);
 	else {
 		auto finish = lcase->lc_limbs + lcase->lc_arity;
@@ -273,7 +273,7 @@ merge(UCase *old)
 			limb_map(lcase, merge);
 		else {	/* same place -- keep following */
 			auto i = cur_match->index;
-			if (lcase->lc_class == LC_CHARACTER)
+			if (lcase->lc_class == lc_type::LC_CHARACTER)
 				ca_assign(lcase->lc_c_limbs, i,
 					sub_merge(ca_index(
 						lcase->lc_c_limbs, i)));

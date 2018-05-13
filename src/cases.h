@@ -54,14 +54,14 @@ extern	UCase	*copy_ucase(UCase *old);
  *	The lower part of case constructs.
  */
 
-enum {
+enum class lc_type : short{
 	LC_ALGEBRAIC,	/* algebraic data type */
 	LC_NUMERIC,	/* numbers -- <0, 0, succ(n) */
 	LC_CHARACTER	/* characters */
 };
 
 struct _LCase {
-	short	lc_class;
+	lc_type lc_class;
 	int	lcu_arity;
 	union {
 		UCase	**lcu_limbs;		/* ALGEBRAIC, NUMERIC */

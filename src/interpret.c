@@ -449,25 +449,23 @@ run(Cell *current)
 		env = current->c_env;
 		current->c_class = C_HOLE;
 		switch (lcase->lc_class) {
-		case LC_ALGEBRAIC:
+        case lc_type::LC_ALGEBRAIC:
 			SHOW("LCASE\n");
 			top = Pop();		/* arg (now updated) */
 			code = lcase->lc_limbs[top->c_cons->c_index];
             break;
-        case LC_NUMERIC:
+        case lc_type::LC_NUMERIC:
 			SHOW("NUMERIC\n");
 			top = Pop();		/* arg (now updated) */
 			code = lcase->lc_limbs[top->c_num < Zero ? LESS :
 						top->c_num == Zero ? EQUAL :
 							GREATER];
             break;
-        case LC_CHARACTER:
+        case lc_type::LC_CHARACTER:
 			SHOW("CHARACTER\n");
 			top = Pop();		/* arg (now updated) */
 			code = ca_index(lcase->lc_c_limbs, top->c_char);
             break;
-        default:
-			NOT_REACHED;
 		}
 		current = new_ucase(code, env);
         break;

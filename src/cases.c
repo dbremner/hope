@@ -99,7 +99,7 @@ LCase *
 alg_case(Natural arity, UCase *def)
 {
 	auto lcase = NEW(LCase);
-	lcase->lc_class = LC_ALGEBRAIC;
+	lcase->lc_class = lc_type::LC_ALGEBRAIC;
 	lcase->lc_arity = arity;
 	lcase->lc_limbs = NEWARRAY(UCase *, arity);
 	for (decltype(arity) i = 0; i < arity; i++)
@@ -111,7 +111,7 @@ LCase *
 num_case(UCase *def)
 {
 	auto lcase = alg_case((Natural)3, def);
-	lcase->lc_class = LC_NUMERIC;
+	lcase->lc_class = lc_type::LC_NUMERIC;
 	return lcase;
 }
 
@@ -119,7 +119,7 @@ LCase *
 char_case(UCase *def)
 {
 	auto lcase = NEW(LCase);
-	lcase->lc_class = LC_CHARACTER;
+	lcase->lc_class = lc_type::LC_CHARACTER;
 	lcase->lc_arity = 256;		/* number of characters */
 	lcase->lc_c_limbs = ca_new(def);
 	return lcase;
@@ -133,13 +133,13 @@ copy_lcase(LCase *old)
 	new_lcase->lc_class = old->lc_class;
 	new_lcase->lc_arity = old->lc_arity;
 	switch (old->lc_class) {
-	case LC_ALGEBRAIC:
-    case LC_NUMERIC:
+	case lc_type::LC_ALGEBRAIC:
+    case lc_type::LC_NUMERIC:
 		new_lcase->lc_limbs = NEWARRAY(UCase *, old->lc_arity);
 		for (i = 0; i < old->lc_arity; i++)
 			new_lcase->lc_limbs[i] = new_reference(old->lc_limbs[i]);
         break;
-    case LC_CHARACTER:
+    case lc_type::LC_CHARACTER:
 		new_lcase->lc_c_limbs = ca_copy(old->lc_c_limbs);
 		ca_map(new_lcase->lc_c_limbs, new_reference);
         break;
