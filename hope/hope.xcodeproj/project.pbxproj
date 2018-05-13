@@ -492,6 +492,7 @@
 		36C07D2820A6C0BB0032844B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LC7VFVAQZZ;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -521,6 +522,7 @@
 		36C07D2920A6C0BB0032844B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LC7VFVAQZZ;
 				GCC_CW_ASM_SYNTAX = NO;
