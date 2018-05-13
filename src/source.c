@@ -487,12 +487,12 @@ re_edit_script(void)
 static void
 remove_messages(const char *fromname, const char *toname)
 {
-	FILE	*from;
-	FILE	*to;
+	auto from = fopen(fromname, "r");
+	auto to = fopen(toname, "w");
 
-	if ((from = fopen(fromname, "r")) == nullptr)
+	if (from == nullptr)
 		error(FATALERR, "'%s': can't read listing file", fromname);
-	if ((to = fopen(toname, "w")) == nullptr)
+	if (to == nullptr)
 		error(FATALERR, "'%s': can't overwrite file", toname);
 	while (fgets(src_line, sizeof(src_line), from) != nullptr)
 		if (strncmp(src_line, list_prefix, sizeof(list_prefix)-1) != 0)

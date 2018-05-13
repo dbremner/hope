@@ -20,9 +20,7 @@ t_insert(Table *table, TabElt *element)
 void
 t_delete(Table *table, TabElt *element)
 {
-	TabElt	**ep;
-
-	for (ep = &(table->t_front); *ep != nullptr; ep = &((*ep)->t_next))
+	for (auto ep = &(table->t_front); *ep != nullptr; ep = &((*ep)->t_next))
 		if (*ep == element) {
 			*ep = (*ep)->t_next;
 			if (*ep == nullptr)
@@ -45,9 +43,7 @@ t_copy(Table *table1, const Table *table2)
 TabElt *
 t_lookup(const Table *table, String name)
 {
-	TabElt	*elem;
-
-	for (elem = table->t_front; elem != nullptr; elem = elem->t_next)
+	for (auto elem = table->t_front; elem != nullptr; elem = elem->t_next)
 		if (elem->t_name == name)
 			return elem;
 	return nullptr;
@@ -56,8 +52,6 @@ t_lookup(const Table *table, String name)
 void
 t_foreach(const Table *table, TableAction *action)
 {
-	TabElt	*elem;
-
-	for (elem = table->t_front; elem != nullptr; elem = elem->t_next)
+	for (auto elem = table->t_front; elem != nullptr; elem = elem->t_next)
 		(*action)(elem);
 }

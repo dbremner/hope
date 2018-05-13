@@ -87,9 +87,7 @@ init_builtins(void)
 static void
 def_builtin(const char *name, Function *fn)
 {
-	Func	*bu;
-
-	bu = fn_lookup(newstring(name));
+	auto bu = fn_lookup(newstring(name));
 	if (bu == nullptr)
 		error(LIBERR, "'%s': undeclared built-in", name);
 	bu->f_code = strict(builtin_expr(fn));
@@ -100,9 +98,7 @@ def_builtin(const char *name, Function *fn)
 static void
 def_1math(const char *name, Unary *fn)
 {
-	Func	*bu;
-
-	bu = fn_lookup(newstring(name));
+	auto bu = fn_lookup(newstring(name));
 	if (bu == nullptr)
 		error(LIBERR, "'%s': undeclared built-in", name);
 	if (! check_arity(bu->f_type, 1))
@@ -115,9 +111,7 @@ def_1math(const char *name, Unary *fn)
 static void
 def_2math(const char *name, Binary *fn)
 {
-	Func	*bu;
-
-	bu = fn_lookup(newstring(name));
+	auto bu = fn_lookup(newstring(name));
 	if (bu == nullptr)
 		error(LIBERR, "'%s': undeclared built-in", name);
 	if (! check_arity(bu->f_type, 2))

@@ -31,9 +31,7 @@ pr_type(FILE *f, Type *type)
 static void
 ty_print(FILE *f, Type *type, int context)
 {
-	int	prec;
-
-	prec = ty_precedence(type);
+	auto prec = ty_precedence(type);
 	if (prec < context)
 		(void)fprintf(f, "(");
 	switch (type->ty_class) {

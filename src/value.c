@@ -4,9 +4,7 @@
 Cell *
 new_pair(Cell *left, Cell *right)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_PAIR);
+	auto cp = new_cell(C_PAIR);
 	cp->c_left = left;
 	cp->c_right = right;
 	return cp;
@@ -15,9 +13,7 @@ new_pair(Cell *left, Cell *right)
 Cell *
 new_dirs(Path path, Cell *val)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_DIRS);
+	auto cp = new_cell(C_DIRS);
 	cp->c_path = path;
 	cp->c_val = val;
 	return cp;
@@ -26,9 +22,7 @@ new_dirs(Path path, Cell *val)
 Cell *
 new_cons(Cons *data_constructor, Cell *arg)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_CONS);
+	auto cp = new_cell(C_CONS);
 	cp->c_cons = data_constructor;
 	cp->c_arg = arg;
 	return cp;
@@ -37,9 +31,7 @@ new_cons(Cons *data_constructor, Cell *arg)
 Cell *
 new_susp(Expr *expr, Cell *env)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_SUSP);
+	auto cp = new_cell(C_SUSP);
 	cp->c_expr = expr;
 	cp->c_env = env;
 	return cp;
@@ -48,9 +40,7 @@ new_susp(Expr *expr, Cell *env)
 Cell *
 new_papp(Expr *expr, Cell *env, int arity)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_PAPP);
+	auto cp = new_cell(C_PAPP);
 	cp->c_expr = expr;
 	cp->c_env = env;
 	cp->c_arity = arity;
@@ -60,9 +50,7 @@ new_papp(Expr *expr, Cell *env, int arity)
 Cell *
 new_ucase(UCase *code, Cell *env)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_UCASE);
+	auto cp = new_cell(C_UCASE);
 	cp->c_code = code;
 	cp->c_env = env;
 	return cp;
@@ -71,9 +59,7 @@ new_ucase(UCase *code, Cell *env)
 Cell *
 new_lcase(LCase *lcase, Cell *env)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_LCASE);
+	auto cp = new_cell(C_LCASE);
 	cp->c_lcase = lcase;
 	cp->c_env = env;
 	return cp;
@@ -82,9 +68,7 @@ new_lcase(LCase *lcase, Cell *env)
 Cell *
 new_cnst(Cons *data_constant)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_CONST);
+	auto cp = new_cell(C_CONST);
 	cp->c_cons = data_constant;
 	return cp;
 }
@@ -92,9 +76,7 @@ new_cnst(Cons *data_constant)
 Cell *
 new_num(Num n)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_NUM);
+	auto cp = new_cell(C_NUM);
 	cp->c_num = n;
 	return cp;
 }
@@ -102,9 +84,7 @@ new_num(Num n)
 Cell *
 new_char(Char c)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_CHAR);
+	auto cp = new_cell(C_CHAR);
 	cp->c_char = c;
 	return cp;
 }
@@ -112,9 +92,7 @@ new_char(Char c)
 Cell *
 new_stream(FILE *f)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_STREAM);
+	auto cp = new_cell(C_STREAM);
 	cp->c_file = f;
 	return cp;
 }

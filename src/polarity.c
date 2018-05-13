@@ -88,9 +88,7 @@ static void	do_polarities(Type *type, Bool pos, Bool neg);
 void
 start_polarities(DefType *deftype, TypeList *varlist)
 {
-	int	i;
-
-	for (i = deftype->dt_arity-1; i >= 0; i--) {
+	for (auto i = deftype->dt_arity-1; i >= 0; i--) {
 		ty_arg[i].equiv = ty_arg[i].dual = NIL;
 		ty_arg[i].pos = ty_arg[i].neg = FALSE;
 	}
@@ -159,12 +157,9 @@ do_polarities(Type *type, Bool pos, Bool neg)
 void
 finish_polarities(void)
 {
-	TypeList *vp;
-	int	n, nd;
-
-	for (vp = cur_varlist; vp != nullptr; vp = vp->ty_tail) {
-		n = tycon_find(vp->ty_head->ty_index);
-		nd = ty_arg[n].dual;
+	for (auto vp = cur_varlist; vp != nullptr; vp = vp->ty_tail) {
+		auto n = tycon_find(vp->ty_head->ty_index);
+		auto nd = ty_arg[n].dual;
 		vp->ty_head->ty_pos = ty_arg[n].pos ||
 					(nd != NIL && ty_arg[nd].neg);
 		vp->ty_head->ty_neg = ty_arg[n].neg ||

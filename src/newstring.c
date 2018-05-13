@@ -33,9 +33,9 @@ newstring(const char *s)
 String
 newnstring(const char *s, int n)
 {
-	Ident	*np, **p;
+	Ident	*np;
 
-	p = &table[hash((const Byte *)s, n)];
+	auto p = &table[hash((const Byte *)s, n)];
 	for (np = *p; np != nullptr; np = np->link)
 		if (strncmp(np->text, s, n) == 0 && np->text[n] == '\0')
 			return np->text;

@@ -73,14 +73,11 @@ remember_type(DefType *dt)
 void
 check_type_defs(void)
 {
-	NoteType *ntp;
-	NoteCons *ncp;
-
-	for (ntp = note_type; ntp->type_name != nullptr; ntp++)
+	for (auto ntp = note_type; ntp->type_name != nullptr; ntp++)
 		if (*(ntp->type_ref) == nullptr)
 			error(LIBERR, "%s: standard type not defined",
 				ntp->type_name);
-	for (ncp = note_cons; ncp->cons_name != nullptr; ncp++) {
+	for (auto ncp = note_cons; ncp->cons_name != nullptr; ncp++) {
 		if ((ncp->cons_ref != nullptr && *(ncp->cons_ref) == nullptr) ||
 		    (ncp->expr_ref != nullptr && *(ncp->expr_ref) == nullptr))
 			error(LIBERR, "%s: standard constructor not defined",

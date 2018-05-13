@@ -235,8 +235,6 @@ nv_constructor(Expr *p, int level, Path *pathp)
 static Bool
 nv_expr(Expr *expr)
 {
-	Branch	*br;
-
 	switch (expr->e_class) {
 	case E_NUM:
     case E_CHAR:
@@ -258,7 +256,7 @@ nv_expr(Expr *expr)
     case E_EQN:
     case E_PRESECT:
     case E_POSTSECT:
-		for (br = expr->e_branch; br != nullptr; br = br->br_next) {
+		for (auto br = expr->e_branch; br != nullptr; br = br->br_next) {
 			if (arity_formals(br->br_formals) != expr->e_arity) {
 				start_err_line();
 				(void)fprintf(errout, "  ");
@@ -294,11 +292,10 @@ arity_formals(Expr *formals)
 static Bool
 nv_var(Expr *expr)
 {
-	String	name;
 	Expr	**vp;
 	Expr	***def_level;
 
-	name = expr->e_vname;
+	auto name = expr->e_vname;
 	ASSERT( next_var == *ref_level );
 	for (vp = next_var-1; vp >= base_var; vp--)
 		if ((*vp)->e_vname == name) {

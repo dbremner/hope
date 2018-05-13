@@ -52,13 +52,11 @@ start_dec_type()
 DefType *
 new_deftype(String name, Bool tupled, TypeList *vars)
 {
-	DefType *dt;
 	TypeList *varp;
-	int	arity;
 	int	i;
 
-	dt = dt_local(name);
-	arity = ty_length(vars);
+	auto dt = dt_local(name);
+	auto arity = ty_length(vars);
 	already_defined = dt != nullptr;
 	if (already_defined) {
 		if (! IsAbsType(dt)) {
@@ -289,9 +287,7 @@ args_repeated(TypeList *varlist)
 Cons *
 constructor(String name, Bool tupled, TypeList *args)
 {
-	Cons	*c;
-
-	c = NEW(Cons);
+	auto c = NEW(Cons);
 	c->c_name = name;
 	c->c_type = tupled ?
 			func_type(multi_pair_type(args), current_newtype()) :
@@ -378,9 +374,7 @@ new_type(String name, Bool tupled, TypeList *args)
 Type *
 def_type(DefType *dt, TypeList *args)
 {
-	Type	*type;
-
-	type = NEW(Type);
+	auto type = NEW(Type);
 	type->ty_class = TY_CONS;
 	type->ty_deftype = dt;
 	type->ty_args = args;
@@ -402,9 +396,7 @@ enter_mu_tv(String name)
 Type *
 mu_type(Type *body)
 {
-	Type	*type;
-
-	type = NEW(Type);
+	auto type = NEW(Type);
 	type->ty_class = TY_MU;
 	type->ty_muvar = *--mu_top;
 	type->ty_body = body;
@@ -414,9 +406,7 @@ mu_type(Type *body)
 Type *
 new_tv(TVar tvar)
 {
-	Type	*type;
-
-	type = NEW(Type);
+	auto type = NEW(Type);
 	type->ty_class = TY_VAR;
 	type->ty_mu_bound = FALSE;
 	type->ty_var = tvar;
@@ -426,11 +416,9 @@ new_tv(TVar tvar)
 TypeList *
 cons_type(Type *type, TypeList *typelist)
 {
-	TypeList *tl;
-
 	if (type == nullptr)
 		return typelist;
-	tl = NEW(TypeList);
+	auto tl = NEW(TypeList);
 	tl->ty_head = type;
 	tl->ty_tail = typelist;
 	return tl;
@@ -472,9 +460,7 @@ multi_func_type(TypeList *args, Type *result)
 QType *
 qualified_type(Type *type)
 {
-	QType	*qtype;
-
-	qtype = NEW(QType);
+	auto qtype = NEW(QType);
 	qtype->qt_type = type;
 	qtype->qt_ntvars = nr_type(type);
 	if (qtype->qt_ntvars > MAX_TVARS_IN_TYPE)
@@ -502,8 +488,6 @@ nr_type(Type *type)
 static void
 nv_type(Type *type)
 {
-	TypeList *argp;
-
 	switch (type->ty_class) {
 	case TY_VAR:
 		if (! type->ty_mu_bound)
@@ -513,7 +497,7 @@ nv_type(Type *type)
 		nv_type(type->ty_body);
         break;
     case TY_CONS:
-		for (argp = type->ty_args; argp != nullptr; argp = argp->ty_tail)
+		for (auto argp = type->ty_args; argp != nullptr; argp = argp->ty_tail)
 			nv_type(argp->ty_head);
         break;
     default:

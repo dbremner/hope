@@ -90,8 +90,6 @@ num_cases(Cons *constr)
 static void
 gen_matches(int level, Path here, Expr *pattern)
 {
-	int	i;
-
 	switch (pattern->e_class) {
 	case E_CHAR:
 		gen_char_match(level, here, pattern->e_char);
@@ -108,7 +106,7 @@ gen_matches(int level, Path here, Expr *pattern)
 		gen_match_constr(level, &here, 0, pattern);
         break;
     case E_PLUS:
-		for (i = 0; i < pattern->e_incr; i++) {
+		for (decltype(pattern->e_incr) i = 0; i < pattern->e_incr; i++) {
 			add_match(level, here, NUMCASE, GREATER);
 			here = p_push(P_PRED, here);
 		}
@@ -205,10 +203,8 @@ limb_map(LCase *lcase, EltMap *f)
 	if (lcase->lc_class == LC_CHARACTER)
 		ca_map(lcase->lc_c_limbs, f);
 	else {
-		UCase	**this_, **finish;
-
-		finish = lcase->lc_limbs + lcase->lc_arity;
-		for (this_ = lcase->lc_limbs; this_ != finish; this_++)
+		auto finish = lcase->lc_limbs + lcase->lc_arity;
+		for (auto this_ = lcase->lc_limbs; this_ != finish; this_++)
 			*this_ = (*f)(*this_);
 	}
 }
@@ -333,15 +329,13 @@ comp_branch(UCase *old_body, Branch *branch)
 void
 comp_expr(Expr *expr)
 {
-	Branch	*br;
-
 	switch (expr->e_class) {
 	case E_LAMBDA:
     case E_EQN:
     case E_PRESECT:
     case E_POSTSECT:
 		expr->e_code = l_nomatch(expr);
-		for (br = expr->e_branch; br != nullptr; br = br->br_next)
+		for (auto br = expr->e_branch; br != nullptr; br = br->br_next)
 			expr->e_code = comp_branch(expr->e_code, br);
         break;
     case E_PAIR:

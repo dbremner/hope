@@ -14,9 +14,7 @@ static UCase	*new_reference(UCase *node);
 UCase *
 ucase(int level, Path path, LCase *cases)
 {
-	UCase	*code;
-
-	code = NEW(UCase);
+	auto code = NEW(UCase);
 	code->uc_class = UC_CASE;
 	code->uc_references = 1;
 	code->uc_level = level;
@@ -28,9 +26,7 @@ ucase(int level, Path path, LCase *cases)
 UCase *
 f_nomatch(Func *defun)
 {
-	UCase	*code;
-
-	code = NEW(UCase);
+	auto code = NEW(UCase);
 	code->uc_class = UC_F_NOMATCH;
 	code->uc_defun = defun;
 	return code;
@@ -39,9 +35,7 @@ f_nomatch(Func *defun)
 UCase *
 l_nomatch(Expr *who)
 {
-	UCase	*code;
-
-	code = NEW(UCase);
+	auto code = NEW(UCase);
 	code->uc_class = UC_L_NOMATCH;
 	code->uc_who = who;
 	return code;
@@ -50,9 +44,7 @@ l_nomatch(Expr *who)
 UCase *
 success(Expr *body, int size)
 {
-	UCase	*code;
-
-	code = NEW(UCase);
+	auto code = NEW(UCase);
 	code->uc_class = UC_SUCCESS;
 	code->uc_body = body;
 	code->uc_size = size;
@@ -62,9 +54,7 @@ success(Expr *body, int size)
 UCase *
 strict(Expr *real)
 {
-	UCase	*code;
-
-	code = NEW(UCase);
+	auto code = NEW(UCase);
 	code->uc_class = UC_STRICT;
 	code->uc_real = real;
 	return code;
@@ -73,9 +63,7 @@ strict(Expr *real)
 UCase *
 copy_ucase(UCase *old)
 {
-	UCase	*new_ucase;
-
-	new_ucase = NEW(UCase);
+	auto new_ucase = NEW(UCase);
 	new_ucase->uc_class = old->uc_class;
 	switch (old->uc_class) {
 	case UC_CASE:
@@ -110,8 +98,7 @@ copy_ucase(UCase *old)
 LCase *
 alg_case(Natural arity, UCase *def)
 {
-	LCase	*lcase;
-	lcase = NEW(LCase);
+	auto lcase = NEW(LCase);
 	lcase->lc_class = LC_ALGEBRAIC;
 	lcase->lc_arity = arity;
 	lcase->lc_limbs = NEWARRAY(UCase *, arity);
@@ -123,9 +110,7 @@ alg_case(Natural arity, UCase *def)
 LCase *
 num_case(UCase *def)
 {
-	LCase	*lcase;
-
-	lcase = alg_case((Natural)3, def);
+	auto lcase = alg_case((Natural)3, def);
 	lcase->lc_class = LC_NUMERIC;
 	return lcase;
 }
@@ -133,9 +118,7 @@ num_case(UCase *def)
 LCase *
 char_case(UCase *def)
 {
-	LCase	*lcase;
-
-	lcase = NEW(LCase);
+	auto lcase = NEW(LCase);
 	lcase->lc_class = LC_CHARACTER;
 	lcase->lc_arity = 256;		/* number of characters */
 	lcase->lc_c_limbs = ca_new(def);
@@ -145,10 +128,8 @@ char_case(UCase *def)
 static LCase *
 copy_lcase(LCase *old)
 {
-	LCase	*new_lcase;
 	int	i;
-
-	new_lcase = NEW(LCase);
+	auto new_lcase = NEW(LCase);
 	new_lcase->lc_class = old->lc_class;
 	new_lcase->lc_arity = old->lc_arity;
 	switch (old->lc_class) {

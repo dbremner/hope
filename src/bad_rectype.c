@@ -173,9 +173,7 @@ check_recursion(DefType *head, Type *type)
 static Bool
 visited(DefType *deftype)
 {
-	DefType	**dp;
-
-	for (dp = dt_base; dp != dt_top; dp++)
+	for (auto dp = dt_base; dp != dt_top; dp++)
 		if (*dp == deftype)
 			return TRUE;
 	return FALSE;

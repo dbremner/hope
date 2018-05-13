@@ -31,9 +31,7 @@ init_memory(void)
 void *
 s_alloc(Natural n)
 {
-	char	*start;
-
-	start = top_string;
+	auto start = top_string;
 	top_string += RoundUp(n);
 	lim_temp = top_string;
 	if (base_temp < lim_temp)

@@ -214,13 +214,11 @@ mod_system(void)
 static Module *
 mod_new(String name)
 {
-	Module	*mod;
-
 	if (mod_count == MAX_MODULES) {
 		error(SEMERR, "too many modules");
 		return nullptr;
 	}
-	mod = NEW(Module);
+	auto mod = NEW(Module);
 	mod->mod_name = name;
 	mod->mod_num = mod_count;
 	mod_clear(mod);
@@ -257,12 +255,11 @@ mod_copy(Module *mod1, Module *mod2)
 static Module *
 module(String name)
 {
-	Module	*mod;
 	for (decltype(mod_count) i = STANDARD; i < mod_count; i++)
 		if (mod_list[i]->mod_name == name)
 			return mod_list[i];	/* already here */
 	/* not here -- make a note to read it */
-	mod = mod_new(name);
+	auto mod = mod_new(name);
 	if (mod != nullptr)
 		ADD(mod_unread, mod->mod_num);
 	return mod;
@@ -271,13 +268,10 @@ module(String name)
 void
 mod_use(String name)
 {
-	Module	**mp;
-	Module	*mod;
-
-	mod = module(name);
+	auto mod = module(name);
 	if (mod == nullptr)
 		return;
-	for (mp = mod_stack; mp <= mod_current; mp++)
+	for (auto mp = mod_stack; mp <= mod_current; mp++)
 		if (*mp == mod || (*mp)->mod_public == mod) {
 			error(SEMERR, "'%s': cyclic 'uses' reference",
 				mod->mod_name);
@@ -318,9 +312,7 @@ mod_fetch(void)
 static void
 mark_as_private(TabElt *p)
 {
-	DefType	*dt;
-
-	dt = (DefType *)p;
+	auto dt = (DefType *)p;
 	dt->dt_private = IsAbsType(dt);
 	if (dt->dt_private)
 		dt->dt_oldvarlist = dt->dt_varlist;
@@ -364,9 +356,7 @@ mod_private(void)
 static void
 reset_private(TabElt *p)
 {
-	DefType	*dt;
-
-	dt = (DefType *)p;
+	auto dt = (DefType *)p;
 	if (dt->dt_private) {
 		dt->dt_varlist = dt->dt_oldvarlist;
 		dt->dt_syn_depth = 0;
@@ -383,9 +373,7 @@ reset_private(TabElt *p)
 void
 fix_synonyms(void)
 {
-	Module	*current;
-
-	current = *mod_current;
+	auto current = *mod_current;
 	t_foreach(&(current->mod_types), fix_syn_depth);
 	if (current->mod_public != nullptr)
 		t_foreach(&(current->mod_public->mod_types), fix_syn_depth);
@@ -394,13 +382,12 @@ fix_synonyms(void)
 static void
 fix_syn_depth(TabElt *p)
 {
-	DefType	*dt, *syn;
 	int	n;
 	Type	*type;
 
-	dt = (DefType *)p;
+	auto dt = (DefType *)p;
 	n = 0;
-	for (syn = dt; IsSynType(syn); syn = type->ty_deftype) {
+	for (auto syn = dt; IsSynType(syn); syn = type->ty_deftype) {
 		n++;
 		type = syn->dt_type;
 		while (type->ty_class == TY_MU)
@@ -415,10 +402,7 @@ fix_syn_depth(TabElt *p)
 void
 mod_finish(void)
 {
-	Module	*current;
-	Module	**mp;
-
-	current = *mod_current;
+	auto current = *mod_current;
 	if (current->mod_num == STANDARD ||
 	    (current->mod_public != nullptr &&
 	     current->mod_public->mod_num == STANDARD)) {
@@ -438,7 +422,7 @@ mod_finish(void)
 		t_foreach(&(current->mod_types), reset_private);
 		fix_synonyms();
 	}
-	for (mp = mod_stack; mp < mod_current; mp++)
+	for (auto mp = mod_stack; mp < mod_current; mp++)
 		if (MEMBER((*mp)->mod_uses, current->mod_num)) {
 			UNION((*mp)->mod_all_uses, current->mod_all_uses);
 			UNION((*mp)->mod_all_tvars, current->mod_all_tvars);
@@ -450,9 +434,6 @@ mod_finish(void)
 void
 mod_save(String name)
 {
-	FILE	*f;
-	Module	*mod;
-
 	if (restricted) {
 		error(SEMERR, "'save' command disabled");
 		return;
@@ -461,13 +442,13 @@ mod_save(String name)
 		error(SEMERR, "'save' not permitted in module");
 		return;
 	}
-	f = mod_create(name);
+	auto f = mod_create(name);
 	if (f == nullptr)
 		return;
 	mod_dump(f);
 
 	/* move the contents of the current session into the module */
-	mod = mod_new(name);
+	auto mod = mod_new(name);
 	if (mod == nullptr)
 		return;
 	mod_copy(mod, *mod_current);
@@ -637,9 +618,7 @@ op_lookup(String name)
 static void
 op_display(TabElt *p)
 {
-	Op	*op;
-
-	op = (Op *)p;
+	auto op = (Op *)p;
 	(void)fprintf(disp_file, "%s %s : %d;\n",
 		op->op_assoc == ASSOC_LEFT ? n_infix : n_infixr,
 		op->op_name, op->op_prec);
@@ -790,10 +769,8 @@ static String	cons_name;
 static void
 ty_cons_lookup(TabElt *p)
 {
-	DefType	*dt;
 	Cons	*cp;
-
-	dt = (DefType *)p;
+	auto dt = (DefType *)p;
 	if (IsDataType(dt))
 		for (cp = dt->dt_cons; cp != nullptr; cp = cp->c_next)
 			if (cp->c_name == cons_name) {

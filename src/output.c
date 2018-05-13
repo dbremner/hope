@@ -21,11 +21,9 @@ Expr	*e_return, *e_print, *e_wr_list;
 void
 init_print(void)
 {
-	Func	*fn;
-
 	e_return = NEW(Expr);
 	e_return->e_class = E_RETURN;
-	fn = fn_lookup(newstring("return"));
+	auto fn = fn_lookup(newstring("return"));
 	ASSERT( fn != nullptr );
 	fn->f_code = success(e_return, 0);
 

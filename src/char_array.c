@@ -30,9 +30,7 @@ static void	ca_insert(CharArray *array, Char c, ArrayElement x);
 CharArray *
 ca_new(ArrayElement x)
 {
-	CharArray	*array;
-
-	array = NEW(CharArray);
+	auto array = NEW(CharArray);
 	array->ca_size = 0;
 	array->ca_index = NEWARRAY(SChar, MIN_SIZE);
 	array->ca_value = NEWARRAY(ArrayElement, MIN_SIZE);
@@ -43,10 +41,9 @@ ca_new(ArrayElement x)
 CharArray *
 ca_copy(CharArray *array)
 {
-	CharArray	*new_array;
 	decltype(array->ca_size) n;
 
-	new_array = NEW(CharArray);
+	auto new_array = NEW(CharArray);
 	new_array->ca_size = array->ca_size;
 	for (n = MIN_SIZE; n < array->ca_size; n *= 2)
 		;

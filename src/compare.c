@@ -26,8 +26,6 @@ static Cons	*cmp_args(Cell *first, Cell *second);
 void
 init_cmps(void)
 {
-	Func	*fn;
-
 	/*
 	 * The following weird structure causes the 2 arguments of cmp
 	 * to be unrolled.
@@ -39,7 +37,7 @@ init_cmps(void)
 	e_cmp = apply_expr(dir_expr(p_push(P_LEFT, p_new())),
 			   apply_expr(dir_expr(p_push(P_RIGHT, p_new())),
 				      builtin_expr(compare)));
-	fn = fn_lookup(newstring("compare"));
+	auto fn = fn_lookup(newstring("compare"));
 	ASSERT( fn != nullptr );
 	fn->f_code = success(e_cmp, 0);
 	fn->f_arity = 1;

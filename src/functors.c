@@ -75,10 +75,8 @@ def_functor(DefType *dt)
 static Expr *
 pat_of_constr(Cons *cp)
 {
-	Expr	*pat;
 	int	i;
-
-	pat = cons_expr(cp);
+	auto pat = cons_expr(cp);
 	for (i = 0; i < cp->c_nargs; i++)
 		pat = apply_expr(pat, id_expr(variable[i]));
 	return pat;
@@ -87,11 +85,10 @@ pat_of_constr(Cons *cp)
 static Expr *
 body_of_constr(Cons *cp)
 {
-	Expr	*body;
 	int	i;
 	Type	*type;
 
-	body = cons_expr(cp);
+	auto body = cons_expr(cp);
 	for (i = 0, type = cp->c_type;
 	     i < cp->c_nargs;
 	     i++, type = type->ty_secondarg)

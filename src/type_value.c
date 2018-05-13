@@ -71,9 +71,6 @@ unify(Cell *type1, Cell *type2)
 static Bool
 real_unify(Cell *type1, Cell *type2)
 {
-	DefType	*tcons1, *tcons2;
-	Cell	*targ1, *targ2;
-
 	type1 = deref(type1);
 	type2 = deref(type2);
 	if (type1 == type2)
@@ -100,8 +97,8 @@ real_unify(Cell *type1, Cell *type2)
 	ASSERT( type1->c_full->c_class == C_TSUB );
 	ASSERT( type2->c_class == C_TCONS );
 	ASSERT( type2->c_full->c_class == C_TSUB );
-	tcons1 = type1->c_full->c_tcons;
-	tcons2 = type2->c_full->c_tcons;
+	auto tcons1 = type1->c_full->c_tcons;
+	auto tcons2 = type2->c_full->c_tcons;
 	ASSERT( tcons1->dt_syn_depth == 0 );
 	ASSERT( tcons2->dt_syn_depth == 0 );
 	if (tcons1 != tcons2)
@@ -111,8 +108,8 @@ real_unify(Cell *type1, Cell *type2)
 	 * equate the cons codes before looking at args.
 	 * (This will be undone if something fails.)
 	 */
-	targ1 = type1->c_full->c_targ;
-	targ2 = type2->c_full->c_targ;
+	auto targ1 = type1->c_full->c_targ;
+	auto targ2 = type2->c_full->c_targ;
 	identify_types(type1, type2);
 	/* same type constructor (implies same no. of arguments) */
 	while (targ1 != NOCELL) {
@@ -232,18 +229,13 @@ expand_type(Cell *type)
 static void
 expand_aux(Cell *type, Memo *last_type_memo)
 {
-	DefType	*tcons;
-	Cell	*targ;
-	Memo	*memo;
-	Cell	*newtype;
-
 	type = deref(type);
 	if (type->c_class != C_TCONS)
 		return;
 	ASSERT( type->c_abbr->c_class == C_TSUB );
 	ASSERT( type->c_full->c_class == C_TSUB );
-	tcons = type->c_full->c_tcons;
-	targ = type->c_full->c_targ;
+	auto tcons = type->c_full->c_tcons;
+	auto targ = type->c_full->c_targ;
 	if (tcons->dt_syn_depth == 0) {
 		/* data type constructor: expand the arguments */
 		/* mark it in case we encounter it recursively */
@@ -255,7 +247,7 @@ expand_aux(Cell *type, Memo *last_type_memo)
 		type->c_class = C_TCONS;
 	} else {	/* type synonym: expand it */
 		/* have we expanded this one before? */
-		for (memo = first_type_memo; memo != last_type_memo; memo++)
+		for (auto memo = first_type_memo; memo != last_type_memo; memo++)
 			if (tcons == memo->type_syn &&
 			    same_args(targ, memo->type_args)) {
 				assign_no_trail(type, deref(memo->type_value));
@@ -263,7 +255,7 @@ expand_aux(Cell *type, Memo *last_type_memo)
 			}
 
 		/* No?  Then do the expansion */
-		newtype = cp_type(tcons->dt_type, targ);
+		auto newtype = cp_type(tcons->dt_type, targ);
 		assign_no_trail(type, newtype);
 
 		/* remember it for next time */
@@ -406,9 +398,7 @@ new_const_type(DefType *dt)
 Cell *
 new_tvar(void)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_TVAR);
+	auto cp = new_cell(C_TVAR);
 	cp->c_varno = 0;
 	return cp;
 }
@@ -416,9 +406,7 @@ new_tvar(void)
 Cell *
 new_tsub(DefType *tcons, Cell *targ)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_TSUB);
+	auto cp = new_cell(C_TSUB);
 	cp->c_varno = 0;
 	cp->c_tcons = tcons;
 	cp->c_targ = targ;
@@ -428,9 +416,7 @@ new_tsub(DefType *tcons, Cell *targ)
 Cell *
 new_tref(Cell *tref)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_TREF);
+	auto cp = new_cell(C_TREF);
 	cp->c_varno = 0;
 	cp->c_tref = tref;
 	return cp;
@@ -439,9 +425,7 @@ new_tref(Cell *tref)
 Cell *
 new_void(void)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_VOID);
+	auto cp = new_cell(C_VOID);
 	cp->c_varno = 0;
 	return cp;
 }
@@ -449,9 +433,7 @@ new_void(void)
 Cell *
 new_frozen(void)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_FROZEN);
+	auto cp = new_cell(C_FROZEN);
 	cp->c_varno = 0;
 	return cp;
 }
@@ -459,9 +441,7 @@ new_frozen(void)
 Cell *
 new_tsyn(Cell *abbr, Cell *full)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_TCONS);
+	auto cp = new_cell(C_TCONS);
 	cp->c_abbr = abbr;
 	cp->c_full = full;
 	return cp;
@@ -470,18 +450,14 @@ new_tsyn(Cell *abbr, Cell *full)
 Cell *
 new_tcons(DefType *tcons, Cell *targ)
 {
-	Cell	*cp;
-
-	cp = new_tsub(tcons, targ);
+	auto cp = new_tsub(tcons, targ);
 	return new_tsyn(cp, cp);
 }
 
 Cell *
 new_tlist(Cell *head, Cell *tail)
 {
-	Cell	*cp;
-
-	cp = new_cell(C_TLIST);
+	auto cp = new_cell(C_TLIST);
 	cp->c_head = head;
 	cp->c_tail = tail;
 	return cp;

@@ -77,9 +77,7 @@ safe_pr_value(FILE *f, Cell *value, int context)
 static void
 real_pr_value(FILE *f, Cell *value, int context)
 {
-	int	prec;
-
-	prec = prec_value(value);
+	auto prec = prec_value(value);
 	if (prec < context)
 		(void)fprintf(f, "(");
 	switch (value->c_class) {
@@ -232,9 +230,7 @@ is_vstring(Cell *value)
 static Cell *
 get_actual(int level, Path path)
 {
-	Cell	*env;
-
-	env = cur_env();
+	auto env = cur_env();
 	while (level-- > 0)
 		env = env->c_right;
 	return evaluate(new_dirs(path, env->c_left));
@@ -268,9 +264,9 @@ static void
 pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context)
 		/* a constructor arg is actually several */
 {
-	Op	*op;
+	auto op = op_lookup(name);
 
-	if ((op = op_lookup(name)) != nullptr) {
+	if (op != nullptr) {
 		if (arg->c_class == C_PAIR) {
 			if (op->op_prec < context)
 				(void)fprintf(f, "(");
@@ -298,9 +294,7 @@ pr_f_value(FILE *f, String name, int nargs, Cell *arg, int context)
 String
 val_name(int level, Path path)
 {
-	Cell	*value;
-
-	value = get_actual(level, path);
+	auto value = get_actual(level, path);
 	switch (value->c_class) {
 	case C_SUSP:
 		switch (value->c_expr->e_class) {

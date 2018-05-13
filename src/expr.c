@@ -26,9 +26,7 @@ static const	char	bound_variable[] = "x'";
 Expr *
 char_expr(Char c)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_CHAR;
 	expr->e_char = c;
 	return expr;
@@ -49,9 +47,7 @@ text_expr(const Byte *text, int n)
 Expr *
 num_expr(Num n)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_NUM;
 	expr->e_num = n;
 	return expr;
@@ -60,9 +56,7 @@ num_expr(Num n)
 Expr *
 cons_expr(Cons *constr)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_CONS;
 	expr->e_const = constr;
 	return expr;
@@ -75,9 +69,7 @@ cons_expr(Cons *constr)
 Expr *
 id_expr(String name)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_VAR;
 	expr->e_vname = name;
 	return expr;
@@ -86,9 +78,7 @@ id_expr(String name)
 Expr *
 dir_expr(Path where)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_PARAM;
 	expr->e_level = 0;
 	expr->e_where = p_stash(p_reverse(where));
@@ -98,9 +88,7 @@ dir_expr(Path where)
 Expr *
 pair_expr(Expr *left, Expr *right)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_PAIR;
 	expr->e_left = left;
 	expr->e_right = right;
@@ -110,9 +98,7 @@ pair_expr(Expr *left, Expr *right)
 Expr *
 apply_expr(Expr *func, Expr *arg)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_APPLY;
 	expr->e_func = func;
 	expr->e_arg = arg;
@@ -122,15 +108,12 @@ apply_expr(Expr *func, Expr *arg)
 Expr *
 func_expr(Branch *branches)
 {
-	Expr	*expr;
-	Expr	*formals;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_LAMBDA;
 	expr->e_branch = branches;
 	expr->e_arity = 0;
 	/* use the first branch for the arity: checked later in nv_expr() */
-	for (formals = branches->br_formals;
+	for (auto formals = branches->br_formals;
 	     formals != nullptr && formals->e_class == E_APPLY;
 	     formals = formals->e_func)
 		expr->e_arity++;
@@ -144,9 +127,7 @@ func_expr(Branch *branches)
 Expr *
 ite_expr(Expr *if_expr, Expr *then_expr, Expr *else_expr)
 {
-	Expr	*expr;
-
-	expr = apply_expr(apply_expr(apply_expr(
+	auto expr = apply_expr(apply_expr(apply_expr(
 					id_expr(newstring("if_then_else")),
 					if_expr),
 				then_expr),
@@ -184,9 +165,7 @@ where_expr(Expr *subexpr, Expr *pattern, Expr *body, Bool recursive)
 Expr *
 mu_expr(Expr *muvar, Expr *body)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_MU;
 	expr->e_muvar = apply_expr((Expr *)0, muvar);
 	expr->e_body = body;
@@ -196,9 +175,7 @@ mu_expr(Expr *muvar, Expr *body)
 Expr *
 presection(String operator_, Expr *arg)
 {
-	Expr	*expr;
-
-	expr = func_expr(new_unary(
+	auto expr = func_expr(new_unary(
 			id_expr(bound_variable),
 			apply_expr(id_expr(operator_),
 				pair_expr(arg, id_expr(bound_variable))),
@@ -210,9 +187,7 @@ presection(String operator_, Expr *arg)
 Expr *
 postsection(String operator_, Expr *arg)
 {
-	Expr	*expr;
-
-	expr = func_expr(new_unary(
+	auto expr = func_expr(new_unary(
 			id_expr(bound_variable),
 			apply_expr(id_expr(operator_),
 				pair_expr(id_expr(bound_variable), arg)),
@@ -228,9 +203,7 @@ postsection(String operator_, Expr *arg)
 Expr *
 builtin_expr(Function *fn)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_BUILTIN;
 	expr->e_fn = fn;
 	return expr;
@@ -239,9 +212,7 @@ builtin_expr(Function *fn)
 Expr *
 bu_1math_expr(Unary *fn)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_BU_1MATH;
 	expr->e_1math = fn;
 	return expr;
@@ -250,9 +221,7 @@ bu_1math_expr(Unary *fn)
 Expr *
 bu_2math_expr(Binary *fn)
 {
-	Expr	*expr;
-
-	expr = NEW(Expr);
+	auto expr = NEW(Expr);
 	expr->e_class = E_BU_2MATH;
 	expr->e_2math = fn;
 	return expr;
@@ -265,9 +234,7 @@ bu_2math_expr(Binary *fn)
 Branch *
 new_branch(Expr *formals, Expr *expr, Branch *next)
 {
-	Branch	*branch;
-
-	branch = NEW(Branch);
+	auto branch = NEW(Branch);
 	branch->br_formals = formals;
 	branch->br_expr = expr;
 	branch->br_next = next;
@@ -306,7 +273,6 @@ decl_value(String name, QType *qtype)
 void
 def_value(Expr *formals, Expr *body)
 {
-	Branch	*branch;
 	Func	*fn;
 	Branch	*br;
 	int	arity;
@@ -336,7 +302,7 @@ def_value(Expr *formals, Expr *body)
 		error(SEMERR, "'%s': attempt to redefine value identifier",
 			head->e_vname);
 	else {	
-		branch = new_branch(formals, body, (Branch *)0);	
+		auto branch = new_branch(formals, body, (Branch *)0);
 		/* BUG: implicitly declared functions are not checked */
 		if (! nr_branch(branch) ||
 		    (fn->f_explicit_dec && ! chk_func(branch, fn)))

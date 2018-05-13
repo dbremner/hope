@@ -47,12 +47,10 @@ static void	show_branch(Branch *branch);
 Bool
 chk_func(Branch *branch, Func *fn)
 {
-	Cell	*inferred;
-
 	if (setjmp(execerror))
 		return FALSE;
 	init_vars();
-	inferred = ty_branch(branch);
+	auto inferred = ty_branch(branch);
 	match_type(fn->f_name, inferred, fn->f_qtype);
 	return TRUE;
 }
@@ -216,20 +214,17 @@ ty_pattern(Expr *pattern, int level)
 static Cell *
 ty_if(Expr *expr)
 {
-	Cell	*type1, *type2;
-	Expr	*if_expr, *then_expr, *else_expr;
-
-	if_expr = expr->e_func->e_func->e_arg;
-	then_expr = expr->e_func->e_arg;
-	else_expr = expr->e_arg;
-	type1 = ty_expr(if_expr);
+	auto if_expr = expr->e_func->e_func->e_arg;
+	auto then_expr = expr->e_func->e_arg;
+	auto else_expr = expr->e_arg;
+	auto type1 = ty_expr(if_expr);
 	if (! unify(type1, new_const_type(truval))) {
 		show_expr_type(if_expr, type1);
 		error(TYPEERR, "predicate is not a truth value");
 	}
 
 	type1 = ty_expr(then_expr);
-	type2 = ty_expr(else_expr);
+	auto type2 = ty_expr(else_expr);
 	if (! unify(type1, type2)) {
 		show_expr_type(then_expr, type1);
 		show_expr_type(else_expr, type2);
@@ -248,13 +243,11 @@ ty_if(Expr *expr)
 static Cell *
 ty_eqn(Branch *branch, Expr *expr)
 {
-	Cell	*pat_type, *exp_type, *val_type;
-
 	new_vars(branch->br_formals->e_nvars);
-	pat_type = ty_pattern(branch->br_formals->e_arg, 0);
-	val_type = ty_expr(branch->br_expr);
+	auto pat_type = ty_pattern(branch->br_formals->e_arg, 0);
+	auto val_type = ty_expr(branch->br_expr);
 	del_vars();
-	exp_type = ty_expr(expr);
+	auto exp_type = ty_expr(expr);
 	if (! unify(pat_type, exp_type)) {
 		show_expr_type(branch->br_formals->e_arg, pat_type);
 		show_expr_type(expr, exp_type);
@@ -273,12 +266,10 @@ ty_eqn(Branch *branch, Expr *expr)
 static Cell *
 ty_rec_eqn(Branch *branch, Expr *expr)
 {
-	Cell	*pat_type, *exp_type, *val_type;
-
 	new_vars(branch->br_formals->e_nvars);
-	pat_type = ty_pattern(branch->br_formals->e_arg, 0);
-	val_type = ty_expr(branch->br_expr);
-	exp_type = ty_expr(expr);
+	auto pat_type = ty_pattern(branch->br_formals->e_arg, 0);
+	auto val_type = ty_expr(branch->br_expr);
+	auto exp_type = ty_expr(expr);
 	del_vars();
 	if (! unify(pat_type, exp_type)) {
 		show_expr_type(branch->br_formals->e_arg, pat_type);
@@ -297,11 +288,9 @@ ty_rec_eqn(Branch *branch, Expr *expr)
 static Cell *
 ty_mu_expr(Expr *muvar, Expr *body)
 {
-	Cell	*pat_type, *exp_type;
-
 	new_vars(muvar->e_nvars);
-	pat_type = ty_pattern(muvar->e_arg, 0);
-	exp_type = ty_expr(body);
+	auto pat_type = ty_pattern(muvar->e_arg, 0);
+	auto exp_type = ty_expr(body);
 	del_vars();
 	if (! unify(pat_type, exp_type)) {
 		show_expr_type(muvar->e_arg, pat_type);
@@ -321,11 +310,8 @@ ty_mu_expr(Expr *muvar, Expr *body)
 static Cell *
 ty_list(Branch *branch)
 {
-	Cell	*type;
-	Branch	*br;
-
-	type = ty_branch(branch);
-	for (br = branch->br_next; br != nullptr; br = br->br_next)
+	auto type = ty_branch(branch);
+	for (auto br = branch->br_next; br != nullptr; br = br->br_next)
 		if (! unify(type, ty_branch(br))) {
 			show_branch(branch);
 			error(TYPEERR, "alternatives have incompatible types");
@@ -347,17 +333,14 @@ ty_list(Branch *branch)
 static Cell *
 ty_branch(Branch *branch)
 {
-	Cell	*type;
 	Cell	**tp;
-	Expr	*formals;
-
-	type = ty_formals(branch->br_formals, NOCELL);
+	auto type = ty_formals(branch->br_formals, NOCELL);
 	/* plug the result type */
 	for (tp = &type; *tp != NOCELL; tp = &((*tp)->c_targ2))
 		;
 	*tp = ty_expr(branch->br_expr);
 	/* delete all the variables pushed by ty_formals() */
-	for (formals = branch->br_formals;
+	for (auto formals = branch->br_formals;
 	     formals != nullptr && formals->e_class == E_APPLY;
 	     formals = formals->e_func)
 		del_vars();
@@ -367,11 +350,9 @@ ty_branch(Branch *branch)
 static Cell *
 ty_formals(Expr *formals, Cell *type)
 {
-	Cell	*newtype;
-
 	if (formals == nullptr || formals->e_class != E_APPLY)
 		return type;
-	newtype = new_func_type(NOCELL, type);
+	auto newtype = new_func_type(NOCELL, type);
 	type = ty_formals(formals->e_func, newtype);
 	new_vars(formals->e_nvars);
 	newtype->c_targ1 = ty_pattern(formals->e_arg, 0);

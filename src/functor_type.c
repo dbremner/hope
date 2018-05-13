@@ -23,16 +23,14 @@ static Cell	*functor_arg(Type *tvar, Cell **targ);
 Cell *
 functor_type(DefType *dt)
 {
-	int	ntvars;
 	int	i;
-	Cell	*result_type;
 	Cell	*type_arg[MAX_TVARS_IN_TYPE];
 
-	ntvars = num_tvars_in(dt->dt_varlist);
+	int ntvars = num_tvars_in(dt->dt_varlist);
 	for (i = 0; i < ntvars; i++)
 		type_arg[i] = new_tvar();
 
-	result_type = new_func_type(
+	auto result_type = new_func_type(
 			new_tcons(dt,
 				fold_typelist(dt->dt_varlist, type_arg,
 						NOCELL, result_domain)),
@@ -71,11 +69,9 @@ static Cell *
 fold_typelist(TypeList *varlist, Cell **targ, Cell *finish,
 		Cell *(*fn)(Type *head, Cell *tail, Cell **targ))
 {
-	Type	*head;
-
 	if (varlist == nullptr)
 		return finish;
-	head = varlist->ty_head;
+	auto head = varlist->ty_head;
 	return (*fn)(head,
 		     fold_typelist(
 			varlist->ty_tail,
@@ -101,9 +97,7 @@ result_range(Type *head, Cell *tail_type, Cell **targ)
 static Cell *
 tupled_args(Type *head, Cell *tail_type, Cell **targ)
 {
-	Cell	*head_type;
-
-	head_type = functor_arg(head, targ);
+	auto head_type = functor_arg(head, targ);
 	return tail_type == nullptr ? head_type :
 		new_prod_type(head_type, tail_type);
 }
